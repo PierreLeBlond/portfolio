@@ -36,6 +36,7 @@
   });
   let faceIndex = 0;
   const urlIndices = [0, 0, 0, 0, 0];
+  $: console.log(urlIndices);
   const rotations = [0, 90, 180, -90];
 
   const rotateHorizontally = (newYawAnchor: number) => {
@@ -122,49 +123,6 @@
   };
 
   $: changeUrls(urls);
-
-  let images: { [key: string]: HTMLImageElement } = {};
-  const createImage = (url: string): Promise<HTMLImageElement> => {
-    return new Promise((resolve) => {
-      const image = new Image();
-      image.src = url;
-      image.alt = url;
-      image.onload = () => {
-        images[url] = image;
-        resolve(image);
-      };
-    });
-  };
-
-  const addImageCore = (node: HTMLElement, url: string) => {
-    if (url == '') {
-      node.innerHTML = '';
-    }
-
-    const image = images[url];
-
-    if (image) {
-      node.innerHTML = '';
-      node.appendChild(image.cloneNode());
-      return;
-    }
-
-    createImage(url).then((image: HTMLImageElement) => {
-      node.innerHTML = '';
-      node.appendChild(image.cloneNode());
-    });
-  };
-  function addImage(node: HTMLElement, url: string) {
-    addImageCore(node, url);
-    return {
-      update: (newUrl: string) => {
-        addImageCore(node, newUrl);
-      },
-      destroy: () => {
-        node.innerHTML = '';
-      }
-    };
-  }
 </script>
 
 <div
@@ -194,7 +152,6 @@
           yaw={rotation}
           {translation}
           {faceSize}
-          {addImage}
         />
       {/each}
       <Face
@@ -202,14 +159,12 @@
         pitch={-90}
         {translation}
         {faceSize}
-        {addImage}
       />
       <Face
         url={bottomFaceUrl}
         pitch={90}
         {translation}
         {faceSize}
-        {addImage}
       />
     </div>
 

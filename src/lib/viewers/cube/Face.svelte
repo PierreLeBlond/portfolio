@@ -1,10 +1,56 @@
 <script lang="ts">
+  import { imagePromises } from './images';
+
   export let url: string;
   export let yaw = 0;
   export let pitch = 0;
   export let translation = 0;
   export let faceSize: number;
-  export let addImage: (node: HTMLElement, url: string) => { update: (newUrl: string) => void; destroy: () => void };
+
+  const getImage = (url: string): Promise<HTMLImageElement> => {
+    return new Promise((resolve) => {
+      const image = new Image();
+      image.src = url;
+      image.alt = url;
+      image.onload = () => {
+        resolve(image);
+      };
+    });
+  };
+
+  const addImageCore = (node: HTMLElement, newUrl: string) => {
+    node.innerHTML = '';
+
+    if (newUrl == '') {
+      return;
+    }
+
+    let imagePromise = $imagePromises[newUrl];
+
+    if (!imagePromise) {
+      imagePromise = getImage(newUrl);
+      $imagePromises[newUrl] = imagePromise;
+    }
+
+    imagePromise.then((image: HTMLImageElement) => {
+      // If another promise has been called meanwhile, nothing more to do
+      if (imagePromise != $imagePromises[url]) {
+        return;
+      }
+      node.innerHTML = '';
+      node.appendChild(image.cloneNode());
+    });
+  };
+
+  function addImage(node: HTMLElement, url: string) {
+    addImageCore(node, url);
+    return {
+      update: (newUrl: string) => {
+        addImageCore(node, newUrl);
+      },
+      destroy: () => {}
+    };
+  }
 </script>
 
 <div
