@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { imagePromises } from './images';
+  import { imagePromises } from './imagePromises';
 
   export let url: string;
   export let yaw = 0;
