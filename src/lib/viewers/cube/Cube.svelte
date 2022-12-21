@@ -36,7 +36,6 @@
   });
   let faceIndex = 0;
   const urlIndices = [0, 0, 0, 0, 0];
-  $: console.log(urlIndices);
   const rotations = [0, 90, 180, -90];
 
   const rotateHorizontally = (newYawAnchor: number) => {
