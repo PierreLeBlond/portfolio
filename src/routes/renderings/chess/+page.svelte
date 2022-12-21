@@ -7,7 +7,7 @@
 
   let chessboard: { start: () => any; stop: () => void };
   const start = async (publicViewer: PublicViewer) => {
-    const Chessboard = (await import('https://app.pierrelespingal.com/chess/v2.1.1/lib/index.js')).default;
+    const Chessboard = (await import('https://app.pierrelespingal.xyz/chess/v2.1.2/lib/index.js')).default;
     chessboard = new Chessboard(publicViewer);
     await chessboard.start();
   };

@@ -7,7 +7,7 @@
 
   let earth: { start: () => any; stop: () => void };
   const start = async () => {
-    const Earth = (await import('https://app.pierrelespingal.com/earth/v1.1.1/lib/index.js')).default;
+    const Earth = (await import('https://app.pierrelespingal.xyz/earth/v1.1.2/lib/index.js')).default;
     earth = new Earth($viewer);
     await earth.start();
   };
