@@ -11,16 +11,18 @@
   });
 </script>
 
-<div class="w-screen h-screen flex text-gray-900 overflow-hidden">
+<div class="w-full h-full text-gray-900">
   <Background />
   {#if display}
-    <div class="flex flex-col grow">
-      <Header />
+    <div class="z-10 w-full h-full flex flex-col">
+      <div class="contents md:hidden">
+        <Header />
+      </div>
       <div class="flex grow">
-        <div class="w-32 h-full hidden md:block">
+        <div class="w-38 h-full hidden md:flex items-center justify-center">
           <NavigationBar />
         </div>
-        <div class="relative flex grow justify-center items-center">
+        <div class="relative flex mb-32 md:mb-0 grow justify-center items-center">
           <slot />
         </div>
       </div>

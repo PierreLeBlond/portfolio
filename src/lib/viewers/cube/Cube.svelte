@@ -177,9 +177,9 @@
       out:fade={{ duration: 1000, easing: expoOut }}
     >
       <div
-        class="w-1/3 h-1/3 flex justify-center items-center bg-black"
-        style="transform-style: preserve-3d; transform-origin: 50% 50% -200px; box-shadow: 0px 0px {faceSize /
-          4}px {faceSize / 3}px black;"
+        class="w-full h-full bg-gray-800"
+        style="transform-style: preserve-3d; transform-origin: 50% 50% -200px;"
+        style:filter={'blur(2em)'}
       />
     </div>
   </div>
