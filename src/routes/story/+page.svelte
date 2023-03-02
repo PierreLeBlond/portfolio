@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Story from '$lib/story/Story.svelte';
+  import Story from '$lib/content/about/Story.svelte';
 
   let height: number;
 
@@ -16,7 +16,7 @@
   bind:offsetHeight={height}
   style:-ms-overflow-style={'none'}
   style:scrollbar-width={'none'}
-  class="relative w-full h-full overflow-y-scroll"
+  class="relative h-full w-full overflow-y-scroll"
   bind:this={wrapper}
   on:scroll={updateScroll}
 >
