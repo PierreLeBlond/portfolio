@@ -1,72 +1,73 @@
 <script lang="ts">
-  import Loading from '$lib/loading/Loading.svelte';
-  import * as VIEWER from '@s0rt/3d-viewer';
   import { onMount, onDestroy } from 'svelte';
   import { setContext } from 'svelte';
   import type { LayoutData } from './$types';
   import { writable, type Writable } from 'svelte/store';
   import { page } from '$app/stores';
+  import { IblSpace, PublicViewer, THREE } from '@s0rt/3d-viewer';
 
   $: path = $page.url.pathname;
 
   export let data: LayoutData;
 
-  const viewerContext: Writable<null | VIEWER.PublicViewer> = writable(null);
-  setContext('viewer', viewerContext);
+  let publicViewerWritable: Writable<null | PublicViewer> = writable(null);
+  const getPublicViewer = async () =>
+    new Promise<PublicViewer>((resolve) => {
+      if ($publicViewerWritable) {
+        resolve($publicViewerWritable);
+        return;
+      }
+
+      const unsubscribe = publicViewerWritable.subscribe((publicViewer: null | PublicViewer) => {
+        if (!publicViewer) {
+          return;
+        }
+        unsubscribe();
+        resolve(publicViewer);
+      });
+    });
+  setContext('renderingsPublicViewerContext', { getPublicViewer });
 
   let progression = 0;
   $: loading = progression != 1;
-  const updateProgression = (
-    event: VIEWER.THREE.Event & { type: 'taskCompleted' } & { target: VIEWER.PublicViewer }
-  ) => {
+  const updateProgression = (event: THREE.Event & { type: 'taskCompleted' } & { target: PublicViewer }) => {
     progression = event['progression'];
   };
 
   onMount(async () => {
-    // page scenes require viewer lib as a external dependency
-    window.VIEWER = VIEWER;
-
-    const publicViewer = new VIEWER.PublicViewer('viewer');
+    const publicViewer = new PublicViewer('objectViewer');
     publicViewer.addEventListener('taskCompleted', updateProgression);
     publicViewer.addTasks({
       parallelTasks: [
         {
           task: async () => {
             await publicViewer.loadIbl(data.irradiance, data.radiance);
-            publicViewer.viewer.setIblSpace(VIEWER.IblSpace.View);
+            publicViewer.viewer.setIblSpace(IblSpace.View);
           }
         }
       ]
     });
     await publicViewer.launch();
 
-    viewerContext.set(publicViewer);
+    publicViewerWritable.set(publicViewer);
   });
 
-  onDestroy(() => {
-    if ($viewerContext) {
-      $viewerContext.removeEventListener('taskCompleted', updateProgression);
-      $viewerContext.dispose();
-    }
+  onDestroy(async () => {
+    const publicViewer = await getPublicViewer();
+    publicViewer.removeEventListener('taskCompleted', updateProgression);
+    publicViewer.dispose();
   });
 </script>
 
-<div class="absolute w-full h-full">
+<div class="absolute h-full w-full">
   <div
     style:visibility={loading ? 'hidden' : 'visible'}
-    class="relative w-full h-full flex justify-center items-center"
-    id="viewer"
+    class="relative flex h-full w-full items-center justify-center"
+    id="objectViewer"
   />
 
   <!-- https://github.com/sveltejs/kit/issues/2527 -->
   {#if path.startsWith('/renderings')}
-    {#if loading}
-      <div class="absolute w-full h-full top-0 flex flex-col justify-center items-center">
-        <Loading />
-        <p>{$page.data['loadingJoke']}</p>
-        <!--p>{progression}%</p-->
-      </div>
-    {/if}
     <slot />
   {/if}
 </div>

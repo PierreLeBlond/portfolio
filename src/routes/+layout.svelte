@@ -1,34 +1,60 @@
 <script lang="ts">
   import '../app.css';
-  import NavigationBar from '$lib/navigation/NavigationBar.svelte';
-  import Header from '$lib/navigation/Header.svelte';
-  import { onMount } from 'svelte';
-  import Background from '$lib/design/Background.svelte';
+  import Background from '$lib/layout/Background.svelte';
+  import Header from '$lib/layout/Header.svelte';
+  import Footer from '$lib/layout/Footer.svelte';
+  import Viewer from '$lib/layout/Viewer/Viewer.svelte';
+  import { pointedPathname, selectedPathname } from '$lib/stores/pathname';
+  import { afterNavigate, beforeNavigate } from '$app/navigation';
+  import InitialLoadingScreen from '$lib/layout/loading/InitialLoadingScreen.svelte';
+  import { globalState } from '$lib/stores/globalState';
+  import { viewerState } from '$lib/stores/viewerState';
 
-  // Pattern to show transitions on first load
-  let display = false;
-  onMount(() => {
-    display = true;
+  beforeNavigate(async (navigation) => {
+    if (!navigation.to) {
+      return;
+    }
+
+    const { pathname } = navigation.to.url;
+    selectedPathname.set(pathname);
+
+    pointedPathname.set(null);
+
+    globalState.set('navigating');
   });
+
+  afterNavigate(() => {
+    globalState.set('ready');
+  });
+
+  let displayInitialLoadingScreen = true;
+  const finishInitialLoading = () => {
+    displayInitialLoadingScreen = false;
+    globalState.set('introducing');
+  };
 </script>
 
-<div class="relative w-screen h-screen overflow-hidden">
-  <div class="contents text-gray-800">
+<div class="relative flex h-screen w-screen flex-col overflow-hidden">
+  {#if displayInitialLoadingScreen}
+    <div class="absolute z-50 h-full w-full">
+      <InitialLoadingScreen
+        canOpen={$viewerState == 'mounted'}
+        on:open={finishInitialLoading}
+      />
+    </div>
+  {/if}
+  <header class="z-40 h-16 w-full">
+    <Header />
+  </header>
+  <main class="relative grow text-gray-800">
     <Background />
-    {#if display}
-      <div class="z-10 w-full h-full flex flex-col">
-        <div class="contents md:hidden">
-          <Header />
-        </div>
-        <div class="flex grow">
-          <div class="w-38 h-full hidden md:flex items-center justify-center">
-            <NavigationBar />
-          </div>
-          <div class="relative flex mb-32 md:mb-0 grow justify-center items-center">
-            <slot />
-          </div>
-        </div>
-      </div>
-    {/if}
-  </div>
+    <div class="relative h-full w-full">
+      <Viewer>
+        <slot />
+      </Viewer>
+    </div>
+  </main>
+  <footer class="z-40 h-16 w-full">
+    <Footer />
+  </footer>
 </div>

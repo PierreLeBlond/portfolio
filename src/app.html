@@ -10,11 +10,18 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="%sveltekit.assets%/favicon-32x32.png">
 	<link rel="apple-touch-icon" href="%sveltekit.assets%/apple-touch-icon.png">
 	<meta name="viewport" content="width=device-width" />
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+
 	%sveltekit.head%
 </head>
 
 <body>
-	%sveltekit.body%
+	<div style:display={'contents'}>
+		%sveltekit.body%
+	</div>
 </body>
 
 </html>
