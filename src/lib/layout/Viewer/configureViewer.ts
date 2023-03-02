@@ -12,7 +12,7 @@ export const configureViewer = async () => {
 
   const scene = publicViewer.viewer.createScene('room');
   publicViewer.viewer.setScene(scene);
-  await scene.loadAsset(room);
+  await scene.loadAsset(room, '/public/');
 
   configureCamera(publicViewer.viewer.camera, publicViewer.viewer.controls);
 
