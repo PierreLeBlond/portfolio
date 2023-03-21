@@ -28,12 +28,12 @@
   class="relative flex h-1/6 w-full items-center justify-center pt-2"
 >
   {#each items as _, i (i)}
-    <li class="px-3 hover:cursor-pointer">
+    <li class="px-3">
       <div
         in:slide={{ delay: (items.length - i) * 50 }}
         out:slide={{ delay: i * 50 }}
         class:selected={i == index}
-        class="group"
+        class="group hover:cursor-pointer"
         on:click={() => handleClickEvent(i)}
         on:keydown={() => handleClickEvent(i)}
       >
