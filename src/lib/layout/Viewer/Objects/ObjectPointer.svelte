@@ -5,6 +5,7 @@
   import { getContext } from 'svelte';
   import { createEventDispatcher } from 'svelte';
   import throttle from 'lodash.throttle';
+  import { afterNavigate } from '$app/navigation';
 
   const dispatch = createEventDispatcher<{ pointed: { pathname: string } }>();
 
@@ -14,24 +15,84 @@
 
   export let pointableObjects: THREE.Object3D[];
   export let pointedObject: null | THREE.Object3D = null;
+  export let selectableObjects: THREE.Object3D[];
 
-  const onPointerMove = throttle((event: MouseEvent) => {
+  $: console.log(pointedObject);
+
+  const onMouseMove = (event: PointerEvent) => {
+    if (event.pointerType != 'mouse') {
+      return;
+    }
+
+    const { offsetX, offsetY } = event;
+
+    onPointerMove(offsetX, offsetY);
+  };
+
+  const onPointerMove = throttle((offsetX: number, offsetY: number) => {
     const pointer = new THREE.Vector2(
-      (event.offsetX / domElement.offsetWidth) * 2.0 - 1.0,
-      -(event.offsetY / domElement.offsetHeight) * 2.0 + 1.0
+      (offsetX / domElement.offsetWidth) * 2.0 - 1.0,
+      -(offsetY / domElement.offsetHeight) * 2.0 + 1.0
     );
     const objectUnderMouse = getObjectUnderMouse(pointer, camera, pointableObjects);
     pointedObject = objectUnderMouse;
     dispatch('pointed', { pathname: pointedObject ? pointedObject.userData['pathname'] : null });
   }, 100);
 
+  let touchedObject: null | THREE.Object3D;
+  const onTouchDown = (event: PointerEvent) => {
+    if (event.pointerType != 'touch') {
+      return;
+    }
+
+    const { offsetX, offsetY } = event;
+
+    const pointer = new THREE.Vector2(
+      (offsetX / domElement.offsetWidth) * 2.0 - 1.0,
+      -(offsetY / domElement.offsetHeight) * 2.0 + 1.0
+    );
+    const objectUnderMouse = getObjectUnderMouse(pointer, camera, pointableObjects);
+
+    if (!selectableObjects.includes(objectUnderMouse)) {
+      touchedObject = null;
+      return;
+    }
+
+    touchedObject = objectUnderMouse;
+  };
+
+  const onTouchUp = (event: PointerEvent) => {
+    if (event.pointerType != 'touch') {
+      return;
+    }
+
+    const { offsetX, offsetY } = event;
+
+    const pointer = new THREE.Vector2(
+      (offsetX / domElement.offsetWidth) * 2.0 - 1.0,
+      -(offsetY / domElement.offsetHeight) * 2.0 + 1.0
+    );
+    const objectUnderMouse = getObjectUnderMouse(pointer, camera, pointableObjects);
+
+    pointedObject = objectUnderMouse == touchedObject ? touchedObject : null;
+    dispatch('pointed', { pathname: pointedObject?.userData['pathname'] || null });
+  };
+
   onMount(() => {
-    domElement.addEventListener('pointermove', onPointerMove);
+    domElement.addEventListener('pointermove', onMouseMove);
+    domElement.addEventListener('pointerdown', onTouchDown);
+    domElement.addEventListener('pointerup', onTouchUp);
   });
 
   onDestroy(() => {
-    domElement.removeEventListener('pointermove', onPointerMove);
+    domElement.removeEventListener('pointermove', onMouseMove);
+    domElement.removeEventListener('pointerdown', onTouchDown);
+    domElement.removeEventListener('pointerup', onTouchUp);
+  });
+
+  afterNavigate(() => {
+    pointedObject = null;
   });
 </script>
 
-<slot {pointedObject} />
+<slot />

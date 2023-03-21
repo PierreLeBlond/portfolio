@@ -42,6 +42,7 @@
 
 {#if $page.data['isHome'] && $viewerState == 'ready'}
   <ObjectPointer
+    {selectableObjects}
     {pointableObjects}
     on:pointed={onPointed}
     bind:pointedObject

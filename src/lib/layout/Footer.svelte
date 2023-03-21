@@ -34,6 +34,9 @@
 
   let leftArrowWidth = 48;
   let leftArrowHeight = 48;
+
+  let rightArrowWidth = 48;
+  let rightArrowHeight = 48;
 </script>
 
 <div class="relative grid h-full w-full grid-cols-6 bg-black sm:grid-cols-12">
@@ -67,6 +70,8 @@
   <div class="order-3 col-span-1 col-start-6 flex items-center justify-end sm:col-start-9">
     {#if nextPathname}
       <a
+        bind:offsetWidth={rightArrowWidth}
+        bind:offsetHeight={rightArrowHeight}
         class="h-12 w-12 hover:cursor-pointer"
         href={nextPathname}
         in:scale={{ easing: bounceOut, duration: 800 }}
@@ -78,8 +83,8 @@
           url={arrow}
           columns={8}
           frames={50}
-          width={48}
-          height={48}
+          width={rightArrowWidth}
+          height={rightArrowHeight}
           activateOnHover={true}
         />
       </a>
