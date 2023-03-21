@@ -49,6 +49,38 @@
   if (!activateOnHover) {
     startAnimation();
   }
+
+  const onPointerEnter = (event: PointerEvent) => {
+    if (event.pointerType != 'mouse') {
+      return;
+    }
+
+    onHover();
+  };
+
+  const onHover = () => {
+    if (!activateOnHover) {
+      return;
+    }
+
+    startAnimation();
+  };
+
+  const onPointerLeave = (event: PointerEvent) => {
+    if (event.pointerType != 'mouse') {
+      return;
+    }
+
+    onUnhover();
+  };
+
+  const onUnhover = () => {
+    if (!activateOnHover) {
+      return;
+    }
+
+    stopAnimation();
+  };
 </script>
 
 <div
@@ -57,6 +89,8 @@
   style:background-size={`${backgroundWidth}px ${backgroundHeight}px`}
   style:background-position={`left ${backgroundX}px top ${backgroundY}px`}
   style:transform={mirrorY ? 'scaleX(-1)' : ''}
-  on:mouseenter={activateOnHover ? startAnimation : null}
-  on:mouseleave={activateOnHover ? stopAnimation : null}
+  on:pointerenter={onPointerEnter}
+  on:pointerleave={onPointerLeave}
+  on:touchstart={onHover}
+  on:touchend={onUnhover}
 />
