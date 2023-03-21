@@ -16,6 +16,8 @@
     frames={24}
     size={offsetHeight}
   >
-    <WaveMonsterCollapse />
+    <div class="h-full w-full px-[12%]">
+      <WaveMonsterCollapse />
+    </div>
   </Mask>
 </div>
