@@ -37,6 +37,6 @@
 	},
 	"dependencies": {
 		"@s0rt/3d-viewer": "8.2.2",
-		"@s0rt/wave-monster-collapse": "^4.2.0"
+		"@s0rt/wave-monster-collapse": "^4.2.4"
 	}
 }
