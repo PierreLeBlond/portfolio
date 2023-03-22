@@ -15,9 +15,8 @@
 
   export let pointableObjects: THREE.Object3D[];
   export let pointedObject: null | THREE.Object3D = null;
+  export let touchedObject: null | THREE.Object3D = null;
   export let selectableObjects: THREE.Object3D[];
-
-  $: console.log(pointedObject);
 
   const onMouseMove = (event: PointerEvent) => {
     if (event.pointerType != 'mouse') {
@@ -39,7 +38,7 @@
     dispatch('pointed', { pathname: pointedObject ? pointedObject.userData['pathname'] : null });
   }, 100);
 
-  let touchedObject: null | THREE.Object3D;
+  let touchedDownObject: null | THREE.Object3D;
   const onTouchDown = (event: PointerEvent) => {
     if (event.pointerType != 'touch') {
       return;
@@ -54,11 +53,11 @@
     const objectUnderMouse = getObjectUnderMouse(pointer, camera, pointableObjects);
 
     if (!selectableObjects.includes(objectUnderMouse)) {
-      touchedObject = null;
+      touchedDownObject = null;
       return;
     }
 
-    touchedObject = objectUnderMouse;
+    touchedDownObject = objectUnderMouse;
   };
 
   const onTouchUp = (event: PointerEvent) => {
@@ -74,8 +73,8 @@
     );
     const objectUnderMouse = getObjectUnderMouse(pointer, camera, pointableObjects);
 
-    pointedObject = objectUnderMouse == touchedObject ? touchedObject : null;
-    dispatch('pointed', { pathname: pointedObject?.userData['pathname'] || null });
+    touchedObject = objectUnderMouse == touchedDownObject ? touchedDownObject : null;
+    dispatch('pointed', { pathname: touchedObject?.userData['pathname'] || null });
   };
 
   onMount(() => {
@@ -92,6 +91,7 @@
 
   afterNavigate(() => {
     pointedObject = null;
+    touchedObject = null;
   });
 </script>
 

@@ -23,6 +23,7 @@
 
   const pointableObjects: THREE.Object3D[] = scene.children;
   let pointedObject: THREE.Object3D | null = null;
+  let touchedObject: THREE.Object3D | null = null;
 
   const onSelected = (event: CustomEvent<{ object: THREE.Object3D }>) => {
     const pathname = event.detail.object.userData['pathname'];
@@ -46,10 +47,12 @@
     {pointableObjects}
     on:pointed={onPointed}
     bind:pointedObject
+    bind:touchedObject
   >
     <ObjectSelector
       {selectableObjects}
       {pointedObject}
+      {touchedObject}
       on:selected={onSelected}
     />
   </ObjectPointer>
@@ -58,7 +61,7 @@
 {#each selectableObjects as selectableObject}
   <Object
     object={selectableObject}
-    pointed={selectableObject == pointedObject}
+    pointed={selectableObject == pointedObject || selectableObject == touchedObject}
     selected={selectableObject.userData['pathname'] == $selectedPathname}
   />
 {/each}

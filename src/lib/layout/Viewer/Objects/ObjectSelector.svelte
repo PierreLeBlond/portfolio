@@ -8,6 +8,7 @@
   const LEFT_BUTTON = 0;
 
   export let pointedObject: null | THREE.Object3D = null;
+  export let touchedObject: null | THREE.Object3D = null;
   export let selectableObjects: THREE.Object3D[];
 
   let clickedObject: null | THREE.Object3D;
@@ -45,10 +46,10 @@
   };
 
   const onLetsGoButtonDown = () => {
-    if (!pointedObject) {
+    if (!touchedObject) {
       return;
     }
-    const object = pointedObject;
+    const object = touchedObject;
     dispatch('selected', { object });
   };
 </script>
@@ -58,16 +59,12 @@
   on:pointerup={onPointerUp}
 />
 
-{#if pointedObject}
+{#if touchedObject}
   <div
     transition:fly={{ y: 48 }}
-    class="fixed bottom-20 left-1/3 flex h-12 w-1/3 origin-center items-center justify-center rounded border border-white bg-black shadow sm:hidden"
+    on:pointerdown={onLetsGoButtonDown}
+    class="fixed bottom-20 left-1/3 flex h-12 w-1/3 origin-center items-center justify-center rounded border border-white bg-black shadow"
   >
-    <p
-      class="text-white"
-      on:pointerdown={onLetsGoButtonDown}
-    >
-      Let's go!
-    </p>
+    <p class="text-white">Let's go!</p>
   </div>
 {/if}
