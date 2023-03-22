@@ -12,7 +12,7 @@
     const mainPublicViewer = await mainPublicViewerContext.getPublicViewer();
     const renderingsPublicViewer = await renderingsPublicViewerContext.getPublicViewer();
 
-    const Earth = (await import('https://app.pierrelespingal.xyz/earth/v2.0.0/lib/index.js')).default;
+    const Earth = (await import('https://app.pierrelespingal.xyz/earth/v2.0.1/lib/index.js')).default;
     earth = new Earth(renderingsPublicViewer);
     await earth.start();
 

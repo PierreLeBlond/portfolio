@@ -14,17 +14,18 @@
     const mainPublicViewer = await mainPublicViewerContext.getPublicViewer();
     const renderingsPublicViewer = await renderingsPublicViewerContext.getPublicViewer();
 
-    const Chessboard = (await import('https://app.pierrelespingal.xyz/chess/v2.2.0/lib/index.js')).default;
+    const Chessboard = (await import('https://app.pierrelespingal.xyz/chess/v2.2.1/lib/index.js')).default;
     chessboard = new Chessboard(renderingsPublicViewer);
     await chessboard.start();
 
     const { camera, controls } = renderingsPublicViewer.viewer;
-    camera.fov = 50;
-    camera.updateProjectionMatrix();
 
     const { viewer } = mainPublicViewer;
     const roomCamera = viewer.camera;
     const roomControls = viewer.controls;
+
+    camera.fov = roomCamera.fov;
+    camera.updateProjectionMatrix();
 
     const roomPosition = roomCamera.position.clone();
     const offset = roomControls.target.clone();

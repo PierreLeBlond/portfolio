@@ -47,6 +47,7 @@
         }
       ]
     });
+    publicViewer.viewer.fov = 50;
     await publicViewer.launch();
 
     publicViewerWritable.set(publicViewer);
