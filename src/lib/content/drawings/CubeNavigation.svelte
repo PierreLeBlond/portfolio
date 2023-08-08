@@ -30,8 +30,8 @@
   {#each items as _, i (i)}
     <li class="px-3">
       <div
-        in:slide={{ delay: (items.length - i) * 50 }}
-        out:slide={{ delay: i * 50 }}
+        in:slide|global={{ delay: (items.length - i) * 50 }}
+        out:slide|global={{ delay: i * 50 }}
         class:selected={i == index}
         class="group hover:cursor-pointer"
         on:click={() => handleClickEvent(i)}

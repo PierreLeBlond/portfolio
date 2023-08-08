@@ -142,7 +142,7 @@
       class="h-full w-full"
       style="transform-style: preserve-3d;
       transform: translateY({-Math.sin($jump * Math.PI) * faceSize * 0.5}px) rotateX({$pitch}deg);"
-      transition:land
+      transition:land|global
     >
       {#each rotations as rotation, i}
         {@const urlIndice = urlIndices[i]}
@@ -174,8 +174,8 @@
           transform-style: preserve-3d;
       transform: translateY({translation + faceSize / 30}px) rotateX(-90deg);
       opacity: {1.0 - Math.sin($jump * Math.PI)}"
-      in:fade={{ duration: 1000, easing: sineIn }}
-      out:fade={{ duration: 1000, easing: expoOut }}
+      in:fade|global={{ duration: 1000, easing: sineIn }}
+      out:fade|global={{ duration: 1000, easing: expoOut }}
     >
       <div
         class="h-full w-full bg-gray-800"

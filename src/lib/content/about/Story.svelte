@@ -56,7 +56,7 @@
   <div
     style:box-shadow={'inset 0 0 12em 7em hsla(0 0% 0% / 0.2)'}
     class="fixed top-0 left-0 h-screen w-screen bg-gray-100"
-    out:fade
+    out:fade|global
   />
 </div>
 

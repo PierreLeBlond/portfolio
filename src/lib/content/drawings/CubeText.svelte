@@ -26,8 +26,8 @@
     {#if i == index}
       <p
         class="absolute top-[40%] w-full text-center indent-2.5 text-xl"
-        in:slideIn
-        out:slideOut
+        in:slideIn|global
+        out:slideOut|global
       >
         {@html text}
       </p>
