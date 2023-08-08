@@ -1,14 +1,17 @@
 <script lang="ts">
+  import type { PublicViewerContext } from '$lib/layout/Viewer/PublicViewerContext';
+  import { appEvent } from '$lib/state/appEvent';
   import { pageDialog } from '$lib/stores/pageDialog';
-  import { THREE } from '@s0rt/3d-viewer';
   import { getContext, onDestroy, onMount } from 'svelte';
+  import { THREE } from '@s0rt/3d-viewer';
 
-  const mainPublicViewerContext = getContext('mainPublicViewerContext');
-  const renderingsPublicViewerContext = getContext('renderingsPublicViewerContext');
+  const mainPublicViewerContext = getContext<PublicViewerContext>('mainPublicViewerContext');
+  const renderingsPublicViewerContext = getContext<PublicViewerContext>('renderingsPublicViewerContext');
 
   let earth: { start: () => any; stop: () => void };
   onMount(async () => {
     pageDialog.set('Creating the earth, that might take a few days');
+    appEvent.set('load');
     const mainPublicViewer = await mainPublicViewerContext.getPublicViewer();
     const renderingsPublicViewer = await renderingsPublicViewerContext.getPublicViewer();
 
@@ -64,6 +67,7 @@
       pageDialog.set(message ? `That's ${message.toLowerCase()}` : null);
     });
 
+    appEvent.set('loaded');
     pageDialog.set(null);
   });
 

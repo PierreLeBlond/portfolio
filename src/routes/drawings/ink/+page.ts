@@ -10,7 +10,6 @@ export const load: PageLoad = () => {
     urls: [euphonium, eye, piano, smoke],
     texts: ['Euphonium', 'Canopy', 'Piano learning nightmares', 'Smoke in the water'],
     dialog: 'Pure black ink',
-    disolve: true,
     camera: {
       position: new THREE.Vector3(-0.740, 1.112, 1.012),
       target: new THREE.Vector3(-1.05, 1.112, 1.012)

@@ -1,16 +1,17 @@
 <script lang="ts">
+  import type { PublicViewerContext } from '$lib/layout/Viewer/PublicViewerContext';
+  import { appEvent } from '$lib/state/appEvent';
   import { pageDialog } from '$lib/stores/pageDialog';
-  import { pageState } from '$lib/stores/pageState';
   import { getContext, onDestroy } from 'svelte';
   import { onMount } from 'svelte';
 
-  const mainPublicViewerContext = getContext('mainPublicViewerContext');
-  const renderingsPublicViewerContext = getContext('renderingsPublicViewerContext');
+  const mainPublicViewerContext = getContext<PublicViewerContext>('mainPublicViewerContext');
+  const renderingsPublicViewerContext = getContext<PublicViewerContext>('renderingsPublicViewerContext');
 
   let chessboard: { start: () => any; stop: () => void };
   onMount(async () => {
     pageDialog.set('Thinking about my next move...');
-    pageState.set('loading');
+    appEvent.set('load');
     const mainPublicViewer = await mainPublicViewerContext.getPublicViewer();
     const renderingsPublicViewer = await renderingsPublicViewerContext.getPublicViewer();
 
@@ -50,7 +51,7 @@
     object.visible = false;
 
     await renderingsPublicViewer.viewer.resolveObject(object, { duration: 0.5, delay: 0.1, color: 0xfb923c });
-    pageState.set('ready');
+    appEvent.set('loaded');
     pageDialog.set(null);
   });
 

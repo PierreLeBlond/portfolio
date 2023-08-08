@@ -5,13 +5,19 @@
   import Object from './Object.svelte';
   import type { THREE } from '@s0rt/3d-viewer';
   import { page } from '$app/stores';
-  import { pointedPathname, selectedPathname } from '$lib/stores/pathname';
+  import { pointedPathname } from '$lib/stores/pathname';
   import { base } from '$app/paths';
-  import { goto } from '$app/navigation';
-  import { viewerState } from '$lib/stores/viewerState';
+  import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
+  import { appState } from '$lib/state/appState';
+  import { selectedObject } from './selectedObject';
+  import { previouslySelectedObject } from './previouslySelectedObject';
+  import { configureObjects } from './configureObjects';
+  import type { PublicViewerContext } from '../PublicViewerContext';
 
-  const { viewer } = getContext('mainPublicViewerContext').getPublicViewerSync();
+  const { viewer } = getContext<PublicViewerContext>('mainPublicViewerContext').getPublicViewerSync();
   const { scene } = viewer;
+
+  const pathnameMap = configureObjects(scene, $page.data['pages']);
 
   const selectableObjects = $page.data['pages'].map(({ objectName }: { objectName: string; pathname: string }) => {
     const object = scene.getObjectByName(objectName);
@@ -24,9 +30,29 @@
   const pointableObjects: THREE.Object3D[] = scene.children;
   let pointedObject: THREE.Object3D | null = null;
   let touchedObject: THREE.Object3D | null = null;
+  const setSelectedObjectFromPathname = (pathname: string) => {
+    const object = pathnameMap.get(pathname) || null;
+
+    previouslySelectedObject.set($selectedObject);
+    selectedObject.set(object);
+  };
+  setSelectedObjectFromPathname($page.url.pathname);
+  afterNavigate(() => {
+    pointedObject = null;
+    touchedObject = null;
+  });
+  beforeNavigate((navigation) => {
+    if (!navigation.to) {
+      return;
+    }
+
+    setSelectedObjectFromPathname(navigation.to.url.pathname);
+  });
 
   const onSelected = (event: CustomEvent<{ object: THREE.Object3D }>) => {
-    const pathname = event.detail.object.userData['pathname'];
+    const { object } = event.detail;
+
+    const pathname = object.userData['pathname'];
 
     if (event.detail.object.userData['isExternal']) {
       window.open(pathname);
@@ -41,7 +67,7 @@
   };
 </script>
 
-{#if $page.data['isHome'] && $viewerState == 'ready'}
+{#if $page.data['isHome'] && $appState == 'idle'}
   <ObjectPointer
     {selectableObjects}
     {pointableObjects}
@@ -62,6 +88,6 @@
   <Object
     object={selectableObject}
     pointed={selectableObject == pointedObject || selectableObject == touchedObject}
-    selected={selectableObject.userData['pathname'] == $selectedPathname}
+    selected={$selectedObject == selectableObject}
   />
 {/each}

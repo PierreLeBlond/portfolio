@@ -10,7 +10,6 @@ export const load: PageLoad = () => {
     urls: [bboy, lalpine, lecorp, logophtalmo],
     texts: ['Break dance & Earth lovers', 'L\'A(l)pine', 'A logo for a good friend evil corporation', 'A logo for an ophtalmology center'],
     dialogText: 'Logos for clients & friends',
-    disolve: true,
     camera: {
       position: new THREE.Vector3(-0.740, 1.112, 0.6375),
       target: new THREE.Vector3(-1.05, 1.112, 0.6375)

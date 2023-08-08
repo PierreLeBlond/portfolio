@@ -1,29 +1,19 @@
 <script lang="ts">
-  import { waitForState } from '$lib/state/waitForState';
-  import { viewerState } from '$lib/stores/viewerState';
   import { THREE } from '@s0rt/3d-viewer';
   import { getContext } from 'svelte';
+  import type { ObjectEvent } from './state/ObjectEvent';
+  import type { ObjectState } from './state/ObjectState';
+  import { writable, type Writable } from 'svelte/store';
+  import type { PublicViewerContext } from '../PublicViewerContext';
 
-  const { viewer } = getContext('mainPublicViewerContext').getPublicViewerSync();
+  const { viewer } = getContext<PublicViewerContext>('mainPublicViewerContext').getPublicViewerSync();
   const { scene } = viewer;
 
   export let object: THREE.Object3D;
+
   export let pointed = false;
   export let selected = false;
 
-  // We want to wait for camera flying before actually deselect the object and play its animation
-  let internalSelected = false;
-  $: if (selected) {
-    internalSelected = true;
-  }
-
-  $: if (!selected) {
-    waitForState(viewerState, 'flying').then(() => {
-      internalSelected = selected;
-    });
-  }
-
-  type State = 'idle' | 'pointed' | 'selected';
   type ActionName = 'LiftAction' | 'UnliftAction' | 'OutAction' | 'LiftOutAction' | 'InAction';
   const actionNames: ActionName[] = ['LiftAction', 'UnliftAction', 'OutAction', 'LiftOutAction', 'InAction'];
 
@@ -34,8 +24,6 @@
     'Github|LiftAction',
     'At|LiftAction'
   ];
-
-  let currentState: State = 'idle';
 
   const mixer = new THREE.AnimationMixer(object);
   scene.addEventListener('animate', (event) => {
@@ -58,6 +46,11 @@
       return [actionName, action];
     })
   );
+
+  type StateChange = {
+    state: ObjectState;
+    actionName: ActionName;
+  };
 
   let runningStateChange: StateChange | null = null;
   let waitingStateChange: StateChange | null = null;
@@ -107,44 +100,69 @@
     playAction();
   };
 
-  interface StateChange {
-    state: State;
-    actionName: ActionName;
-  }
-  const stateChanges = {
-    pointed: new Map<State, StateChange>([['idle', { state: 'pointed', actionName: 'LiftAction' }]]),
-    notPointed: new Map<State, StateChange>([['pointed', { state: 'idle', actionName: 'UnliftAction' }]]),
-    selected: new Map<State, StateChange>([
-      ['idle', { state: 'selected', actionName: 'LiftOutAction' }],
-      ['pointed', { state: 'selected', actionName: 'OutAction' }]
-    ]),
-    notSelected: new Map<State, StateChange>([['selected', { state: 'idle', actionName: 'InAction' }]])
-  };
+  const objectState: Writable<ObjectState> = writable('idle');
+  const objectEvent: Writable<ObjectEvent | null> = writable(null);
+  const machine: Map<ObjectState, Map<ObjectEvent, { state: ObjectState; actionName: ActionName }>> = new Map([
+    ['idle', new Map()],
+    ['pointed', new Map()],
+    ['selected', new Map()]
+  ]);
 
-  const changeState = (stateChangeMap: Map<State, StateChange>) => {
-    const stateChange = stateChangeMap.get(currentState);
-    if (!stateChange) {
+  machine.get('idle')?.set('point', {
+    state: 'pointed',
+    actionName: 'LiftAction'
+  });
+
+  machine.get('idle')?.set('select', {
+    state: 'selected',
+    actionName: 'LiftOutAction'
+  });
+
+  machine.get('pointed')?.set('select', {
+    state: 'selected',
+    actionName: 'OutAction'
+  });
+
+  machine.get('pointed')?.set('unpoint', {
+    state: 'idle',
+    actionName: 'UnliftAction'
+  });
+
+  machine.get('selected')?.set('unselect', {
+    state: 'idle',
+    actionName: 'InAction'
+  });
+
+  objectEvent.subscribe((event) => {
+    if (event == null) {
       return;
     }
 
-    const { state } = stateChange;
-    currentState = state;
+    const statePath = machine.get($objectState);
+    if (!statePath) {
+      throw new Error(`AppMachine does not have ${$objectState} state`);
+    }
 
-    scheduleStateChange(stateChange);
-  };
+    const nextState = statePath.get(event);
+
+    if (!nextState) {
+      return;
+    }
+
+    scheduleStateChange(nextState);
+    $objectState = nextState.state;
+  });
 
   const onPointedChange = (pointed: boolean) => {
-    const stateChangeMap = stateChanges[pointed ? 'pointed' : 'notPointed'];
-    changeState(stateChangeMap);
+    objectEvent.set(pointed ? 'point' : 'unpoint');
   };
 
   const onSelectedChange = (selected: boolean) => {
-    const stateChangeMap = stateChanges[selected ? 'selected' : 'notSelected'];
-    changeState(stateChangeMap);
+    objectEvent.set(selected ? 'select' : 'unselect');
   };
 
   $: onPointedChange(pointed);
-  $: onSelectedChange(internalSelected);
+  $: onSelectedChange(selected);
 </script>
 
 <svelte:body class:cursor-pointed={pointed} />

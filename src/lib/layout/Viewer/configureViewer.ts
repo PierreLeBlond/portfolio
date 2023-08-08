@@ -8,14 +8,15 @@ export const configureViewer = async () => {
   window.VIEWER = VIEWER;
 
   const publicViewer = new VIEWER.PublicViewer('viewer');
-  publicViewer.viewer.fov = 50;
-  configureCamera(publicViewer.viewer.camera, publicViewer.viewer.controls);
 
   await publicViewer.launch();
 
   const scene = publicViewer.viewer.createScene('room');
   publicViewer.viewer.setScene(scene);
   await scene.loadAsset(room, '/public/');
+
+  publicViewer.viewer.fov = 50;
+  configureCamera(scene, publicViewer.viewer.camera, publicViewer.viewer.controls);
 
   return publicViewer;
 }

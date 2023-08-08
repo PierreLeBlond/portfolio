@@ -7,33 +7,45 @@ export const load: LayoutLoad = () => {
     pages: [{
       objectName: 'InkCube',
       pathname: '/drawings/ink',
-      label: 'I like to draw'
+      label: 'I like to draw',
+      isExternal: false,
+      disolve: true
     }, {
       objectName: 'LogoCube',
       pathname: '/drawings/logo',
-      label: 'I found myself designing logos a few time'
+      label: 'I found myself designing logos a few time',
+      isExternal: false,
+      disolve: true
     }, {
       objectName: 'Earth',
       pathname: '/renderings/earth',
-      label: 'I made a basic interactive earth render'
+      label: 'I made a basic interactive earth render',
+      isExternal: false,
+      disolve: true
     }, {
       objectName: 'Wave',
       pathname: '/experiments/wave',
-      label: 'I played with the wave function collapse algorythm'
+      label: 'I played with the wave function collapse algorythm',
+      isExternal: false,
+      disolve: false
     }, {
       objectName: 'Chess',
       pathname: '/renderings/chess',
-      label: 'I have a chessboard render'
+      label: 'I have a chessboard render',
+      isExternal: false,
+      disolve: true
     }, {
       objectName: 'Github',
       pathname: 'https://github.com/PierreLeBlond',
       label: 'My github page!',
-      isExternal: true
+      isExternal: true,
+      disolve: false
     }, {
       objectName: 'At',
       pathname: 'mailto:pierre.lespingal@gmail.com',
       label: 'You can contact me at pierre.lespingal@gmail.com',
-      isExternal: true
+      isExternal: true,
+      disolve: false
     }],
     irradiance,
     radiance,

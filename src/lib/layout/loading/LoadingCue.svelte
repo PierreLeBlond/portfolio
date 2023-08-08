@@ -1,14 +1,9 @@
 <script lang="ts">
+  import { appState } from '$lib/state/appState';
   import Loading from './Loading.svelte';
-  import { globalState } from '$lib/stores/globalState';
-  import { pageState } from '$lib/stores/pageState';
-  import { viewerState } from '$lib/stores/viewerState';
-  const viewerStates = ['mounting', 'flying'];
-  const globalStates = ['navigating'];
-  const pageStates = ['loading'];
 
-  $: loading =
-    viewerStates.includes($viewerState) || globalStates.includes($globalState) || pageStates.includes($pageState);
+  const loadingStates = ['mounting', 'loading', 'navigating', 'flying', 'navigatingWhileFlying', 'disolving'];
+  $: loading = loadingStates.includes($appState);
 </script>
 
 {#if loading}

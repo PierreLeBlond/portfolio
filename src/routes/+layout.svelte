@@ -4,43 +4,34 @@
   import Header from '$lib/layout/Header.svelte';
   import Footer from '$lib/layout/Footer.svelte';
   import Viewer from '$lib/layout/Viewer/Viewer.svelte';
-  import { pointedPathname, selectedPathname } from '$lib/stores/pathname';
   import { afterNavigate, beforeNavigate } from '$app/navigation';
   import InitialLoadingScreen from '$lib/layout/loading/InitialLoadingScreen.svelte';
-  import { globalState } from '$lib/stores/globalState';
-  import { viewerState } from '$lib/stores/viewerState';
+  import AppStateMachine from '$lib/state/AppStateMachine.svelte';
+  import { pointedPathname } from '$lib/stores/pathname';
+  import { appEvent } from '$lib/state/appEvent';
+  import { appState } from '$lib/state/appState';
 
   beforeNavigate(async (navigation) => {
     if (!navigation.to) {
       return;
     }
 
-    const { pathname } = navigation.to.url;
-    selectedPathname.set(pathname);
-
     pointedPathname.set(null);
 
-    globalState.set('navigating');
+    appEvent.set('navigate');
   });
 
   afterNavigate(() => {
-    globalState.set('ready');
+    appEvent.set('navigated');
   });
 
-  let displayInitialLoadingScreen = true;
-  const finishInitialLoading = () => {
-    displayInitialLoadingScreen = false;
-    globalState.set('introducing');
-  };
+  $: displayInitialLoadingScreen = $appState == 'mounting' || $appState == 'introducing';
 </script>
 
 <div class="relative flex h-screen w-screen flex-col overflow-hidden">
   {#if displayInitialLoadingScreen}
     <div class="absolute z-50 h-full w-full">
-      <InitialLoadingScreen
-        canOpen={$viewerState == 'mounted'}
-        on:open={finishInitialLoading}
-      />
+      <InitialLoadingScreen />
     </div>
   {/if}
   <header class="z-40 h-16 w-full">
@@ -49,6 +40,7 @@
   <main class="relative grow text-gray-800">
     <Background />
     <div class="relative h-full w-full">
+      <AppStateMachine />
       <Viewer>
         <slot />
       </Viewer>

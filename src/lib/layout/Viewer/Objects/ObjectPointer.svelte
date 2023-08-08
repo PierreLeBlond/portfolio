@@ -6,10 +6,11 @@
   import { createEventDispatcher } from 'svelte';
   import throttle from 'lodash.throttle';
   import { afterNavigate } from '$app/navigation';
+  import type { PublicViewerContext } from '../PublicViewerContext';
 
   const dispatch = createEventDispatcher<{ pointed: { pathname: string } }>();
 
-  const { viewer } = getContext('mainPublicViewerContext').getPublicViewerSync();
+  const { viewer } = getContext<PublicViewerContext>('mainPublicViewerContext').getPublicViewerSync();
   const { camera, renderer } = viewer;
   const { domElement } = renderer;
 
@@ -52,7 +53,7 @@
     );
     const objectUnderMouse = getObjectUnderMouse(pointer, camera, pointableObjects);
 
-    if (!selectableObjects.includes(objectUnderMouse)) {
+    if (!objectUnderMouse || !selectableObjects.includes(objectUnderMouse)) {
       touchedDownObject = null;
       return;
     }

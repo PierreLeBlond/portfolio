@@ -2,16 +2,12 @@
   export let scroll: number;
   export let totalHeight: number;
 
-  let width: number;
   const totalWidth = 3000;
 
   $: offset = (scroll * totalWidth) / totalHeight;
 </script>
 
-<div
-  bind:clientWidth={width}
-  class="fixed w-screen bottom-0 left-0"
->
+<div class="fixed bottom-0 left-0 w-screen">
   <div
     style:width={`${totalWidth}px`}
     style:left={`-${offset}px`}

@@ -1,11 +1,10 @@
 import { page } from "$app/stores";
-import { viewerState } from "$lib/stores/viewerState"
 import { derived, type Readable } from "svelte/store";
-import type { ViewerState } from "$lib/state/State";
 import { pageDialog } from "./pageDialog";
 import { pointedPathname } from "./pathname";
+import { appState, type AppState } from "$lib/state/appState";
 
-export const dialogState: Readable<string> = derived([page, viewerState, pointedPathname, pageDialog], ([page, viewerState, pointedPathname, pageDialog]) => {
+export const dialogState: Readable<string> = derived([page, appState, pointedPathname, pageDialog], ([page, state, pointedPathname, pageDialog]) => {
   let dialog = page.data['dialog'];
   if (pageDialog) {
     dialog = pageDialog;
@@ -16,11 +15,14 @@ export const dialogState: Readable<string> = derived([page, viewerState, pointed
     dialog = pointedPage.label;
   }
 
-  const stateMap: Map<ViewerState, string> = new Map([
+  const stateMap: Map<AppState, string> = new Map([
     ['flying', 'WhoooOOOooosh'],
     ['navigating', 'And...'],
-    ['ready', dialog]
+    ['navigatingWhileFlying', 'And...'],
+    ['loading', dialog],
+    ['idle', dialog],
+    ['disolving', dialog],
   ]);
 
-  return stateMap.get(viewerState) ?? "Hum, there should be a dialog there...";
+  return stateMap.get(state) ?? "Hum, there should be a dialog there...";
 });

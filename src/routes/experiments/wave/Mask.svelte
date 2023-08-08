@@ -3,8 +3,9 @@
   import { getContext, onDestroy, onMount } from 'svelte';
   import { THREE } from '@s0rt/3d-viewer';
   import RatioBox from '$lib/layout/reusable/RatioBox.svelte';
+  import type { PublicViewerContext } from '$lib/layout/Viewer/PublicViewerContext';
 
-  const mainPublicViewerContext = getContext('mainPublicViewerContext');
+  const mainPublicViewerContext = getContext<PublicViewerContext>('mainPublicViewerContext');
 
   export let url: string;
   export let columns: number;

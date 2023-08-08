@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import { bounceOut } from 'svelte/easing';
   import { fade, fly } from 'svelte/transition';
   import { typewritter } from '../reusable/typewritter';
+  import { appState } from '$lib/state/appState';
+  import { appEvent } from '$lib/state/appEvent';
 
-  const dispatch = createEventDispatcher<{ open: void }>();
-
-  export let canOpen = false;
+  $: canOpen = $appState == 'introducing';
 
   let offsetHeight: number;
 
@@ -15,7 +15,7 @@
     if (!canOpen) {
       return;
     }
-    dispatch('open');
+    appEvent.set('introduced');
     displayText = false;
   };
 
