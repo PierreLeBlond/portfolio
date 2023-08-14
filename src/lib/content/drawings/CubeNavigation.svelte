@@ -34,6 +34,8 @@
         out:slide|global={{ delay: i * 50 }}
         class:selected={i == index}
         class="group hover:cursor-pointer"
+        role="button"
+        tabindex={i}
         on:click={() => handleClickEvent(i)}
         on:keydown={() => handleClickEvent(i)}
       >

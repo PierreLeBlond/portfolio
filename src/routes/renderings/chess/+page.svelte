@@ -4,19 +4,20 @@
   import { pageDialog } from '$lib/stores/pageDialog';
   import { getContext, onDestroy } from 'svelte';
   import { onMount } from 'svelte';
+  import type App from 'chess';
 
   const mainPublicViewerContext = getContext<PublicViewerContext>('mainPublicViewerContext');
   const renderingsPublicViewerContext = getContext<PublicViewerContext>('renderingsPublicViewerContext');
 
-  let chessboard: { start: () => any; stop: () => void };
+  let chessboard: App;
   onMount(async () => {
     pageDialog.set('Thinking about my next move...');
     appEvent.set('load');
     const mainPublicViewer = await mainPublicViewerContext.getPublicViewer();
     const renderingsPublicViewer = await renderingsPublicViewerContext.getPublicViewer();
 
-    const Chessboard = (await import('https://app.pierrelespingal.xyz/chess/v2.2.1/lib/index.js')).default;
-    chessboard = new Chessboard(renderingsPublicViewer);
+    const App = (await import('chess')).default;
+    chessboard = new App(renderingsPublicViewer);
     await chessboard.start();
 
     const { camera, controls } = renderingsPublicViewer.viewer;

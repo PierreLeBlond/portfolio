@@ -1,7 +1,6 @@
 <script lang="ts">
   import Cube from './Cube.svelte';
   import CubeNavigation from './CubeNavigation.svelte';
-  import { unifyTouchEvent } from './util';
   import { onDestroy, onMount } from 'svelte';
 
   let index = 0;
@@ -51,12 +50,12 @@
       yawOffset = ((clientX - lastX) / faceSize) * 90.0;
     }
   };
-  const handleMouseMove = (event: TouchEvent | Touch) => move(unifyTouchEvent(event));
+  const handlePointerMove = (event: PointerEvent) => move(event.clientX);
   const lock = (clientX: number) => {
     isLocked = true;
     lastX = clientX;
   };
-  const handleMouseDown = (event: TouchEvent | Touch) => lock(unifyTouchEvent(event));
+  const handlePointerDown = (event: PointerEvent) => lock(event.clientX);
   const release = () => {
     if (Math.abs(yawOffset) > 45) {
       direction = -Math.sign(yawOffset);
@@ -69,9 +68,6 @@
   let mounted = false;
   onMount(() => {
     document.onkeydown = handleKeyDown;
-    document.ontouchmove = handleMouseMove;
-    document.ontouchstart = handleMouseDown;
-    document.ontouchend = release;
     mounted = true;
   });
 
@@ -80,9 +76,6 @@
       return;
     }
     document.onkeydown = null;
-    document.ontouchmove = null;
-    document.ontouchstart = null;
-    document.ontouchend = null;
   });
 </script>
 
@@ -90,10 +83,11 @@
   class="flex h-full w-full flex-col flex-nowrap items-center justify-center overflow-x-visible pt-2.5"
   style:perspective="100vh"
   style:perspective-origin="50% 50%"
-  on:mousemove|preventDefault={handleMouseMove}
-  on:mousedown|preventDefault={handleMouseDown}
-  on:mouseup|preventDefault={release}
-  on:mouseleave|preventDefault={release}
+  role="presentation"
+  on:pointermove|preventDefault={handlePointerMove}
+  on:pointerdown|preventDefault={handlePointerDown}
+  on:pointerup|preventDefault={release}
+  on:pointerleave|preventDefault={release}
 >
   <Cube
     {urls}

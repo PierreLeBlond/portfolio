@@ -1,11 +1,12 @@
 import { appEvent } from '$lib/state/appEvent';
 import { cameraTarget } from '$lib/stores/cameraTarget';
 import { type Scene, THREE } from '@s0rt/3d-viewer';
+import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.d.ts';
 import { cubicInOut } from 'svelte/easing';
 
 const DURATION = 1500;
 
-export const configureCamera = (scene: Scene, camera: THREE.PerspectiveCamera, controls: THREE.OrbitControl) => {
+export const configureCamera = (scene: Scene, camera: THREE.PerspectiveCamera, controls: OrbitControls) => {
   camera.position.set(3.75, 3.75, 4.5);
   camera.near = 0.01;
   camera.far = 10;
@@ -30,7 +31,7 @@ export const configureCamera = (scene: Scene, camera: THREE.PerspectiveCamera, c
   let minDistanceEnd = 0;
   let time = 0;
 
-  const onAnimate = (event: Event) => {
+  const onAnimate = (event: THREE.Event) => {
 
     const { delta } = event;
 

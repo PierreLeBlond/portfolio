@@ -2,7 +2,7 @@ import type { Scene } from "@s0rt/3d-viewer";
 import { tweened, type Tweened } from "svelte/motion";
 import { disolveObject } from "./disolve/disolveObject";
 
-export const configureObjects = (scene: Scene, pages: { objectName: string, pathname: string }[]): Map<string, THREE.Object3D> => {
+export const configureObjects = (scene: Scene, pages: { objectName: string, pathname: string, isExternal: boolean, disolve: boolean }[]): Map<string, THREE.Object3D> => {
 
   const map = new Map<string, THREE.Object3D>();
 

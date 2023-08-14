@@ -4,19 +4,20 @@
   import { pageDialog } from '$lib/stores/pageDialog';
   import { getContext, onDestroy, onMount } from 'svelte';
   import { THREE } from '@s0rt/3d-viewer';
+  import type App from 'earth';
 
   const mainPublicViewerContext = getContext<PublicViewerContext>('mainPublicViewerContext');
   const renderingsPublicViewerContext = getContext<PublicViewerContext>('renderingsPublicViewerContext');
 
-  let earth: { start: () => any; stop: () => void };
+  let earth: App;
   onMount(async () => {
     pageDialog.set('Creating the earth, that might take a few days');
     appEvent.set('load');
     const mainPublicViewer = await mainPublicViewerContext.getPublicViewer();
     const renderingsPublicViewer = await renderingsPublicViewerContext.getPublicViewer();
 
-    const Earth = (await import('https://app.pierrelespingal.xyz/earth/v2.0.1/lib/index.js')).default;
-    earth = new Earth(renderingsPublicViewer);
+    const App = (await import('earth')).default;
+    earth = new App(renderingsPublicViewer);
     await earth.start();
 
     const { camera, controls } = renderingsPublicViewer.viewer;
@@ -63,7 +64,8 @@
 
     await renderingsPublicViewer.viewer.resolveObject(object, { duration: 0.5, delay: 0.1, color: 0xfb923c });
 
-    earth.addEventListener('country', ({ message }: { message: string }) => {
+    earth.addEventListener('country', (event: THREE.Event) => {
+      const { message } = event;
       pageDialog.set(message ? `That's ${message.toLowerCase()}` : null);
     });
 

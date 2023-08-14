@@ -1,4 +1,4 @@
-import room from './assets/room.gltf';
+import room from './assets/room.gltf?url';
 import * as VIEWER from '@s0rt/3d-viewer';
 import { configureCamera } from './configureCamera';
 

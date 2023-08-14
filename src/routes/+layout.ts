@@ -1,6 +1,6 @@
 import type { LayoutLoad } from './$types';
-import irradiance from './assets/portfolio-room_rgbd_irradiance.dds';
-import radiance from './assets/portfolio-room_rgbd_radiance.dds';
+import irradiance from './assets/portfolio-room_rgbd_irradiance.dds?url';
+import radiance from './assets/portfolio-room_rgbd_radiance.dds?url';
 
 export const load: LayoutLoad = () => {
   return {

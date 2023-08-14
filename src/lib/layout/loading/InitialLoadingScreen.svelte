@@ -38,6 +38,8 @@
   <div
     bind:offsetHeight
     class="absolute flex h-full w-full flex-col pt-8 pl-8 text-xl text-white sm:pt-32 sm:pl-32 sm:text-2xl"
+    role="button"
+    tabindex="0"
     on:click={openInitialLoadingScreen}
     on:keydown={openInitialLoadingScreen}
   >
