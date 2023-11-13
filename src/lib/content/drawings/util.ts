@@ -4,9 +4,9 @@ const mod = (z: number, n: number) => {
 };
 
 const unifyTouchEvent = (event: TouchEvent | Touch): number => {
-  return (event as TouchEvent).changedTouches ?
-    ((event as TouchEvent).changedTouches[0] as Touch).clientX :
-    (event as Touch).clientX;
+  return (event as TouchEvent).changedTouches
+    ? ((event as TouchEvent).changedTouches[0] as Touch).clientX
+    : (event as Touch).clientX;
 };
 
 export { mod, unifyTouchEvent };

@@ -1,1 +1,1 @@
-export type ObjectState = 'idle' | 'pointed' | 'selected';
+export type ObjectState = "idle" | "pointed" | "selected";

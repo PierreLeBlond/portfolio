@@ -1,1 +1,1 @@
-export type ObjectEvent = 'point' | 'unpoint' | 'select' | 'unselect';
+export type ObjectEvent = "point" | "unpoint" | "select" | "unselect";

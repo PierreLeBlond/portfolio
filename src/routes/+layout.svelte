@@ -1,15 +1,15 @@
 <script lang="ts">
-  import '../app.css';
-  import Background from '$lib/layout/Background.svelte';
-  import Header from '$lib/layout/Header.svelte';
-  import Footer from '$lib/layout/Footer.svelte';
-  import Viewer from '$lib/layout/Viewer/Viewer.svelte';
-  import { afterNavigate, beforeNavigate } from '$app/navigation';
-  import InitialLoadingScreen from '$lib/layout/loading/InitialLoadingScreen.svelte';
-  import AppStateMachine from '$lib/state/AppStateMachine.svelte';
-  import { pointedPathname } from '$lib/stores/pathname';
-  import { appEvent } from '$lib/state/appEvent';
-  import { appState } from '$lib/state/appState';
+  import "../app.css";
+  import Background from "$lib/layout/Background.svelte";
+  import Header from "$lib/layout/Header.svelte";
+  import Footer from "$lib/layout/Footer.svelte";
+  import Viewer from "$lib/layout/Viewer/Viewer.svelte";
+  import { afterNavigate, beforeNavigate } from "$app/navigation";
+  import InitialLoadingScreen from "$lib/layout/loading/InitialLoadingScreen.svelte";
+  import AppStateMachine from "$lib/state/AppStateMachine.svelte";
+  import { pointedPathname } from "$lib/stores/pathname";
+  import { appEvent } from "$lib/state/appEvent";
+  import { appState } from "$lib/state/appState";
 
   beforeNavigate(async (navigation) => {
     if (!navigation.to) {
@@ -18,14 +18,15 @@
 
     pointedPathname.set(null);
 
-    appEvent.set('navigate');
+    appEvent.set("navigate");
   });
 
   afterNavigate(() => {
-    appEvent.set('navigated');
+    appEvent.set("navigated");
   });
 
-  $: displayInitialLoadingScreen = $appState == 'mounting' || $appState == 'introducing';
+  $: displayInitialLoadingScreen =
+    $appState == "mounting" || $appState == "introducing";
 </script>
 
 <div class="relative flex h-screen w-screen flex-col overflow-hidden">

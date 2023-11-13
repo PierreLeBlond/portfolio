@@ -2,28 +2,28 @@ import { THREE } from "@s0rt/3d-viewer";
 
 const wireframeMaterial = new THREE.MeshBasicMaterial({
   wireframe: true,
-  color: 0xfb923c
+  color: 0xfb923c,
 });
 
 export const getDisolveData = (object: THREE.Object3D) => {
   const meshDatas: {
-    mesh: THREE.Mesh,
-    wireframeMesh: THREE.Mesh,
-    faceCount: number
+    mesh: THREE.Mesh;
+    wireframeMesh: THREE.Mesh;
+    faceCount: number;
   }[] = [];
 
   object.traverse((children: THREE.Object3D) => {
-    if (children.type != 'Mesh' && children.type != 'SkinnedMesh') {
+    if (children.type != "Mesh" && children.type != "SkinnedMesh") {
       return;
     }
 
-    if (children.userData['isDisolveWireframe']) {
+    if (children.userData["isDisolveWireframe"]) {
       return;
     }
 
     const mesh = children as THREE.Mesh;
 
-    let meshData = mesh.userData['disolveData'];
+    let meshData = mesh.userData["disolveData"];
     if (meshData) {
       meshDatas.push(meshData);
       return;
@@ -40,7 +40,7 @@ export const getDisolveData = (object: THREE.Object3D) => {
     const meshIndexBuffer = mesh.geometry.getIndex();
 
     if (!meshIndexBuffer) {
-      throw new Error('Mesh should be indexed to be disolved.')
+      throw new Error("Mesh should be indexed to be disolved.");
     }
 
     const faceCount = meshIndexBuffer.count / 3;
@@ -48,11 +48,11 @@ export const getDisolveData = (object: THREE.Object3D) => {
     meshData = {
       mesh,
       wireframeMesh,
-      faceCount
+      faceCount,
     };
 
-    wireframeMesh.userData['isDisolveWireframe'] = true;
-    mesh.userData['disolveData'] = meshData;
+    wireframeMesh.userData["isDisolveWireframe"] = true;
+    mesh.userData["disolveData"] = meshData;
 
     meshDatas.push(meshData);
   });
@@ -67,5 +67,4 @@ export const getDisolveData = (object: THREE.Object3D) => {
   });
 
   return meshDatas;
-
-}
+};

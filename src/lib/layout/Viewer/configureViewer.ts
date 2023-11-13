@@ -1,22 +1,25 @@
-import room from './assets/room.gltf?url';
-import * as VIEWER from '@s0rt/3d-viewer';
-import { configureCamera } from './configureCamera';
+import * as VIEWER from "@s0rt/3d-viewer";
+import room from "./assets/room.gltf?url";
+import { configureCamera } from "./configureCamera";
 
 export const configureViewer = async () => {
-
   // page scenes require viewer lib as a external dependency
   window.VIEWER = VIEWER;
 
-  const publicViewer = new VIEWER.PublicViewer('viewer');
+  const publicViewer = new VIEWER.PublicViewer("viewer");
 
   await publicViewer.launch();
 
-  const scene = publicViewer.viewer.createScene('room');
+  const scene = publicViewer.viewer.createScene("room");
   publicViewer.viewer.setScene(scene);
-  await scene.loadAsset(room, '/public/');
+  await scene.loadAsset(room, "/public/");
 
   publicViewer.viewer.fov = 50;
-  configureCamera(scene, publicViewer.viewer.camera, publicViewer.viewer.controls);
+  configureCamera(
+    scene,
+    publicViewer.viewer.camera,
+    publicViewer.viewer.controls,
+  );
 
   return publicViewer;
-}
+};

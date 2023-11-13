@@ -1,12 +1,16 @@
-import { appEvent } from '$lib/state/appEvent';
-import { cameraTarget } from '$lib/stores/cameraTarget';
-import { type Scene, THREE } from '@s0rt/3d-viewer';
-import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.d.ts';
-import { cubicInOut } from 'svelte/easing';
+import { appEvent } from "$lib/state/appEvent";
+import { cameraTarget } from "$lib/stores/cameraTarget";
+import { THREE, type Scene } from "@s0rt/3d-viewer";
+import { cubicInOut } from "svelte/easing";
+import type { OrbitControls } from "three/examples/jsm/controls/OrbitControls.d.ts";
 
 const DURATION = 1500;
 
-export const configureCamera = (scene: Scene, camera: THREE.PerspectiveCamera, controls: OrbitControls) => {
+export const configureCamera = (
+  scene: Scene,
+  camera: THREE.PerspectiveCamera,
+  controls: OrbitControls,
+) => {
   camera.position.set(3.75, 3.75, 4.5);
   camera.near = 0.01;
   camera.far = 10;
@@ -32,7 +36,6 @@ export const configureCamera = (scene: Scene, camera: THREE.PerspectiveCamera, c
   let time = 0;
 
   const onAnimate = (event: THREE.Event) => {
-
     const { delta } = event;
 
     if (time == 1.0) {
@@ -48,17 +51,17 @@ export const configureCamera = (scene: Scene, camera: THREE.PerspectiveCamera, c
   };
 
   const endCameraAnimation = () => {
-    scene.removeEventListener('animate', onAnimate);
+    scene.removeEventListener("animate", onAnimate);
 
     controls.minDistance = minDistanceEnd;
 
     controls.enableDamping = true;
     controls.enabled = true;
 
-    appEvent.set('land');
+    appEvent.set("land");
   };
 
-  cameraTarget.subscribe(payload => {
+  cameraTarget.subscribe((payload) => {
     if (!payload) {
       return;
     }
@@ -78,8 +81,8 @@ export const configureCamera = (scene: Scene, camera: THREE.PerspectiveCamera, c
 
     minDistanceEnd = payload.controlMinDistance;
 
-    if (!scene.hasEventListener('animate', onAnimate)) {
-      scene.addEventListener('animate', onAnimate);
+    if (!scene.hasEventListener("animate", onAnimate)) {
+      scene.addEventListener("animate", onAnimate);
     }
-  })
-}
+  });
+};

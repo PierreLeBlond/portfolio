@@ -1,6 +1,6 @@
-import type { PublicViewer } from "@s0rt/3d-viewer"
+import type { PublicViewer } from "@s0rt/3d-viewer";
 
 export type PublicViewerContext = {
-  getPublicViewer: () => Promise<PublicViewer>,
-  getPublicViewerSync: () => PublicViewer
-}
+  getPublicViewer: () => Promise<PublicViewer>;
+  getPublicViewerSync: () => PublicViewer;
+};

@@ -1,5 +1,5 @@
-import { THREE } from '@s0rt/3d-viewer';
-import type { PageLoad } from './$types';
+import { THREE } from "@s0rt/3d-viewer";
+import type { PageLoad } from "./$types";
 
 export const load: PageLoad = () => {
   return {
@@ -8,7 +8,7 @@ export const load: PageLoad = () => {
       target: new THREE.Vector3(0, 0.75, 0),
     },
     controlMinDistance: 3.5,
-    dialog: 'Feel free to explore !',
-    isHome: true
+    dialog: "Feel free to explore !",
+    isHome: true,
   };
-}
+};

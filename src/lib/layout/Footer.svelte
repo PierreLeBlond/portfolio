@@ -1,15 +1,15 @@
 <script lang="ts">
-  import SpriteSheetAnimator from '$lib/layout/reusable/SpriteSheetAnimator.svelte';
-  import LoadingCue from '$lib/layout/loading/LoadingCue.svelte';
-  import arrow from '$lib/icons/arrow.png';
-  import { page } from '$app/stores';
-  import { scale } from 'svelte/transition';
-  import { backIn, bounceOut } from 'svelte/easing';
-  import Dialog from './Dialog.svelte';
-  import { pointedPathname } from '$lib/stores/pathname';
+  import SpriteSheetAnimator from "$lib/layout/reusable/SpriteSheetAnimator.svelte";
+  import LoadingCue from "$lib/layout/loading/LoadingCue.svelte";
+  import arrow from "$lib/icons/arrow.png";
+  import { page } from "$app/stores";
+  import { scale } from "svelte/transition";
+  import { backIn, bounceOut } from "svelte/easing";
+  import Dialog from "./Dialog.svelte";
+  import { pointedPathname } from "$lib/stores/pathname";
 
   $: pathname = $page.url.pathname;
-  $: pathnames = $page.data['pages']
+  $: pathnames = $page.data["pages"]
     .filter(({ isExternal }: { isExternal: boolean }) => !isExternal)
     .map(({ pathname }: { pathname: string }) => pathname);
 
@@ -40,7 +40,9 @@
 </script>
 
 <div class="relative grid h-full w-full grid-cols-6 bg-black sm:grid-cols-12">
-  <div class="order-1 col-span-1 col-start-1 flex items-center justify-start sm:col-start-4">
+  <div
+    class="order-1 col-span-1 col-start-1 flex items-center justify-start sm:col-start-4"
+  >
     {#if previousPathname}
       <a
         bind:offsetWidth={leftArrowWidth}
@@ -67,7 +69,9 @@
   <div class="order-2 col-span-4 col-start-2 flex items-center sm:col-start-5">
     <Dialog />
   </div>
-  <div class="order-3 col-span-1 col-start-6 flex items-center justify-end sm:col-start-9">
+  <div
+    class="order-3 col-span-1 col-start-6 flex items-center justify-end sm:col-start-9"
+  >
     {#if nextPathname}
       <a
         bind:offsetWidth={rightArrowWidth}
@@ -90,7 +94,9 @@
       </a>
     {/if}
   </div>
-  <div class="order-4 col-span-1 col-start-12 hidden items-center justify-end sm:flex">
+  <div
+    class="order-4 col-span-1 col-start-12 hidden items-center justify-end sm:flex"
+  >
     <div class="relative mr-3 h-12 w-12">
       <LoadingCue />
     </div>
