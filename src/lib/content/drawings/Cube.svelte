@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { spring, tweened } from 'svelte/motion';
-  import { mod } from './util';
-  import { onMount } from 'svelte';
-  import { expoOut, sineIn, sineOut } from 'svelte/easing';
-  import { fade } from 'svelte/transition';
-  import Face from './Face.svelte';
+  import { spring, tweened } from "svelte/motion";
+  import { mod } from "./util";
+  import { onMount } from "svelte";
+  import { expoOut, sineIn, sineOut } from "svelte/easing";
+  import { fade } from "svelte/transition";
+  import Face from "./Face.svelte";
 
   export let index = 0;
   export let direction = 0;
@@ -16,7 +16,7 @@
   const land = (_: HTMLElement) => ({
     duration: 1000,
     easing: expoOut,
-    css: (_: number, u: number) => `transform: translateY(-${u * 200}%);`
+    css: (_: number, u: number) => `transform: translateY(-${u * 200}%);`,
   });
 
   onMount(async () => {
@@ -33,7 +33,7 @@
   let yawAnchor = 0;
   let yaw = spring(0, {
     stiffness: 0.02,
-    damping: 0.2
+    damping: 0.2,
   });
   let faceIndex = 0;
   const urlIndices = [0, 0, 0, 0, 0];
@@ -73,18 +73,18 @@
 
   let jump = tweened(0, {
     duration: 1000,
-    easing: sineOut
+    easing: sineOut,
   });
 
   let pitch = spring(0, {
     stiffness: 0.02,
-    damping: 0.2
+    damping: 0.2,
   });
 
   let oldUrls = urls.slice(0);
   let oldPageIndex = pageIndex;
-  let topFaceUrl = '';
-  let bottomFaceUrl = '';
+  let topFaceUrl = "";
+  let bottomFaceUrl = "";
   const changeUrls = (newUrls: string[]) => {
     if (newUrls.length == 0) {
       return;
@@ -102,10 +102,10 @@
 
     // Set top face image before rotating up
 
-    const oldUrl = oldUrls[index] ?? '';
+    const oldUrl = oldUrls[index] ?? "";
 
-    topFaceUrl = sign > 0 ? oldUrl : '';
-    bottomFaceUrl = sign < 0 ? oldUrl : '';
+    topFaceUrl = sign > 0 ? oldUrl : "";
+    bottomFaceUrl = sign < 0 ? oldUrl : "";
 
     // Reset all rotation, making pitch rotation way easier
     pitch.set(sign * 90, { hard: true });
@@ -141,31 +141,18 @@
     <div
       class="h-full w-full"
       style="transform-style: preserve-3d;
-      transform: translateY({-Math.sin($jump * Math.PI) * faceSize * 0.5}px) rotateX({$pitch}deg);"
+      transform: translateY({-Math.sin($jump * Math.PI) *
+        faceSize *
+        0.5}px) rotateX({$pitch}deg);"
       transition:land|global
     >
       {#each rotations as rotation, i}
         {@const urlIndice = urlIndices[i]}
-        {@const url = urlIndice != undefined ? urls[urlIndice] ?? '' : ''}
-        <Face
-          {url}
-          yaw={rotation}
-          {translation}
-          {faceSize}
-        />
+        {@const url = urlIndice != undefined ? urls[urlIndice] ?? "" : ""}
+        <Face {url} yaw={rotation} {translation} {faceSize} />
       {/each}
-      <Face
-        url={topFaceUrl}
-        pitch={-90}
-        {translation}
-        {faceSize}
-      />
-      <Face
-        url={bottomFaceUrl}
-        pitch={90}
-        {translation}
-        {faceSize}
-      />
+      <Face url={topFaceUrl} pitch={-90} {translation} {faceSize} />
+      <Face url={bottomFaceUrl} pitch={90} {translation} {faceSize} />
     </div>
 
     <div
@@ -180,7 +167,7 @@
       <div
         class="h-full w-full bg-gray-800"
         style="transform-style: preserve-3d; transform-origin: 50% 50% -200px;"
-        style:filter={'blur(2em)'}
+        style:filter={"blur(2em)"}
       />
     </div>
   </div>

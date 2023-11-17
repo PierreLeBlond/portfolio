@@ -8,7 +8,6 @@ export const load: PageLoad = () => {
       target: new THREE.Vector3(0, 0.75, 0),
     },
     controlMinDistance: 3.5,
-    dialog: "Feel free to explore !",
     isHome: true,
   };
 };

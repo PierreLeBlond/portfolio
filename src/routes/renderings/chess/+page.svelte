@@ -1,22 +1,27 @@
 <script lang="ts">
-  import type { PublicViewerContext } from '$lib/layout/Viewer/PublicViewerContext';
-  import { appEvent } from '$lib/state/appEvent';
-  import { pageDialog } from '$lib/stores/pageDialog';
-  import { getContext, onDestroy } from 'svelte';
-  import { onMount } from 'svelte';
-  import type App from 'chess';
+  import type { PublicViewerContext } from "$lib/layout/Viewer/PublicViewerContext";
+  import { appEvent } from "$lib/state/appEvent";
+  import { getContext, onDestroy } from "svelte";
+  import { onMount } from "svelte";
+  import type App from "chess";
+  import Description from "$lib/layout/Description.svelte";
+  import { appState } from "$lib/state/appState";
 
-  const mainPublicViewerContext = getContext<PublicViewerContext>('mainPublicViewerContext');
-  const renderingsPublicViewerContext = getContext<PublicViewerContext>('renderingsPublicViewerContext');
+  const mainPublicViewerContext = getContext<PublicViewerContext>(
+    "mainPublicViewerContext",
+  );
+  const renderingsPublicViewerContext = getContext<PublicViewerContext>(
+    "renderingsPublicViewerContext",
+  );
 
   let chessboard: App;
   onMount(async () => {
-    pageDialog.set('Thinking about my next move...');
-    appEvent.set('load');
+    appEvent.set("load");
     const mainPublicViewer = await mainPublicViewerContext.getPublicViewer();
-    const renderingsPublicViewer = await renderingsPublicViewerContext.getPublicViewer();
+    const renderingsPublicViewer =
+      await renderingsPublicViewerContext.getPublicViewer();
 
-    const App = (await import('chess')).default;
+    const App = (await import("chess")).default;
     chessboard = new App(renderingsPublicViewer);
     await chessboard.start();
 
@@ -44,16 +49,19 @@
 
     const { scene } = renderingsPublicViewer.viewer;
 
-    const object = scene.getObjectByName('main');
+    const object = scene.getObjectByName("main");
     if (!object) {
-      throw new Error('Object does not exists');
+      throw new Error("Object does not exists");
     }
 
     object.visible = false;
 
-    await renderingsPublicViewer.viewer.resolveObject(object, { duration: 0.5, delay: 0.1, color: 0xfb923c });
-    appEvent.set('loaded');
-    pageDialog.set(null);
+    await renderingsPublicViewer.viewer.resolveObject(object, {
+      duration: 0.5,
+      delay: 0.1,
+      color: 0xfb923c,
+    });
+    appEvent.set("loaded");
   });
 
   onDestroy(async () => {
@@ -62,3 +70,21 @@
     }
   });
 </script>
+
+<Description>
+  <div class="flex h-full w-full flex-col gap-y-4 p-4">
+    <h1 class="text-2xl font-bold">Render</h1>
+    <h2 class="self-end pb-4 text-xl">chessboard rendering</h2>
+    <p>A Three.js rendering of a chessboard, animated.</p>
+    <p>Build in blender.</p>
+    <p>Lighting is done with image based lighting.</p>
+
+    {#if $appState === "loading"}
+      <p class="animate-pulse text-center font-bold">
+        Thinking about my next move...
+      </p>
+    {:else}
+      <p class="text-center">You can't play with it yet though :/</p>
+    {/if}
+  </div>
+</Description>

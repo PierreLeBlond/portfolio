@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
-  import { setContext } from 'svelte';
-  import type { LayoutData } from './$types';
-  import { writable, type Writable } from 'svelte/store';
-  import { page } from '$app/stores';
-  import { IblSpace, PublicViewer, THREE } from '@s0rt/3d-viewer';
+  import { onMount, onDestroy } from "svelte";
+  import { setContext } from "svelte";
+  import type { LayoutData } from "./$types";
+  import { writable, type Writable } from "svelte/store";
+  import { page } from "$app/stores";
+  import { IblSpace, PublicViewer, THREE } from "@s0rt/3d-viewer";
 
   $: path = $page.url.pathname;
 
@@ -18,34 +18,38 @@
         return;
       }
 
-      const unsubscribe = publicViewerWritable.subscribe((publicViewer: null | PublicViewer) => {
-        if (!publicViewer) {
-          return;
-        }
-        unsubscribe();
-        resolve(publicViewer);
-      });
+      const unsubscribe = publicViewerWritable.subscribe(
+        (publicViewer: null | PublicViewer) => {
+          if (!publicViewer) {
+            return;
+          }
+          unsubscribe();
+          resolve(publicViewer);
+        },
+      );
     });
-  setContext('renderingsPublicViewerContext', { getPublicViewer });
+  setContext("renderingsPublicViewerContext", { getPublicViewer });
 
   let progression = 0;
   $: loading = progression != 1;
-  const updateProgression = (event: THREE.Event & { type: 'taskCompleted' } & { target: PublicViewer }) => {
-    progression = event['progression'];
+  const updateProgression = (
+    event: THREE.Event & { type: "taskCompleted" } & { target: PublicViewer },
+  ) => {
+    progression = event["progression"];
   };
 
   onMount(async () => {
-    const publicViewer = new PublicViewer('objectViewer');
-    publicViewer.addEventListener('taskCompleted', updateProgression);
+    const publicViewer = new PublicViewer("objectViewer");
+    publicViewer.addEventListener("taskCompleted", updateProgression);
     publicViewer.addTasks({
       parallelTasks: [
         {
           task: async () => {
             await publicViewer.loadIbl(data.irradiance, data.radiance);
             publicViewer.viewer.setIblSpace(IblSpace.View);
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
     publicViewer.viewer.fov = 50;
     await publicViewer.launch();
@@ -55,20 +59,17 @@
 
   onDestroy(async () => {
     const publicViewer = await getPublicViewer();
-    publicViewer.removeEventListener('taskCompleted', updateProgression);
+    publicViewer.removeEventListener("taskCompleted", updateProgression);
     publicViewer.dispose();
   });
 </script>
 
-<div class="absolute h-full w-full">
+<div class="absolute h-full w-full large:pr-[25%]">
   <div
-    style:visibility={loading ? 'hidden' : 'visible'}
+    style:visibility={loading ? "hidden" : "visible"}
     class="relative flex h-full w-full items-center justify-center"
     id="objectViewer"
   />
-
-  <!-- https://github.com/sveltejs/kit/issues/2527 -->
-  {#if path.startsWith('/renderings')}
-    <slot />
-  {/if}
 </div>
+
+<slot />

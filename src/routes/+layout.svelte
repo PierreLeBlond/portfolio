@@ -1,8 +1,7 @@
 <script lang="ts">
   import "../app.css";
   import Background from "$lib/layout/Background.svelte";
-  import Header from "$lib/layout/Header.svelte";
-  import Footer from "$lib/layout/Footer.svelte";
+  import { page } from "$app/stores";
   import Viewer from "$lib/layout/Viewer/Viewer.svelte";
   import { afterNavigate, beforeNavigate } from "$app/navigation";
   import InitialLoadingScreen from "$lib/layout/loading/InitialLoadingScreen.svelte";
@@ -10,6 +9,7 @@
   import { pointedPathname } from "$lib/stores/pathname";
   import { appEvent } from "$lib/state/appEvent";
   import { appState } from "$lib/state/appState";
+  import Hud from "$lib/layout/Hud.svelte";
 
   beforeNavigate(async (navigation) => {
     if (!navigation.to) {
@@ -30,24 +30,27 @@
 </script>
 
 <div class="relative flex h-screen w-screen flex-col overflow-hidden">
+  <Background />
   {#if displayInitialLoadingScreen}
     <div class="absolute z-50 h-full w-full">
+      <Background></Background>
       <InitialLoadingScreen />
     </div>
+  {:else}
+    <Hud></Hud>
   {/if}
-  <header class="z-40 h-16 w-full">
-    <Header />
-  </header>
   <main class="relative grow text-gray-800">
-    <Background />
-    <div class="relative h-full w-full">
+    <div id="container" class="relative h-full w-full">
       <AppStateMachine />
+
       <Viewer>
-        <slot />
+        <!-- pages are within viewer component for some of them need viewer context -->
+        {#if !$page.data["isHome"] && ($appState == "idle" || $appState == "loading")}
+          <div class="relative z-10 h-full w-full">
+            <slot />
+          </div>
+        {/if}
       </Viewer>
     </div>
   </main>
-  <footer class="z-40 h-16 w-full">
-    <Footer />
-  </footer>
 </div>

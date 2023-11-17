@@ -1,11 +1,13 @@
 <script lang="ts">
-  import { tweened } from 'svelte/motion';
-  import { getContext, onDestroy, onMount } from 'svelte';
-  import { THREE } from '@s0rt/3d-viewer';
-  import RatioBox from '$lib/layout/reusable/RatioBox.svelte';
-  import type { PublicViewerContext } from '$lib/layout/Viewer/PublicViewerContext';
+  import { tweened } from "svelte/motion";
+  import { getContext, onDestroy, onMount } from "svelte";
+  import { THREE } from "@s0rt/3d-viewer";
+  import RatioBox from "$lib/layout/reusable/RatioBox.svelte";
+  import type { PublicViewerContext } from "$lib/layout/Viewer/PublicViewerContext";
 
-  const mainPublicViewerContext = getContext<PublicViewerContext>('mainPublicViewerContext');
+  const mainPublicViewerContext = getContext<PublicViewerContext>(
+    "mainPublicViewerContext",
+  );
 
   export let url: string;
   export let columns: number;
@@ -30,9 +32,9 @@
     renderer.render(scene, camera);
     imageData = renderer.domElement.toDataURL();
 
-    const object = scene.getObjectByName('Wave') as THREE.Mesh;
+    const object = scene.getObjectByName("Wave") as THREE.Mesh;
     if (!object) {
-      throw new Error('Object Wave does not exists');
+      throw new Error("Object Wave does not exists");
     }
 
     material = object.material as THREE.MeshPhysicalMaterial;
@@ -71,29 +73,25 @@
   {#if mounted}
     <slot />
   {/if}
-  <div class="pointer-events-none absolute top-0 h-full w-full">
+  <div
+    class="pointer-events-none absolute top-0 h-full w-full large:w-[150%] large:-translate-x-[25%]"
+  >
     <RatioBox ratio={1}>
       <img
         src={imageData}
-        alt={'Animated mask'}
+        alt={"Animated mask"}
         class="h-full w-full"
-        style:object-position={'center'}
-        style:object-fit={'cover'}
+        style:object-position={"center"}
+        style:object-fit={"cover"}
         style:-webkit-mask-image={`url(${url})`}
         style:mask-image={`url(${url})`}
-        style:-webkit-mask-repeat={'no-repeat'}
-        style:mask-repeat={'no-repeat'}
+        style:-webkit-mask-repeat={"no-repeat"}
+        style:mask-repeat={"no-repeat"}
         style:-webkit-mask-size={`${maskWidth}px ${maskHeight}px`}
         style:mask-size={`${maskWidth}px ${maskHeight}px`}
         style:-webkit-mask-position={`left ${maskX}px top ${maskY}px`}
         style:mask-position={`left ${maskX}px top ${maskY}px`}
       />
-      <!--div
-      class="pointer-events-none absolute top-0 h-full w-full"
-      style:background-image={`url(${url})`}
-      style:background-size={`${backgroundWidth}px ${backgroundHeight}px`}
-      style:background-position={`left ${backgroundX}px top ${backgroundY}px`}
-    /-->
     </RatioBox>
   </div>
 </div>

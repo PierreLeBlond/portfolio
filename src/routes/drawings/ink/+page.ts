@@ -14,10 +14,9 @@ export const load: PageLoad = () => {
       "Piano learning nightmares",
       "Smoke in the water",
     ],
-    dialog: "Pure black ink",
     camera: {
-      position: new THREE.Vector3(-0.74, 1.112, 1.012),
-      target: new THREE.Vector3(-1.05, 1.112, 1.012),
+      position: new THREE.Vector3(-0.705, 1.097, 1.012),
+      target: new THREE.Vector3(-1.05, 1.097, 1.012),
     },
   };
 };

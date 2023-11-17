@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Cube from './Cube.svelte';
-  import CubeNavigation from './CubeNavigation.svelte';
-  import { onDestroy, onMount } from 'svelte';
+  import Cube from "./Cube.svelte";
+  import CubeNavigation from "./CubeNavigation.svelte";
+  import { onDestroy, onMount } from "svelte";
 
   let index = 0;
   let direction = 0;
@@ -34,10 +34,10 @@
       return;
     }
 
-    if (event.code == 'KeyH' || event.code == 'ArrowLeft') {
+    if (event.code == "KeyH" || event.code == "ArrowLeft") {
       index = mod(index - 1, urls.length);
       direction = -1;
-    } else if (event.code == 'KeyL' || event.code == 'ArrowRight') {
+    } else if (event.code == "KeyL" || event.code == "ArrowRight") {
       index = mod(index + 1, urls.length);
       direction = 1;
     }
@@ -89,14 +89,7 @@
   on:pointerup|preventDefault={release}
   on:pointerleave|preventDefault={release}
 >
-  <Cube
-    {urls}
-    {index}
-    {pageIndex}
-    {direction}
-    {yawOffset}
-    bind:faceSize
-  />
+  <Cube {urls} {index} {pageIndex} {direction} {yawOffset} bind:faceSize />
 
   <!--CubeText
     {texts}
@@ -104,9 +97,5 @@
     {direction}
   /-->
 
-  <CubeNavigation
-    {length}
-    {index}
-    on:choose={handleChooseEvent}
-  />
+  <CubeNavigation {length} {index} on:choose={handleChooseEvent} />
 </div>

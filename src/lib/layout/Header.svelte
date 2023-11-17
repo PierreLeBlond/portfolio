@@ -4,7 +4,7 @@
   import LoadingCue from "./loading/LoadingCue.svelte";
 </script>
 
-<div class="flex h-full w-full items-center justify-between bg-black">
+<div class="flex h-full w-full items-center justify-between">
   <a href="/" class="ml-3 h-12 w-12 hover:cursor-pointer">
     <SpriteSheetAnimator
       url={house}

@@ -1,33 +1,44 @@
 <script lang="ts">
-  import { THREE } from '@s0rt/3d-viewer';
-  import { getContext } from 'svelte';
-  import type { ObjectEvent } from './state/ObjectEvent';
-  import type { ObjectState } from './state/ObjectState';
-  import { writable, type Writable } from 'svelte/store';
-  import type { PublicViewerContext } from '../PublicViewerContext';
+  import { THREE } from "@s0rt/3d-viewer";
+  import { getContext } from "svelte";
+  import { writable, type Writable } from "svelte/store";
+  import type { PublicViewerContext } from "../PublicViewerContext";
 
-  const { viewer } = getContext<PublicViewerContext>('mainPublicViewerContext').getPublicViewerSync();
+  const { viewer } = getContext<PublicViewerContext>(
+    "mainPublicViewerContext",
+  ).getPublicViewerSync();
   const { scene } = viewer;
 
   export let object: THREE.Object3D;
 
-  export let pointed = false;
-  export let selected = false;
+  export let highlighted = false;
+  export let entered = false;
 
-  type ActionName = 'LiftAction' | 'UnliftAction' | 'OutAction' | 'LiftOutAction' | 'InAction';
-  const actionNames: ActionName[] = ['LiftAction', 'UnliftAction', 'OutAction', 'LiftOutAction', 'InAction'];
+  type ActionName =
+    | "LiftAction"
+    | "UnliftAction"
+    | "OutAction"
+    | "LiftOutAction"
+    | "InAction";
+  const actionNames: ActionName[] = [
+    "LiftAction",
+    "UnliftAction",
+    "OutAction",
+    "LiftOutAction",
+    "InAction",
+  ];
 
   const loopedAction = [
-    'LogoCube|LiftAction',
-    'InkCube|LiftAction',
-    'Earth|LiftAction',
-    'Github|LiftAction',
-    'At|LiftAction'
+    "LogoCube|LiftAction",
+    "InkCube|LiftAction",
+    "Earth|LiftAction",
+    "Github|LiftAction",
+    "At|LiftAction",
   ];
 
   const mixer = new THREE.AnimationMixer(object);
-  scene.addEventListener('animate', (event) => {
-    mixer.update(event['delta']);
+  scene.addEventListener("animate", (event) => {
+    mixer.update(event["delta"]);
   });
 
   const actionsMap = new Map<ActionName, THREE.AnimationAction | null>(
@@ -39,14 +50,18 @@
       }
 
       const action = mixer.clipAction(clip);
-      const loopMode = loopedAction.includes(clipName) ? THREE.LoopRepeat : THREE.LoopOnce;
+      const loopMode = loopedAction.includes(clipName)
+        ? THREE.LoopRepeat
+        : THREE.LoopOnce;
       action.setLoop(loopMode, Infinity);
       action.clampWhenFinished = true;
       action.setEffectiveTimeScale(2.0);
       return [actionName, action];
-    })
+    }),
   );
 
+  type ObjectState = "idle" | "highlighted" | "entered";
+  type ObjectEvent = "highlight" | "unhighlight" | "enter" | "leave";
   type StateChange = {
     state: ObjectState;
     actionName: ActionName;
@@ -80,8 +95,8 @@
     waitingStateChange = null;
   };
 
-  mixer.addEventListener('loop', playAction);
-  mixer.addEventListener('finished', playAction);
+  mixer.addEventListener("loop", playAction);
+  mixer.addEventListener("finished", playAction);
 
   const scheduleStateChange = (stateChange: StateChange) => {
     // If multiple state change resulted in the same current action being scheduled, do nothing
@@ -93,44 +108,50 @@
     waitingStateChange = stateChange;
 
     // Wait for running action to finish before playing the new one
-    if (runningStateChange && actionsMap.get(runningStateChange.actionName)?.isRunning()) {
+    if (
+      runningStateChange &&
+      actionsMap.get(runningStateChange.actionName)?.isRunning()
+    ) {
       return;
     }
 
     playAction();
   };
 
-  const objectState: Writable<ObjectState> = writable('idle');
+  const objectState: Writable<ObjectState> = writable("idle");
   const objectEvent: Writable<ObjectEvent | null> = writable(null);
-  const machine: Map<ObjectState, Map<ObjectEvent, { state: ObjectState; actionName: ActionName }>> = new Map([
-    ['idle', new Map()],
-    ['pointed', new Map()],
-    ['selected', new Map()]
+  const machine: Map<
+    ObjectState,
+    Map<ObjectEvent, { state: ObjectState; actionName: ActionName }>
+  > = new Map([
+    ["idle", new Map()],
+    ["highlighted", new Map()],
+    ["entered", new Map()],
   ]);
 
-  machine.get('idle')?.set('point', {
-    state: 'pointed',
-    actionName: 'LiftAction'
+  machine.get("idle")?.set("highlight", {
+    state: "highlighted",
+    actionName: "LiftAction",
   });
 
-  machine.get('idle')?.set('select', {
-    state: 'selected',
-    actionName: 'LiftOutAction'
+  machine.get("idle")?.set("enter", {
+    state: "entered",
+    actionName: "LiftOutAction",
   });
 
-  machine.get('pointed')?.set('select', {
-    state: 'selected',
-    actionName: 'OutAction'
+  machine.get("highlighted")?.set("enter", {
+    state: "entered",
+    actionName: "OutAction",
   });
 
-  machine.get('pointed')?.set('unpoint', {
-    state: 'idle',
-    actionName: 'UnliftAction'
+  machine.get("highlighted")?.set("unhighlight", {
+    state: "idle",
+    actionName: "UnliftAction",
   });
 
-  machine.get('selected')?.set('unselect', {
-    state: 'idle',
-    actionName: 'InAction'
+  machine.get("entered")?.set("leave", {
+    state: "idle",
+    actionName: "InAction",
   });
 
   objectEvent.subscribe((event) => {
@@ -153,16 +174,16 @@
     $objectState = nextState.state;
   });
 
-  const onPointedChange = (pointed: boolean) => {
-    objectEvent.set(pointed ? 'point' : 'unpoint');
+  const onEnteredChange = (entered: boolean) => {
+    objectEvent.set(entered ? "enter" : "leave");
   };
 
-  const onSelectedChange = (selected: boolean) => {
-    objectEvent.set(selected ? 'select' : 'unselect');
+  const onHighlightedChange = (highlighted: boolean) => {
+    objectEvent.set(highlighted ? "highlight" : "unhighlight");
   };
 
-  $: onPointedChange(pointed);
-  $: onSelectedChange(selected);
+  $: onHighlightedChange(highlighted);
+  $: onEnteredChange(entered);
+
+  // TODO On enter
 </script>
-
-<svelte:body class:cursor-pointed={pointed} />

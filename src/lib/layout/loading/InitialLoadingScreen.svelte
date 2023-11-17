@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { bounceOut } from 'svelte/easing';
-  import { fade, fly } from 'svelte/transition';
-  import { typewritter } from '../reusable/typewritter';
-  import { appState } from '$lib/state/appState';
-  import { appEvent } from '$lib/state/appEvent';
+  import { onMount } from "svelte";
+  import { backIn, bounceOut } from "svelte/easing";
+  import { fade, scale } from "svelte/transition";
+  import { appEvent } from "$lib/state/appEvent";
+  import { Cog } from "lucide-svelte";
+  import { appState } from "$lib/state/appState";
 
-  $: canOpen = $appState == 'introducing';
+  $: canOpen = $appState == "introducing";
 
   let offsetHeight: number;
 
@@ -15,7 +15,7 @@
     if (!canOpen) {
       return;
     }
-    appEvent.set('introduced');
+    appEvent.set("introduced");
     displayText = false;
   };
 
@@ -25,53 +25,43 @@
   });
 </script>
 
-<div
-  class="absolute top-0 h-1/2 w-full bg-black"
-  out:fly={{ y: -offsetHeight, duration: 1000, opacity: 1, easing: bounceOut }}
-/>
-<div
-  class="absolute bottom-0 h-1/2 w-full bg-black"
-  out:fly={{ y: offsetHeight, duration: 1000, opacity: 1, easing: bounceOut }}
-/>
-
 {#if displayText}
   <div
     bind:offsetHeight
-    class="absolute flex h-full w-full flex-col pt-8 pl-8 text-xl text-white sm:pt-32 sm:pl-32 sm:text-2xl"
+    class="absolute flex h-full w-full flex-col pt-8 text-center text-xl text-stone-700 sm:pt-32 sm:text-2xl"
     role="button"
     tabindex="0"
     on:click={openInitialLoadingScreen}
     on:keydown={openInitialLoadingScreen}
   >
     {#if mounted}
-      <p in:typewritter={{ maxDuration: 1000 }}>So, I'm building a portfolio,</p>
-      <p>
-        <span in:typewritter={{ delay: 1000, maxDuration: 500 }}>With code & </span>
-        <span
-          class="text-orange-400"
-          in:typewritter={{ delay: 1500, maxDuration: 200 }}>art</span
-        ><span in:typewritter={{ delay: 1700, maxDuration: 50 }}>,</span>
+      <p in:fade={{ duration: 1000 }} class="text-2xl">Pierre LESPINGAL</p>
+      <p in:fade={{ duration: 1000, delay: 500 }}>3D & Web developer</p>
+
+      <p in:fade={{ duration: 1000, delay: 1500 }} class="py-16 text-sm">
+        presents
       </p>
-      <p>
-        <span in:typewritter={{ delay: 2000, maxDuration: 1000 }}>Though I'm not an artist, but a</span>
-        <span
-          class="text-orange-400"
-          in:typewritter={{ delay: 3000, maxDuration: 200 }}>developer</span
-        ><span in:typewritter={{ delay: 3200, maxDuration: 50 }}>.</span>
+      <p in:fade={{ duration: 1000, delay: 2500 }} class="pb-8">
+        his portfolio
       </p>
-      <p
-        in:fade={{ delay: 3500, duration: 1000 }}
-        class="animate-pulse"
-      >
-        <br />
-        <span class="animate-pulse">
-          {#if canOpen}
-            Click if you want to explore !
-          {:else}
-            Wait a moment before exploring...
-          {/if}
-        </span>
+      <p in:fade={{ duration: 1000, delay: 3000 }}>with chuncks of code</p>
+      <p in:fade={{ duration: 1000, delay: 3000 }} class="pb-16">
+        and bits of art
       </p>
+
+      <div in:fade={{ duration: 1000, delay: 4000 }}>
+        {#if canOpen}
+          <p class="animate-pulse">Click to explore !</p>
+        {:else}
+          <div
+            class="flex h-full w-full animate-spin items-center justify-center duration-1000"
+            in:scale={{ easing: bounceOut, duration: 200 }}
+            out:scale={{ easing: backIn, duration: 50 }}
+          >
+            <Cog size={32}></Cog>
+          </div>
+        {/if}
+      </div>
     {/if}
   </div>
 {/if}

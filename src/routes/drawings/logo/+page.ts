@@ -14,10 +14,9 @@ export const load: PageLoad = () => {
       "A logo for a good friend evil corporation",
       "A logo for an ophtalmology center",
     ],
-    dialogText: "Logos for clients & friends",
     camera: {
-      position: new THREE.Vector3(-0.74, 1.112, 0.6375),
-      target: new THREE.Vector3(-1.05, 1.112, 0.6375),
+      position: new THREE.Vector3(-0.705, 1.097, 0.6375),
+      target: new THREE.Vector3(-1.05, 1.097, 0.6375),
     },
   };
 };

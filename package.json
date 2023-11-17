@@ -39,6 +39,7 @@
     "@s0rt/3d-viewer": "8.2.5",
     "@s0rt/wave-monster-collapse": "^4.2.7",
     "chess": "https://app.pierrelespingal.xyz/chess/v2.2.2/package/chess-2.2.2.tgz",
-    "earth": "https://app.pierrelespingal.xyz/earth/v2.0.10/package/earth-2.0.10.tgz"
+    "earth": "https://app.pierrelespingal.xyz/earth/v2.0.10/package/earth-2.0.10.tgz",
+    "lucide-svelte": "^0.292.0"
   }
 }

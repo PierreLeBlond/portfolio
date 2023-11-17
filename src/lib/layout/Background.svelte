@@ -1,10 +1,3 @@
 <div
-  id="back"
-  class="absolute h-full w-full bg-blue-200"
+  class="absolute h-full w-full bg-gradient-to-bl from-blue-200 to-blue-300"
 />
-
-<style>
-  #back {
-    box-shadow: inset 0 0 12em 7em hsla(0 0% 0% / 0.5);
-  }
-</style>
