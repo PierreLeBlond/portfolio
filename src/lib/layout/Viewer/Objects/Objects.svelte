@@ -10,7 +10,6 @@
   import { configureObjects } from "./configureObjects";
   import type { PublicViewerContext } from "../PublicViewerContext";
   import {
-    selectedPage,
     type Page,
     pointedPage,
     currentPage,
@@ -18,7 +17,7 @@
   } from "$lib/stores/selectedPage";
   import { selectedObject } from "./selectedObject";
   import { previouslySelectedObject } from "./previouslySelectedObject";
-  import { afterNavigate, beforeNavigate, goto } from "$app/navigation";
+  import { afterNavigate, goto } from "$app/navigation";
 
   const { viewer } = getContext<PublicViewerContext>(
     "mainPublicViewerContext",
@@ -102,8 +101,8 @@
 {#each selectableObjects as selectableObject}
   <Object
     object={selectableObject}
-    highlighted={selectableObject == pointedObject ||
-      selectableObject == touchedObject}
+    highlighted={selectableObject === pointedObject ||
+      selectableObject === touchedObject}
     entered={selectableObject === $selectedObject}
   />
 {/each}

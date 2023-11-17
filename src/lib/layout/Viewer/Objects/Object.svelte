@@ -123,21 +123,21 @@
   const machine: Map<
     ObjectState,
     Map<ObjectEvent, { state: ObjectState; actionName: ActionName }>
-  > = new Map([
-    ["idle", new Map()],
-    ["highlighted", new Map()],
-    ["entered", new Map()],
-  ]);
+  > = new Map();
+
+  machine.set("idle", new Map());
+
+  machine.get("idle")?.set("enter", {
+    state: "entered",
+    actionName: "LiftOutAction",
+  });
 
   machine.get("idle")?.set("highlight", {
     state: "highlighted",
     actionName: "LiftAction",
   });
 
-  machine.get("idle")?.set("enter", {
-    state: "entered",
-    actionName: "LiftOutAction",
-  });
+  machine.set("highlighted", new Map());
 
   machine.get("highlighted")?.set("enter", {
     state: "entered",
@@ -148,6 +148,8 @@
     state: "idle",
     actionName: "UnliftAction",
   });
+
+  machine.set("entered", new Map());
 
   machine.get("entered")?.set("leave", {
     state: "idle",
@@ -184,6 +186,4 @@
 
   $: onHighlightedChange(highlighted);
   $: onEnteredChange(entered);
-
-  // TODO On enter
 </script>
