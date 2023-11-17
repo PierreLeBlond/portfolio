@@ -5,6 +5,7 @@
   import { writable, type Writable } from "svelte/store";
   import { page } from "$app/stores";
   import { IblSpace, PublicViewer, THREE } from "@s0rt/3d-viewer";
+  import { fade } from "svelte/transition";
 
   $: path = $page.url.pathname;
 
@@ -64,7 +65,10 @@
   });
 </script>
 
-<div class="absolute h-full w-full large:pr-[25%]">
+<div
+  class="absolute h-full w-full large:pr-[25%]"
+  out:fade|global={{ duration: 0 }}
+>
   <div
     style:visibility={loading ? "hidden" : "visible"}
     class="relative flex h-full w-full items-center justify-center"
