@@ -2,6 +2,11 @@
   import { descriptionOpenStatus } from "$lib/stores/descriptionOpenStatus";
   import { HelpCircle, X } from "lucide-svelte";
   import { fly } from "svelte/transition";
+  import Description from "./Description.svelte";
+
+  export let title: string;
+  export let subtitle: string;
+  export let githubLink: string | null = null;
 </script>
 
 <section class="pointer-events-none absolute right-0 top-0 flex w-1/3 p-16">
@@ -9,7 +14,7 @@
     class="pointer-events-auto hidden w-full rounded border-2 border-stone-200 bg-gradient-to-tr from-stone-100/70 to-stone-300/70 p-4 pb-8 text-stone-800 shadow-lg backdrop-blur large:flex"
     transition:fly|global={{ duration: 400, x: 500 }}
   >
-    <slot />
+    <Description {title} {subtitle} {githubLink}><slot /></Description>
   </div>
 </section>
 
@@ -39,7 +44,7 @@
       >
         <X></X>
       </button>
-      <slot />
+      <Description {title} {subtitle} {githubLink}><slot /></Description>
     </div>
   </div>
 {/if}

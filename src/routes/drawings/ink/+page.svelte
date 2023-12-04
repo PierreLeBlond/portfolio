@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import CubeViewer from "$lib/content/drawings/CubeViewer.svelte";
-  import Description from "$lib/layout/Description.svelte";
+  import DescriptionPanel from "$lib/layout/description/DescriptionPanel.svelte";
   import { pageDialog } from "$lib/stores/pageDialog";
   import { onDestroy } from "svelte";
 
@@ -25,12 +25,8 @@
   </div>
 </div>
 
-<Description>
-  <div class="flex h-full w-full flex-col gap-y-4 p-4">
-    <h1 class="text-2xl font-bold">Drawings</h1>
-    <h2 class="self-end pb-4 text-xl">with black ink</h2>
-    <p>A cube image viewer made with css !</p>
-    <p>The current image is named</p>
-    <p class="self-center font-bold">{text}</p>
-  </div>
-</Description>
+<DescriptionPanel title="Drawings" subtitle="with black ink">
+  <p>A cube image viewer made with css !</p>
+  <p>The current image is named</p>
+  <p class="self-center font-bold">{text}</p>
+</DescriptionPanel>

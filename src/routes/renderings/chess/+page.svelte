@@ -4,7 +4,7 @@
   import { getContext, onDestroy } from "svelte";
   import { onMount } from "svelte";
   import type App from "chess";
-  import Description from "$lib/layout/Description.svelte";
+  import DescriptionPanel from "$lib/layout/description/DescriptionPanel.svelte";
   import { appState } from "$lib/state/appState";
 
   const mainPublicViewerContext = getContext<PublicViewerContext>(
@@ -71,20 +71,20 @@
   });
 </script>
 
-<Description>
-  <div class="flex h-full w-full flex-col gap-y-4 p-4">
-    <h1 class="text-2xl font-bold">Render</h1>
-    <h2 class="self-end pb-4 text-xl">chessboard rendering</h2>
-    <p>A Three.js rendering of a chessboard, animated.</p>
-    <p>Build in blender.</p>
-    <p>Lighting is done with image based lighting.</p>
+<DescriptionPanel
+  title="Render"
+  subtitle="chessboard rendering"
+  githubLink="https://github.com/PierreLeBlond/chessboard"
+>
+  <p>A Three.js rendering of a chessboard, animated.</p>
+  <p>Build in blender.</p>
+  <p>Lighting is done with image based lighting.</p>
 
-    {#if $appState === "loading"}
-      <p class="animate-pulse text-center font-bold">
-        Thinking about my next move...
-      </p>
-    {:else}
-      <p class="text-center">You can't play with it yet though :/</p>
-    {/if}
-  </div>
-</Description>
+  {#if $appState === "loading"}
+    <p class="animate-pulse text-center font-bold">
+      Thinking about my next move...
+    </p>
+  {:else}
+    <p class="text-center">You can't play with it yet though :/</p>
+  {/if}
+</DescriptionPanel>

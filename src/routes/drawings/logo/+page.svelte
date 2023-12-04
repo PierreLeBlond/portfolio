@@ -1,11 +1,9 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import CubeViewer from "$lib/content/drawings/CubeViewer.svelte";
-  import Description from "$lib/layout/Description.svelte";
+  import DescriptionPanel from "$lib/layout/description/DescriptionPanel.svelte";
   import { pageDialog } from "$lib/stores/pageDialog";
   import { onDestroy } from "svelte";
-
-  $: path = $page.url.pathname;
 
   $: urls = $page.data["urls"] || [];
   $: texts = $page.data["texts"] || [];
@@ -27,11 +25,6 @@
   </div>
 </div>
 
-<Description>
-  <div class="flex h-full w-full flex-col gap-y-4 p-4">
-    <h1 class="text-2xl font-bold">Logos</h1>
-    <h2 class="self-end pb-4 text-xl">made with Inkscape</h2>
-    <p>The cube is css.</p>
-    <p class="font-bold">{text}</p>
-  </div>
-</Description>
+<DescriptionPanel title="Logos" subtitle="made with Inkscape">
+  <p class="font-bold">{text}</p>
+</DescriptionPanel>

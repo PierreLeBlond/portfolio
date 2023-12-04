@@ -5,7 +5,7 @@
   import { getContext, onDestroy, onMount } from "svelte";
   import { THREE } from "@s0rt/3d-viewer";
   import type App from "earth";
-  import Description from "$lib/layout/Description.svelte";
+  import DescriptionPanel from "$lib/layout/description/DescriptionPanel.svelte";
   import { appState } from "$lib/state/appState";
 
   const mainPublicViewerContext = getContext<PublicViewerContext>(
@@ -94,25 +94,25 @@
   });
 </script>
 
-<Description>
-  <div class="flex h-full w-full flex-col gap-y-4 p-4">
-    <h1 class="text-2xl font-bold">3D interactivity</h1>
-    <h2 class="self-end pb-4 text-xl">earth country map</h2>
-    <p>
-      A Three.js rendering of a globe with country hovering via color picking.
-    </p>
-    <p>Lighting is done with image based lighting.</p>
+<DescriptionPanel
+  title="3D interactivity"
+  subtitle="earth country map"
+  githubLink="https://github.com/PierreLeBlond/earth"
+>
+  <p>
+    A Three.js rendering of a globe with country hovering via color picking.
+  </p>
+  <p>Lighting is done with image based lighting.</p>
 
-    {#if $appState === "loading"}
-      <p class="animate-pulse text-center font-bold">
-        Creating the earth, might take a few days...
-      </p>
-    {:else if country !== null}
-      <p class="text-center">
-        You're flying hover <span class="font-bold">{country}</span>
-      </p>
-    {:else}
-      <p class="text-center font-bold">Try hovering a country !</p>
-    {/if}
-  </div>
-</Description>
+  {#if $appState === "loading"}
+    <p class="animate-pulse text-center font-bold">
+      Creating the earth, might take a few days...
+    </p>
+  {:else if country !== null}
+    <p class="text-center">
+      You're flying hover <span class="font-bold">{country}</span>
+    </p>
+  {:else}
+    <p class="text-center font-bold">Try hovering a country !</p>
+  {/if}
+</DescriptionPanel>
