@@ -1,6 +1,6 @@
 <script lang="ts">
-  import RatioBox from '$lib/layout/reusable/RatioBox.svelte';
-  import boardPath from './board.png';
+  import RatioBox from "$lib/components/reusable/RatioBox.svelte";
+  import boardPath from "./board.png";
 
   export let time: number;
   export let speed: number;
@@ -32,8 +32,10 @@
   <div
     style:background-image={`url(${boardPath})`}
     style:top={`${top}px`}
-    class="relative w-full h-full flex items-center justify-center bg-no-repeat bg-contain bg-center"
+    class="relative flex h-full w-full items-center justify-center bg-contain bg-center bg-no-repeat"
   >
-    <p class="w-1/4 text-4xl text-black text-center">Being better at math made me take another path.</p>
+    <p class="w-1/4 text-center text-4xl text-black">
+      Being better at math made me take another path.
+    </p>
   </div>
 </RatioBox>

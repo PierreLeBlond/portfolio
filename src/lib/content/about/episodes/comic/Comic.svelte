@@ -1,13 +1,13 @@
 <script lang="ts">
-  import RatioBox from '$lib/layout/reusable/RatioBox.svelte';
-  import { elasticOut } from 'svelte/easing';
-  import { fly } from 'svelte/transition';
-  import imagePath1 from './images/story-comic-1.png';
-  import imagePath2 from './images/story-comic-2.png';
-  import imagePath3 from './images/story-comic-3.png';
-  import imagePath4 from './images/story-comic-4.png';
-  import imagePath5 from './images/story-comic-5.png';
-  import imagePath6 from './images/story-comic-6.png';
+  import RatioBox from "$lib/components/reusable/RatioBox.svelte";
+  import { elasticOut } from "svelte/easing";
+  import { fly } from "svelte/transition";
+  import imagePath1 from "./images/story-comic-1.png";
+  import imagePath2 from "./images/story-comic-2.png";
+  import imagePath3 from "./images/story-comic-3.png";
+  import imagePath4 from "./images/story-comic-4.png";
+  import imagePath5 from "./images/story-comic-5.png";
+  import imagePath6 from "./images/story-comic-6.png";
 
   export let time: number;
   export let speed: number;
@@ -24,100 +24,105 @@
   $: panels = [
     {
       text: {
-        value: 'When',
+        value: "When",
         x: 0,
         y: 30,
-        width: 100
+        width: 100,
       },
       image: {
         path: imagePath1,
         width: 100,
         height: 100,
         x: 0,
-        y: 0
+        y: 0,
       },
-      transition: { x: -width / 3 }
+      transition: { x: -width / 3 },
     },
     {
       text: {
-        value: 'I was',
+        value: "I was",
         x: -17,
         y: 30,
-        width: 100
+        width: 100,
       },
       image: {
         path: imagePath2,
         width: 100,
         height: 100,
         x: 0,
-        y: 0
+        y: 0,
       },
-      transition: { y: -height / 2 }
+      transition: { y: -height / 2 },
     },
     {
       text: {
-        value: 'a child',
+        value: "a child",
         x: -10,
         y: 64,
-        width: 100
+        width: 100,
       },
       image: {
         path: imagePath3,
         width: 100,
         height: 100,
         x: 0,
-        y: 0
+        y: 0,
       },
-      transition: { x: width / 3 }
+      transition: { x: width / 3 },
     },
     {
       text: {
-        value: 'I wanted',
+        value: "I wanted",
         x: 10,
         y: 73,
-        width: 100
+        width: 100,
       },
       image: {
         path: imagePath4,
         width: 100,
         height: 100,
         x: 0,
-        y: 0
+        y: 0,
       },
-      transition: { x: -width / 3 }
+      transition: { x: -width / 3 },
     },
     {
       text: {
-        value: 'to be',
+        value: "to be",
         x: 18,
         y: 70,
-        width: 5
+        width: 5,
       },
       image: {
         path: imagePath5,
         width: 100,
         height: 142,
         x: 0,
-        y: 0
+        y: 0,
       },
-      transition: { y: height / 2 }
+      transition: { y: height / 2 },
     },
     {
       text: {
-        value: 'a comic book artist.',
+        value: "a comic book artist.",
         x: 16,
         y: 68,
-        width: 40
+        width: 40,
       },
       image: {
         path: imagePath6,
         width: 138,
         height: 155,
         x: -36,
-        y: -23
+        y: -23,
       },
-      transition: { x: width / 2, y: height / 1.5, easing: elasticOut, duration: 1000 }
-    }
+      transition: {
+        x: width / 2,
+        y: height / 1.5,
+        easing: elasticOut,
+        duration: 1000,
+      },
+    },
   ];
 </script>
 
@@ -126,7 +131,7 @@
     bind:clientWidth={width}
     bind:clientHeight={height}
     style:top={`${top}px`}
-    class="relative w-full h-full grid grid-cols-3 grid-rows-2 gap-4 py-36 px-64 text-black"
+    class="relative grid h-full w-full grid-cols-3 grid-rows-2 gap-4 px-64 py-36 text-black"
   >
     {#each panels as panel, i}
       <div class="relative">
@@ -137,7 +142,7 @@
             style:height={`${panel.image.height}%`}
             style:top={`${panel.image.y}%`}
             style:left={`${panel.image.x}%`}
-            class="relative flex items-center justify-center bg-contain bg-no-repeat bg-center"
+            class="relative flex items-center justify-center bg-contain bg-center bg-no-repeat"
             transition:fly={{ opacity: 1, ...panel.transition }}
           >
             <p

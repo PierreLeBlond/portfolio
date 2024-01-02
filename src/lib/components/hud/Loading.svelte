@@ -15,7 +15,7 @@
 
 {#if loading}
   <div
-    class="flex h-full w-full animate-spin items-center justify-center duration-1000"
+    class="absolute bottom-16 right-8 z-40 flex animate-spin items-center justify-center duration-1000 sm:right-16"
   >
     <Cog size={32}></Cog>
   </div>

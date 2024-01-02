@@ -1,9 +1,10 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import CubeViewer from "$lib/content/drawings/CubeViewer.svelte";
-  import DescriptionPanel from "$lib/layout/description/DescriptionPanel.svelte";
+  import DescriptionPanel from "$lib/components/description/DescriptionPanel.svelte";
   import { pageDialog } from "$lib/stores/pageDialog";
   import { onDestroy } from "svelte";
+  import { fade } from "svelte/transition";
 
   $: urls = $page.data["urls"] || [];
   $: texts = $page.data["texts"] || [];
@@ -25,8 +26,19 @@
   </div>
 </div>
 
-<DescriptionPanel title="Drawings" subtitle="with black ink">
-  <p>A cube image viewer made with css !</p>
-  <p>The current image is named</p>
-  <p class="self-center font-bold">{text}</p>
+<DescriptionPanel title="Drawings">
+  <div class="flex flex-col items-center justify-center gap-y-2">
+    <p>
+      Here are some drawing I made<br />
+      with black ink.
+    </p>
+    <p>
+      This cubic image viewer is made<br />
+      with css.
+    </p>
+    <p>The current drawing is named</p>
+    {#key text}
+      <p class="self-center font-bold" in:fade>{text}</p>
+    {/key}
+  </div>
 </DescriptionPanel>

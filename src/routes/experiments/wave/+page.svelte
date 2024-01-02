@@ -2,7 +2,7 @@
   import WaveMonsterCollapse from "@s0rt/wave-monster-collapse";
   import Mask from "./Mask.svelte";
   import mask from "./mask.png";
-  import DescriptionPanel from "$lib/layout/description/DescriptionPanel.svelte";
+  import DescriptionPanel from "$lib/components/description/DescriptionPanel.svelte";
   import { fade } from "svelte/transition";
 
   let offsetHeight: number;
@@ -27,17 +27,18 @@
 </div>
 
 <DescriptionPanel
-  title="Algorythm"
-  subtitle="wave monster collapse"
+  title="Algo"
   githubLink="https://github.com/PierreLeBlond/wave-monster-collapse"
 >
-  <p>Typescript implementation of the wave function collapse algorythm.</p>
-  <p>
-    Based on <a
-      class="text-stone-100"
-      href="https://github.com/mxgmn/WaveFunctionCollapse"
-    >
-      Maxim Gumin implementation
-    </a>
-  </p>
+  <div class="flex flex-col items-center justify-center gap-y-2">
+    <p>Typescript implementation of the wave function collapse algorythm.</p>
+    <p>
+      Based on <a
+        class="text-stone-100"
+        href="https://github.com/mxgmn/WaveFunctionCollapse"
+      >
+        Maxim Gumin implementation
+      </a>
+    </p>
+  </div>
 </DescriptionPanel>

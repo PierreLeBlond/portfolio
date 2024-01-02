@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { PublicViewerContext } from "$lib/layout/Viewer/PublicViewerContext";
+  import type { PublicViewerContext } from "$lib/components/Viewer/PublicViewerContext";
   import { appEvent } from "$lib/state/appEvent";
   import { getContext, onDestroy } from "svelte";
   import { onMount } from "svelte";
   import type App from "chess";
-  import DescriptionPanel from "$lib/layout/description/DescriptionPanel.svelte";
+  import DescriptionPanel from "$lib/components/description/DescriptionPanel.svelte";
   import { appState } from "$lib/state/appState";
 
   const mainPublicViewerContext = getContext<PublicViewerContext>(
@@ -73,18 +73,18 @@
 
 <DescriptionPanel
   title="Render"
-  subtitle="chessboard rendering"
   githubLink="https://github.com/PierreLeBlond/chessboard"
 >
-  <p>A Three.js rendering of a chessboard, animated.</p>
-  <p>Build in blender.</p>
-  <p>Lighting is done with image based lighting.</p>
+  <div class="flex flex-col items-center justify-center gap-y-2">
+    <p>A Three.js rendering of a chessboard, animated, from blender.</p>
+    <p>Lighting is done with image based lighting.</p>
 
-  {#if $appState === "loading"}
-    <p class="animate-pulse text-center font-bold">
-      Thinking about my next move...
-    </p>
-  {:else}
-    <p class="text-center">You can't play with it yet though :/</p>
-  {/if}
+    {#if $appState === "loading"}
+      <p class="animate-pulse text-center font-bold">
+        Thinking about my next move...
+      </p>
+    {:else}
+      <p class="text-center">You can't play with it yet though :/</p>
+    {/if}
+  </div>
 </DescriptionPanel>

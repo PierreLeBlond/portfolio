@@ -48,7 +48,7 @@
 </script>
 
 <div
-  class="large:w-[150%] large:-translate-x-[25%] absolute top-0 h-full w-full"
+  class="absolute top-0 h-full w-full large:w-[150%] large:-translate-x-[25%]"
   class:cursor-pointer={$pointedPage}
   id="viewer"
 />

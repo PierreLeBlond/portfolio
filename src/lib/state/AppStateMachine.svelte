@@ -1,33 +1,35 @@
 <script lang="ts">
-  import { cameraTarget } from '$lib/stores/cameraTarget';
-  import { page } from '$app/stores';
-  import { publicViewer } from '$lib/stores/publicViewer';
-  import { appState, type AppState } from './appState';
-  import { appEvent, type AppEvent } from './appEvent';
-  import { selectedObject } from '$lib/layout/Viewer/Objects/selectedObject';
-  import { previouslySelectedObject } from '$lib/layout/Viewer/Objects/previouslySelectedObject';
-  import type { Tweened } from 'svelte/motion';
+  import { cameraTarget } from "$lib/stores/cameraTarget";
+  import { page } from "$app/stores";
+  import { publicViewer } from "$lib/stores/publicViewer";
+  import { appState, type AppState } from "./appState";
+  import { appEvent, type AppEvent } from "./appEvent";
+  import { selectedObject } from "$lib/components/Viewer/Objects/selectedObject";
+  import { previouslySelectedObject } from "$lib/components/Viewer/Objects/previouslySelectedObject";
+  import type { Tweened } from "svelte/motion";
 
   type Action = () => void;
 
-  const machine: Map<AppState, Map<AppEvent, { state: AppState; action?: Action }>> = new Map([
-    ['mounting', new Map()],
-    ['introducing', new Map()],
-    ['idle', new Map()],
-    ['navigating', new Map()],
-    ['navigatingWhileFlying', new Map()],
-    ['flying', new Map()],
-    ['disolving', new Map()],
-    ['loading', new Map()]
+  const machine: Map<
+    AppState,
+    Map<AppEvent, { state: AppState; action?: Action }>
+  > = new Map([
+    ["mounting", new Map()],
+    ["idle", new Map()],
+    ["navigating", new Map()],
+    ["navigatingWhileFlying", new Map()],
+    ["flying", new Map()],
+    ["disolving", new Map()],
+    ["loading", new Map()],
   ]);
 
   const setCamera = () => {
-    const { position, target } = $page.data['camera'];
-    const controlMinDistance = $page.data['controlMinDistance'];
+    const { position, target } = $page.data["camera"];
+    const controlMinDistance = $page.data["controlMinDistance"];
     cameraTarget.set({
       position: position,
       target: target,
-      controlMinDistance: controlMinDistance
+      controlMinDistance: controlMinDistance,
     });
   };
 
@@ -38,7 +40,7 @@
     $publicViewer.play();
   };
   const pauseViewer = () => {
-    const isHome = $page.data['isHome'];
+    const isHome = $page.data["isHome"];
     if (!$publicViewer || isHome) {
       return;
     }
@@ -46,90 +48,92 @@
   };
 
   const disolveSelectedObject = () => {
-    if (!$selectedObject || !$selectedObject.userData['disolveRatio']) {
-      appEvent.set('disolved');
+    if (!$selectedObject || !$selectedObject.userData["disolveRatio"]) {
+      appEvent.set("disolved");
       return;
     }
 
     const disolvingObject = $selectedObject;
 
-    const disolveRatio: Tweened<number> = disolvingObject.userData['disolveRatio'];
+    const disolveRatio: Tweened<number> =
+      disolvingObject.userData["disolveRatio"];
 
     disolveRatio.set(0).then(() => {
-      appEvent.set('disolved');
+      appEvent.set("disolved");
     });
   };
 
   const resolvePreviouslySelectedObject = () => {
-    if (!$previouslySelectedObject || !$previouslySelectedObject.userData['disolveRatio']) {
+    if (
+      !$previouslySelectedObject ||
+      !$previouslySelectedObject.userData["disolveRatio"]
+    ) {
       return;
     }
 
     const resolvingObject = $previouslySelectedObject;
 
-    const disolveRatio: Tweened<number> = resolvingObject.userData['disolveRatio'];
+    const disolveRatio: Tweened<number> =
+      resolvingObject.userData["disolveRatio"];
 
     disolveRatio.set(1);
   };
 
-  machine.get('mounting')?.set('mounted', {
-    state: 'introducing'
-  });
-  machine.get('introducing')?.set('introduced', {
-    state: 'flying',
+  machine.get("mounting")?.set("mounted", {
+    state: "flying",
     action: () => {
       playViewer();
       setCamera();
-    }
+    },
   });
-  machine.get('idle')?.set('navigate', {
-    state: 'navigating',
+  machine.get("idle")?.set("navigate", {
+    state: "navigating",
     action: () => {
       playViewer();
-    }
+    },
   });
-  machine.get('idle')?.set('load', {
-    state: 'loading'
+  machine.get("idle")?.set("load", {
+    state: "loading",
   });
-  machine.get('navigating')?.set('navigated', {
-    state: 'flying',
+  machine.get("navigating")?.set("navigated", {
+    state: "flying",
     action: () => {
       resolvePreviouslySelectedObject();
       setCamera();
-    }
+    },
   });
-  machine.get('flying')?.set('land', {
-    state: 'disolving',
+  machine.get("flying")?.set("land", {
+    state: "disolving",
     action: () => {
       disolveSelectedObject();
-    }
+    },
   });
-  machine.get('flying')?.set('navigate', {
-    state: 'navigatingWhileFlying'
+  machine.get("flying")?.set("navigate", {
+    state: "navigatingWhileFlying",
   });
-  machine.get('navigatingWhileFlying')?.set('navigated', {
-    state: 'flying',
+  machine.get("navigatingWhileFlying")?.set("navigated", {
+    state: "flying",
     action: () => {
       setCamera();
-    }
+    },
   });
-  machine.get('disolving')?.set('disolved', {
-    state: 'idle',
+  machine.get("disolving")?.set("disolved", {
+    state: "idle",
     action: () => {
       pauseViewer();
-    }
+    },
   });
-  machine.get('disolving')?.set('navigate', {
-    state: 'navigating'
+  machine.get("disolving")?.set("navigate", {
+    state: "navigating",
   });
-  machine.get('loading')?.set('loaded', {
-    state: 'idle'
+  machine.get("loading")?.set("loaded", {
+    state: "idle",
   });
-  machine.get('loading')?.set('navigate', {
-    state: 'navigating',
+  machine.get("loading")?.set("navigate", {
+    state: "navigating",
     action: () => {
       playViewer();
-    }
+    },
   });
 
   appEvent.subscribe((event) => {

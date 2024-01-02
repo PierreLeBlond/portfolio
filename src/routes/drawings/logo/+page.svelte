@@ -1,20 +1,14 @@
 <script lang="ts">
   import { page } from "$app/stores";
+  import DescriptionPanel from "$lib/components/description/DescriptionPanel.svelte";
   import CubeViewer from "$lib/content/drawings/CubeViewer.svelte";
-  import DescriptionPanel from "$lib/layout/description/DescriptionPanel.svelte";
-  import { pageDialog } from "$lib/stores/pageDialog";
-  import { onDestroy } from "svelte";
+  import { fade } from "svelte/transition";
 
   $: urls = $page.data["urls"] || [];
   $: texts = $page.data["texts"] || [];
   $: pageIndex = $page.data["pageIndex"];
 
   let text: string | null;
-  $: pageDialog.set(text);
-
-  onDestroy(() => {
-    pageDialog.set(null);
-  });
 </script>
 
 <div class="relative top-0 flex h-[90%] items-center justify-center">
@@ -25,6 +19,19 @@
   </div>
 </div>
 
-<DescriptionPanel title="Logos" subtitle="made with Inkscape">
-  <p class="font-bold">{text}</p>
+<DescriptionPanel title="Logos">
+  <div class="flex flex-col items-center justify-center gap-y-2">
+    <p>
+      From time to time I try numeric art, <br />
+      using open source software, <br />
+      to design logos. <br />
+      I'd use Gimp, Inkscape & Krita.
+    </p>
+    <p>This one is for</p>
+    {#key text}
+      <p class="self-center font-bold" in:fade>
+        {text}
+      </p>
+    {/key}
+  </div>
 </DescriptionPanel>

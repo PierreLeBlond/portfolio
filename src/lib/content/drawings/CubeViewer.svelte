@@ -80,7 +80,7 @@
 </script>
 
 <div
-  class="flex h-full w-full flex-col flex-nowrap items-center justify-center overflow-x-visible pt-2.5"
+  class="flex h-full w-full flex-col flex-nowrap items-center justify-center overflow-x-visible"
   style:perspective="100vh"
   style:perspective-origin="50% 50%"
   role="presentation"

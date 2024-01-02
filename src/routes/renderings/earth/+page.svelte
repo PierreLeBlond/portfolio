@@ -1,12 +1,13 @@
 <script lang="ts">
-  import type { PublicViewerContext } from "$lib/layout/Viewer/PublicViewerContext";
+  import type { PublicViewerContext } from "$lib/components/Viewer/PublicViewerContext";
   import { appEvent } from "$lib/state/appEvent";
   import { pageDialog } from "$lib/stores/pageDialog";
   import { getContext, onDestroy, onMount } from "svelte";
   import { THREE } from "@s0rt/3d-viewer";
   import type App from "earth";
-  import DescriptionPanel from "$lib/layout/description/DescriptionPanel.svelte";
+  import DescriptionPanel from "$lib/components/description/DescriptionPanel.svelte";
   import { appState } from "$lib/state/appState";
+  import { fade } from "svelte/transition";
 
   const mainPublicViewerContext = getContext<PublicViewerContext>(
     "mainPublicViewerContext",
@@ -95,24 +96,25 @@
 </script>
 
 <DescriptionPanel
-  title="3D interactivity"
-  subtitle="earth country map"
+  title="3D earth"
   githubLink="https://github.com/PierreLeBlond/earth"
 >
-  <p>
-    A Three.js rendering of a globe with country hovering via color picking.
-  </p>
-  <p>Lighting is done with image based lighting.</p>
+  <div class="flex flex-col items-center justify-center gap-y-2">
+    <p>
+      A Three.js rendering of a globe with country hovering via color picking.
+    </p>
+    <p>Lighting is done with image based lighting.</p>
 
-  {#if $appState === "loading"}
-    <p class="animate-pulse text-center font-bold">
-      Creating the earth, might take a few days...
-    </p>
-  {:else if country !== null}
-    <p class="text-center">
-      You're flying hover <span class="font-bold">{country}</span>
-    </p>
-  {:else}
-    <p class="text-center font-bold">Try hovering a country !</p>
-  {/if}
+    {#if $appState === "loading"}
+      <p class="animate-pulse text-center font-bold">
+        Creating the earth, might take a few days...
+      </p>
+    {:else if country !== null}
+      <p class="text-center" in:fade>
+        You're flying hover <span class="font-bold">{country}</span>
+      </p>
+    {:else}
+      <p class="text-center font-bold">Try hovering a country !</p>
+    {/if}
+  </div>
 </DescriptionPanel>
