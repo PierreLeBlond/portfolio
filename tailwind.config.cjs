@@ -12,6 +12,9 @@ module.exports = {
         large: { raw: "(min-aspect-ratio: 1/0.75) and (min-height: 700px)" },
         square: { raw: "(min-aspect-ratio: 1/1)" },
       },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(circle at top left, var(--tw-gradient-stops))',
+      }
     },
     colors: {
       ...colors,
