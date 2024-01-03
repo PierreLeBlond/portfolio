@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { fade } from 'svelte/transition';
-  import Comic from './episodes/comic/Comic.svelte';
-  import Board from './episodes/board/Board.svelte';
+  import { fade } from "svelte/transition";
+  import Comic from "./episodes/comic/Comic.svelte";
+  import Board from "./episodes/board/Board.svelte";
   //import DynamicTexts from './episodes/DynamicTexts.svelte';
   //import StaticTexts from './episodes/StaticTexts.svelte';
   //import { texts } from './texts';
@@ -39,13 +39,13 @@
     {
       component: Comic,
       start: 1,
-      duration: 1.2
+      duration: 1.2,
     },
     {
       component: Board,
       start: 2.2,
-      duration: 1
-    }
+      duration: 1,
+    },
   ];
 </script>
 
@@ -54,8 +54,8 @@
   class="pointer-events-none absolute h-full w-full"
 >
   <div
-    style:box-shadow={'inset 0 0 12em 7em hsla(0 0% 0% / 0.2)'}
-    class="fixed top-0 left-0 h-screen w-screen bg-gray-100"
+    style:box-shadow={"inset 0 0 12em 7em hsla(0 0% 0% / 0.2)"}
+    class="fixed left-0 top-0 h-screen w-screen bg-gray-100"
     out:fade|global
   />
 </div>
@@ -75,7 +75,7 @@
 
 <div
   style:height={`${duration * speed}px`}
-  style:font-family={'Comic Neue'}
+  style:font-family={"Comic Neue"}
   class="absolute w-full border border-red-700 text-3xl"
 >
   {#each episodes as episode}

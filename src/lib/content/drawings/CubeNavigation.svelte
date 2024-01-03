@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher } from "svelte";
 
   let width: number;
 
@@ -11,14 +11,15 @@
   const slide = (_: HTMLElement, { delay }: { delay: number }) => ({
     delay,
     duration: 500,
-    css: (t: number, u: number) => `transform: translateX(${u * -width}px); opacity: ${t}`
+    css: (t: number, u: number) =>
+      `transform: translateX(${u * -width}px); opacity: ${t}`,
   });
 
   const dispatch = createEventDispatcher();
 
   const handleClickEvent = (i: number) => {
-    dispatch('choose', {
-      index: i
+    dispatch("choose", {
+      index: i,
     });
   };
 </script>
@@ -47,11 +48,7 @@
           class="bi bi-circle-fill scale-90 transition-transform duration-300 group-[.selected]:scale-125"
           viewBox="0 0 16 16"
         >
-          <circle
-            cx="8"
-            cy="8"
-            r="8"
-          />
+          <circle cx="8" cy="8" r="8" />
         </svg>
       </div>
     </li>

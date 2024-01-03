@@ -16,13 +16,9 @@
 <div
   bind:clientWidth={wrapperWidth}
   bind:clientHeight={wrapperHeight}
-  class="relative w-full h-full flex items-center justify-center"
+  class="relative flex h-full w-full items-center justify-center"
 >
-  <div
-    style:width={`${width}px`}
-    style:height={`${height}px`}
-    class="relative"
-  >
+  <div style:width={`${width}px`} style:height={`${height}px`} class="relative">
     <slot />
   </div>
 </div>

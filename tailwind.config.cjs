@@ -13,8 +13,9 @@ module.exports = {
         square: { raw: "(min-aspect-ratio: 1/1)" },
       },
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(circle at top left, var(--tw-gradient-stops))',
-      }
+        "gradient-radial":
+          "radial-gradient(circle at top left, var(--tw-gradient-stops))",
+      },
     },
     colors: {
       ...colors,

@@ -8,13 +8,17 @@
   const slideIn = (_: HTMLElement) => ({
     duration: 500,
     css: (t: number, u: number) =>
-      `transform: translateX(${u * (direction != 0 ? direction : -1) * width}px); opacity: ${t}`
+      `transform: translateX(${
+        u * (direction != 0 ? direction : -1) * width
+      }px); opacity: ${t}`,
   });
 
   const slideOut = (_: HTMLElement) => ({
     duration: 500,
     css: (t: number, u: number) =>
-      `transform: translateX(${u * (direction! - 0 ? -direction : 1) * width}px); opacity: ${t}`
+      `transform: translateX(${
+        u * (direction! - 0 ? -direction : 1) * width
+      }px); opacity: ${t}`,
   });
 </script>
 

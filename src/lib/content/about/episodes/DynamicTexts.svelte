@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fly } from 'svelte/transition';
+  import { fly } from "svelte/transition";
 
   export let time: number;
   export let speed: number;
@@ -12,7 +12,7 @@
 
 <ul
   style:height={`${heightInPercentage}%`}
-  class="relative w-full flex justify-center text-2xl border border-red-700"
+  class="relative flex w-full justify-center border border-red-700 text-2xl"
 >
   {#each dynamicTimedTexts as dynamicTimedText}
     {#if Math.abs(time - dynamicTimedText.time) < dynamicThreshold}
@@ -21,11 +21,11 @@
         class="absolute box-content w-1/2 text-center"
         in:fly={{
           duration: 1000,
-          y: Math.sign(dynamicTimedText.time - time) * 0.1 * speed
+          y: Math.sign(dynamicTimedText.time - time) * 0.1 * speed,
         }}
         out:fly={{
           duration: 500,
-          y: Math.sign(dynamicTimedText.time - time) * 0.1 * speed
+          y: Math.sign(dynamicTimedText.time - time) * 0.1 * speed,
         }}
       >
         {dynamicTimedText.text}

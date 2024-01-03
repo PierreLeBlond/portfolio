@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { imagePromises } from './imagePromises';
+  import { imagePromises } from "./imagePromises";
 
   export let url: string;
   export let yaw = 0;
@@ -19,9 +19,9 @@
   };
 
   const addImageCore = (node: HTMLElement, newUrl: string) => {
-    node.innerHTML = '';
+    node.innerHTML = "";
 
-    if (newUrl == '') {
+    if (newUrl == "") {
       return;
     }
 
@@ -37,7 +37,7 @@
       if (imagePromise != $imagePromises[url]) {
         return;
       }
-      node.innerHTML = '';
+      node.innerHTML = "";
       node.appendChild(image.cloneNode());
     });
   };
@@ -48,15 +48,16 @@
       update: (newUrl: string) => {
         addImageCore(node, newUrl);
       },
-      destroy: () => {}
+      destroy: () => {},
     };
   }
 </script>
 
 <div
   use:addImage={url}
-  class="absolute flex w-full h-full justify-center items-center bg-contain bg-no-repeat bg-center bg-gray-200 border border-gray-800"
-  style="box-shadow: rgba(0, 0, 0, 0.1) 0px 0px {faceSize / 20}px {faceSize / 30}px inset;
+  class="absolute flex h-full w-full items-center justify-center border border-gray-800 bg-gray-200 bg-contain bg-center bg-no-repeat"
+  style="box-shadow: rgba(0, 0, 0, 0.1) 0px 0px {faceSize / 20}px {faceSize /
+    30}px inset;
           transform-style: preserve-3d;
           transform: rotateX({pitch}deg) rotateY({yaw}deg) translate3d(0, 0, {translation}px);"
 />
