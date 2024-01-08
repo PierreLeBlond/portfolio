@@ -28,8 +28,22 @@ export const load: LayoutLoad = () => {
     },
     {
       objectName: "Wave",
-      pathname: "/experiments/wave",
+      pathname: "/apps/wave",
       label: "algorythm",
+      isExternal: false,
+      disolve: false,
+    },
+    {
+      objectName: "Ustom",
+      pathname: "/apps/ustom",
+      label: "ustom",
+      isExternal: false,
+      disolve: false,
+    },
+    {
+      objectName: "Quests",
+      pathname: "/apps/quests",
+      label: "quests",
       isExternal: false,
       disolve: false,
     },

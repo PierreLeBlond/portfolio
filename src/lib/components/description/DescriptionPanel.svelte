@@ -1,6 +1,6 @@
 <script lang="ts">
   import { descriptionOpenStatus } from "$lib/stores/descriptionOpenStatus";
-  import { Github, HelpCircle, X } from "lucide-svelte";
+  import { HelpCircle, X } from "lucide-svelte";
   import { fly } from "svelte/transition";
   import Description from "./Description.svelte";
 
@@ -27,7 +27,7 @@
 
 {#if $descriptionOpenStatus}
   <div
-    class="pointer-events-none absolute right-0 top-0 flex h-screen w-full large:hidden"
+    class="pointer-events-none absolute right-0 top-0 flex h-screen w-full bg-stone-700/40 large:hidden"
   >
     <button
       class="pointer-events-auto absolute right-8 top-8 rounded-full bg-stone-200 p-2 text-stone-700 shadow-lg large:hidden"
