@@ -48,6 +48,13 @@ export const load: LayoutLoad = () => {
       disolve: false,
     },
     {
+      objectName: "Recipe",
+      pathname: "/apps/recipe",
+      label: "recipes",
+      isExternal: false,
+      disolve: false,
+    },
+    {
       objectName: "Chess",
       pathname: "/renderings/chess",
       label: "render",
