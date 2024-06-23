@@ -1,7 +1,7 @@
 import type { Page } from "$lib/stores/selectedPage";
 import type { LayoutLoad } from "./$types";
-import irradiance from "./assets/portfolio-room_rgbd_irradiance.dds?url";
-import radiance from "./assets/portfolio-room_rgbd_radiance.dds?url";
+import irradiance from "./assets/portfolio_rgbd_irradiance.dds?url";
+import radiance from "./assets/portfolio_rgbd_radiance.dds?url";
 
 export const load: LayoutLoad = () => {
   const pages: Page[] = [
