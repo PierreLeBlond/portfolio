@@ -9,8 +9,6 @@
   import { pointedPathname } from "$lib/stores/pathname";
   import { appEvent } from "$lib/state/appEvent";
   import { appState } from "$lib/state/appState";
-  import Home from "$lib/components/hud/Home.svelte";
-  import Navigation from "$lib/components/hud/Navigation.svelte";
   import Explore from "$lib/components/hud/Explore.svelte";
   import Loading from "$lib/components/hud/Loading.svelte";
 
@@ -36,14 +34,6 @@
 
 <div class="relative flex h-screen w-screen flex-col overflow-hidden">
   <Background />
-
-  {#if !isHome}
-    <Home></Home>
-  {/if}
-
-  {#if !isHome}
-    <Navigation></Navigation>
-  {/if}
 
   <Explore></Explore>
 

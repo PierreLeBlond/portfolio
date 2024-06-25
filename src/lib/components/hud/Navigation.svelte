@@ -1,8 +1,8 @@
 <script lang="ts">
   import { page } from "$app/stores";
+  import { descriptionOpenStatus } from "$lib/stores/descriptionOpenStatus";
   import { currentPage } from "$lib/stores/selectedPage";
-  import { ArrowBigLeft, ArrowBigRight } from "lucide-svelte";
-  import Button from "$lib/components/reusable/Button.svelte";
+  import { ArrowBigLeft, ArrowBigRight, Box, HelpCircle } from "lucide-svelte";
 
   $: pages = $page.data["pages"].filter(
     ({ isExternal }: { isExternal: boolean }) => !isExternal,
@@ -20,16 +20,52 @@
 </script>
 
 <nav
-  class="absolute bottom-16 left-8 z-40 flex flex-col items-center gap-y-4 large:left-16 large:gap-y-6"
+  class="z-40 grid w-full grid-cols-4 items-center rounded-t-xl bg-stone-200 horizontal:grid-cols-3"
 >
   {#if previousPage}
-    <Button href={previousPage.pathname}>
-      <ArrowBigLeft class="large:h-8 large:w-8"></ArrowBigLeft>
-    </Button>
+    <a
+      href={previousPage.pathname}
+      class="flex h-full w-full flex-col items-center justify-center p-2 hover:bg-stone-300 horizontal:w-24 horizontal:justify-self-start horizontal:rounded-xl xs:w-24 xs:rounded-tl-xl"
+    >
+      <ArrowBigLeft size={42} strokeWidth={3} absoluteStrokeWidth
+      ></ArrowBigLeft>
+      <p class="text-xs">
+        {previousPage.label}
+      </p>
+    </a>
   {/if}
+  <a
+    href="/"
+    class="flex h-full w-full flex-col items-center justify-center p-2 hover:bg-stone-300 horizontal:w-24 horizontal:justify-self-center horizontal:rounded-xl xs:w-24"
+  >
+    <Box class="rotate-180" size={42} strokeWidth={3} absoluteStrokeWidth></Box>
+    <p class="text-xs">home</p>
+  </a>
+  <button
+    type="button"
+    class="flex h-full w-full flex-col items-center justify-center p-2 hover:bg-stone-300 horizontal:hidden xs:w-24"
+    on:click={() => descriptionOpenStatus.set(!$descriptionOpenStatus)}
+  >
+    <HelpCircle
+      size={42}
+      strokeWidth={3}
+      absoluteStrokeWidth
+      class={`transition-transform
+      ${$descriptionOpenStatus ? "rotate-180" : ""}
+    `}
+    ></HelpCircle>
+    <p class="text-xs">info</p>
+  </button>
   {#if nextPage}
-    <Button href={nextPage.pathname}>
-      <ArrowBigRight class="large:h-8 large:w-8"></ArrowBigRight>
-    </Button>
+    <a
+      href={nextPage.pathname}
+      class="flex h-full w-full flex-col items-center justify-center p-2 hover:bg-stone-300 horizontal:w-24 horizontal:justify-self-end horizontal:rounded-xl xs:w-24 xs:rounded-tr-xl"
+    >
+      <ArrowBigRight size={42} strokeWidth={3} absoluteStrokeWidth
+      ></ArrowBigRight>
+      <p class="text-nowrap text-xs">
+        {nextPage.label}
+      </p>
+    </a>
   {/if}
 </nav>

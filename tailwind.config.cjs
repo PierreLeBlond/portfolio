@@ -11,6 +11,8 @@ module.exports = {
       screens: {
         large: { raw: "(min-aspect-ratio: 1/0.75) and (min-height: 700px)" },
         square: { raw: "(min-aspect-ratio: 1/1)" },
+        horizontal: { raw: "(min-aspect-ratio: 16/9)" },
+        xs: { raw: "(max-aspect-ratio: 16/9) and (min-width: 448px)" },
       },
       backgroundImage: {
         "gradient-radial":

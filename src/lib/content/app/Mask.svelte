@@ -1,7 +1,6 @@
 <script lang="ts">
   import { tweened } from "svelte/motion";
-  import { getContext, onDestroy, onMount } from "svelte";
-  import { THREE } from "@s0rt/3d-viewer";
+  import { getContext, onMount } from "svelte";
   import type { PublicViewerContext } from "$lib/components/Viewer/PublicViewerContext";
   import mask from "./mask.png";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
@@ -16,15 +15,15 @@
   export let width: number;
   export let height: number;
 
-  export let name: string;
+  export let loaded: boolean;
+  $: if (loaded) {
+    frame.set(frames - 1);
+  }
 
   const frame = tweened(0, { duration: 1500 });
 
   let imageData: string;
-
-  let material: THREE.MeshPhysicalMaterial;
-  let map: THREE.Texture | null;
-  let emissiveMap: THREE.Texture | null;
+  let maskData: string;
 
   let mounted = false;
   onMount(async () => {
@@ -35,35 +34,18 @@
     renderer.render(scene, camera);
     imageData = renderer.domElement.toDataURL();
 
-    const object = scene.getObjectByName(name) as THREE.Mesh;
-    if (!object) {
-      throw new Error("Object Wave does not exists");
-    }
-
-    material = object.material as THREE.MeshPhysicalMaterial;
-
-    map = material.map;
-    emissiveMap = material.emissiveMap;
-
     const maskImage = new Image();
     maskImage.src = mask;
     maskImage.onload = () => {
-      frame.set(frames - 1);
+      // Using base64 image to avoid blinking due to image preloading
+      const canvas: HTMLCanvasElement = document.createElement("canvas");
+      const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+      canvas.height = 2560;
+      canvas.width = 3072;
+      ctx.drawImage(maskImage, 0, 0);
+      maskData = canvas.toDataURL();
       mounted = true;
-
-      material.map = null;
-      material.emissiveMap = null;
-      material.emissive = new THREE.Color(0xffffff);
-      material.needsUpdate = true;
-
-      renderer.render(scene, camera);
     };
-  });
-
-  onDestroy(() => {
-    material.map = map;
-    material.emissiveMap = emissiveMap;
-    material.needsUpdate = true;
   });
 
   $: maskWidth = width * columns;
@@ -77,7 +59,7 @@
     <slot />
   {/if}
   <div
-    class="pointer-events-none absolute top-0 flex h-full w-full items-center justify-center large:w-[150%] large:-translate-x-[25%]"
+    class="pointer-events-none absolute left-0 top-0 flex h-full w-full items-center justify-center"
   >
     <RatioBox ratio={112.5 / 157.5}>
       <img
@@ -86,8 +68,8 @@
         class="h-full w-full"
         style:object-position={"center"}
         style:object-fit={"cover"}
-        style:-webkit-mask-image={`url(${mask})`}
-        style:mask-image={`url(${mask})`}
+        style:-webkit-mask-image={`url(${maskData})`}
+        style:mask-image={`url(${maskData})`}
         style:-webkit-mask-repeat={"no-repeat"}
         style:mask-repeat={"no-repeat"}
         style:-webkit-mask-size={`${maskWidth}px ${maskHeight}px`}
