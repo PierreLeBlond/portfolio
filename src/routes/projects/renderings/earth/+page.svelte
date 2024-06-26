@@ -5,7 +5,6 @@
   import { getContext, onDestroy, onMount } from "svelte";
   import { THREE } from "@s0rt/3d-viewer";
   import type App from "earth";
-  import DescriptionPanel from "$lib/components/hud/Hud.svelte";
   import { appState } from "$lib/state/appState";
   import { fade } from "svelte/transition";
   import Project from "$lib/components/Project.svelte";
@@ -80,8 +79,7 @@
       color: 0xfb923c,
     });
 
-    earth.addEventListener("country", (event: THREE.Event) => {
-      const { message } = event;
+    earth.getEventDispatcher().addEventListener("country", ({ message }) => {
       country = message ? message.toLowerCase() : null;
     });
 

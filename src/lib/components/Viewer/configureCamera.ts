@@ -35,9 +35,7 @@ export const configureCamera = (
   let minDistanceEnd = 0;
   let time = 0;
 
-  const onAnimate = (event: THREE.Event) => {
-    const { delta } = event;
-
+  const onAnimate = ({ delta }: { delta: number }) => {
     if (time == 1.0) {
       endCameraAnimation();
       return;
@@ -51,7 +49,7 @@ export const configureCamera = (
   };
 
   const endCameraAnimation = () => {
-    scene.removeEventListener("animate", onAnimate);
+    scene.getEventDispatcher().removeEventListener("animate", onAnimate);
 
     controls.minDistance = minDistanceEnd;
 
@@ -81,8 +79,8 @@ export const configureCamera = (
 
     minDistanceEnd = payload.controlMinDistance;
 
-    if (!scene.hasEventListener("animate", onAnimate)) {
-      scene.addEventListener("animate", onAnimate);
+    if (!scene.getEventDispatcher().hasEventListener("animate", onAnimate)) {
+      scene.getEventDispatcher().addEventListener("animate", onAnimate);
     }
   });
 };

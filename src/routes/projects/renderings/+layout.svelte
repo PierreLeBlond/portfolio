@@ -3,11 +3,8 @@
   import { setContext } from "svelte";
   import type { LayoutData } from "./$types";
   import { writable, type Writable } from "svelte/store";
-  import { page } from "$app/stores";
-  import { IblSpace, PublicViewer, THREE } from "@s0rt/3d-viewer";
+  import { IblSpace, PublicViewer } from "@s0rt/3d-viewer";
   import { fade } from "svelte/transition";
-
-  $: path = $page.url.pathname;
 
   export let data: LayoutData;
 
@@ -32,16 +29,19 @@
   setContext("renderingsPublicViewerContext", { getPublicViewer });
 
   let progression = 0;
-  $: loading = progression != 1;
-  const updateProgression = (
-    event: THREE.Event & { type: "taskCompleted" } & { target: PublicViewer },
-  ) => {
-    progression = event["progression"];
+  $: loading = progression !== 1;
+  const updateProgression = (event: { progression?: number }) => {
+    if (event.progression === undefined) {
+      return;
+    }
+    progression = event.progression;
   };
 
   onMount(async () => {
     const publicViewer = new PublicViewer("objectViewer");
-    publicViewer.addEventListener("taskCompleted", updateProgression);
+    publicViewer
+      .getEventDispatcher()
+      .addEventListener("taskCompleted", updateProgression);
     publicViewer.addTasks({
       parallelTasks: [
         {
@@ -60,7 +60,9 @@
 
   onDestroy(async () => {
     const publicViewer = await getPublicViewer();
-    publicViewer.removeEventListener("taskCompleted", updateProgression);
+    publicViewer
+      .getEventDispatcher()
+      .removeEventListener("taskCompleted", updateProgression);
     publicViewer.dispose();
   });
 </script>

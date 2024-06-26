@@ -37,8 +37,8 @@
   ];
 
   const mixer = new THREE.AnimationMixer(object);
-  scene.addEventListener("animate", (event) => {
-    mixer.update(event["delta"]);
+  scene.getEventDispatcher().addEventListener("animate", ({ delta }) => {
+    mixer.update(delta);
   });
 
   const actionsMap = new Map<ActionName, THREE.AnimationAction | null>(
