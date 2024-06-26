@@ -31,7 +31,11 @@
     await earth.start();
 
     const { camera, controls } = renderingsPublicViewer.viewer;
-    camera.fov = 50;
+    const { viewer } = mainPublicViewer;
+    const roomCamera = viewer.camera;
+    const roomControls = viewer.controls;
+
+    camera.fov = roomCamera.fov;
     camera.updateProjectionMatrix();
 
     const earthScene = renderingsPublicViewer.viewer.getScene("earth-main");
@@ -48,10 +52,6 @@
     const scale = new THREE.Vector3(0.106, 0.106, 0.106);
     earthScene.scale.copy(scale);
     detectorScene.scale.copy(scale);
-
-    const { viewer } = mainPublicViewer;
-    const roomCamera = viewer.camera;
-    const roomControls = viewer.controls;
 
     const roomPosition = roomCamera.position.clone();
     const offset = roomControls.target.clone();
