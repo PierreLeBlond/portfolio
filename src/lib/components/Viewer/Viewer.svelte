@@ -39,6 +39,7 @@
 
   onMount(async () => {
     const viewer = await configureViewer();
+    await viewer.launch();
     publicViewer.set(viewer);
 
     viewer.pause();

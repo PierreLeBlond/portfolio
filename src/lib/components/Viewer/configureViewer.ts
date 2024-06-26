@@ -8,8 +8,6 @@ export const configureViewer = async () => {
 
   const publicViewer = new VIEWER.PublicViewer("viewer");
 
-  await publicViewer.launch();
-
   const scene = publicViewer.viewer.createScene("room");
   publicViewer.viewer.setScene(scene);
   await scene.loadAsset(room, "/public/");
