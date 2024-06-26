@@ -110,4 +110,13 @@
       {/if}
     {/if}
   </div>
+  <div slot="excerpt">
+    {#if country}
+      <p in:fade class="overflow-hidden text-ellipsis text-nowrap">
+        You recognize it as <b>{country}</b>.
+      </p>
+    {:else}
+      <p in:fade>You feel the urge to hover a country.</p>
+    {/if}
+  </div>
 </Project>

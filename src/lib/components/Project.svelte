@@ -15,6 +15,7 @@
   >
     <Hud {title} {githubLink} {link}>
       <slot name="hud" />
+      <slot name="excerpt" slot="excerpt" />
     </Hud>
   </div>
 </div>

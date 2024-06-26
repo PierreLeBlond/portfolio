@@ -9,8 +9,8 @@ export const load: PageLoad = () => {
   return {
     urls: [bboy, lalpine, lecorp, logophtalmo],
     texts: [
-      "a friend's breakdance and earth lover association",
-      "a shorted lived brass band we named L'A(l)pine",
+      "a breakdance association",
+      "a brass band",
       "a good friend evil corporation",
       "an ophtalmology center",
     ],

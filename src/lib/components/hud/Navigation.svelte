@@ -50,9 +50,7 @@
       size={42}
       strokeWidth={3}
       absoluteStrokeWidth
-      class={`transition-transform
-      ${$descriptionOpenStatus ? "rotate-180" : ""}
-    `}
+      class={`transition-transform ${$descriptionOpenStatus ? "rotate-180" : ""}`}
     ></HelpCircle>
     <p class="text-xs">info</p>
   </button>

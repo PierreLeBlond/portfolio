@@ -44,4 +44,9 @@
         >{/key}.
     </p>
   </div>
+  <div slot="excerpt">
+    <p class="flex justify-center">
+      {#key text}<b in:fade>{text}</b>{/key}
+    </p>
+  </div>
 </Project>

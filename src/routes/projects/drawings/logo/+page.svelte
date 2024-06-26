@@ -31,11 +31,20 @@
       Without doubt with open source software such as Inkscape, Gimp or Krita.
     </p>
     <p>
-      If this one had a name, it would be {#key text}
+      This one seems to represent {#key text}
         <b in:fade>
-          "{text}"
+          {text}
         </b>
       {/key}.
+    </p>
+  </div>
+  <div slot="excerpt">
+    <p class="flex justify-center">
+      {#key text}
+        <b in:fade>
+          {text}
+        </b>
+      {/key}
     </p>
   </div>
 </Project>
