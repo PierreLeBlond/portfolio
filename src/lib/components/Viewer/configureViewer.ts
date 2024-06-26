@@ -1,4 +1,5 @@
 import * as VIEWER from "@s0rt/3d-viewer";
+import { VERTICAL_RATIO_LIMIT } from "../../../constants";
 import room from "./assets/room.gltf?url";
 import { configureCamera } from "./configureCamera";
 
@@ -13,6 +14,7 @@ export const configureViewer = async () => {
   await scene.loadAsset(room, "/public/");
 
   publicViewer.viewer.fov = 50;
+  publicViewer.viewer.verticalRatio = VERTICAL_RATIO_LIMIT;
   configureCamera(
     scene,
     publicViewer.viewer.camera,

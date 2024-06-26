@@ -3,7 +3,6 @@
   import { getContext, onMount } from "svelte";
   import type { PublicViewerContext } from "$lib/components/Viewer/PublicViewerContext";
   import mask from "./mask.png";
-  import RatioBox from "$lib/components/reusable/RatioBox.svelte";
 
   const mainPublicViewerContext = getContext<PublicViewerContext>(
     "mainPublicViewerContext",
@@ -61,22 +60,20 @@
   <div
     class="pointer-events-none absolute left-0 top-0 flex h-full w-full items-center justify-center"
   >
-    <RatioBox ratio={112.5 / 157.5}>
-      <img
-        src={imageData}
-        alt={"Animated mask"}
-        class="h-full w-full"
-        style:object-position={"center"}
-        style:object-fit={"cover"}
-        style:-webkit-mask-image={`url(${maskData})`}
-        style:mask-image={`url(${maskData})`}
-        style:-webkit-mask-repeat={"no-repeat"}
-        style:mask-repeat={"no-repeat"}
-        style:-webkit-mask-size={`${maskWidth}px ${maskHeight}px`}
-        style:mask-size={`${maskWidth}px ${maskHeight}px`}
-        style:-webkit-mask-position={`left ${maskX}px top ${maskY}px`}
-        style:mask-position={`left ${maskX}px top ${maskY}px`}
-      />
-    </RatioBox>
+    <img
+      src={imageData}
+      alt={"Animated mask"}
+      class="h-full w-full"
+      style:object-position={"center"}
+      style:object-fit={"cover"}
+      style:-webkit-mask-image={`url(${maskData})`}
+      style:mask-image={`url(${maskData})`}
+      style:-webkit-mask-repeat={"no-repeat"}
+      style:mask-repeat={"no-repeat"}
+      style:-webkit-mask-size={`${maskWidth}px ${maskHeight}px`}
+      style:mask-size={`${maskWidth}px ${maskHeight}px`}
+      style:-webkit-mask-position={`left ${maskX}px top ${maskY}px`}
+      style:mask-position={`left ${maskX}px top ${maskY}px`}
+    />
   </div>
 </div>

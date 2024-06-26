@@ -7,7 +7,7 @@
 </script>
 
 <div class="grid h-full w-full horizontal:grid-cols-5">
-  <div class="h-full horizontal:col-span-3">
+  <div class="h-full overflow-hidden horizontal:col-span-3">
     <slot name="project" />
   </div>
   <div

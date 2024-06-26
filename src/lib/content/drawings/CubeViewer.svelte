@@ -90,12 +90,5 @@
   on:pointerleave|preventDefault={release}
 >
   <Cube {urls} {index} {pageIndex} {direction} {yawOffset} bind:faceSize />
-
-  <!--CubeText
-    {texts}
-    {index}
-    {direction}
-  /-->
-
   <CubeNavigation {length} {index} on:choose={handleChooseEvent} />
 </div>

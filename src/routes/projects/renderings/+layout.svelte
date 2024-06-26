@@ -5,6 +5,7 @@
   import { writable, type Writable } from "svelte/store";
   import { IblSpace, PublicViewer } from "@s0rt/3d-viewer";
   import { fade } from "svelte/transition";
+  import { VERTICAL_RATIO_LIMIT } from "../../../constants";
 
   export let data: LayoutData;
 
@@ -53,6 +54,7 @@
       ],
     });
     publicViewer.viewer.fov = 50;
+    publicViewer.viewer.verticalRatio = VERTICAL_RATIO_LIMIT;
     await publicViewer.launch();
 
     publicViewerWritable.set(publicViewer);

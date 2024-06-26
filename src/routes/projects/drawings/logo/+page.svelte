@@ -1,9 +1,10 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import Project from "$lib/components/Project.svelte";
-  import DescriptionPanel from "$lib/components/hud/Hud.svelte";
+  import RatioBox from "$lib/components/reusable/RatioBox.svelte";
   import CubeViewer from "$lib/content/drawings/CubeViewer.svelte";
   import { fade } from "svelte/transition";
+  import { VERTICAL_RATIO_LIMIT } from "../../../../constants";
 
   $: urls = $page.data["urls"] || [];
   $: texts = $page.data["texts"] || [];
@@ -13,15 +14,12 @@
 </script>
 
 <Project title="Another cube">
-  <div
-    class="relative top-0 flex h-[90%] items-center justify-center"
-    slot="project"
-  >
-    <div
-      class="absolute flex aspect-square w-[90%] items-center justify-center square:aspect-auto square:h-full square:w-full"
-    >
-      <CubeViewer {urls} {texts} {pageIndex} bind:text />
-    </div>
+  <div class="relative h-full w-full" slot="project">
+    <RatioBox ratio={VERTICAL_RATIO_LIMIT}>
+      <div class="h-[90%]">
+        <CubeViewer {urls} {texts} {pageIndex} bind:text />
+      </div>
+    </RatioBox>
   </div>
 
   <div class="flex w-full flex-col" slot="hud">

@@ -1,0 +1,1 @@
+export const VERTICAL_RATIO_LIMIT = 112.5 / 157.5;

@@ -5,27 +5,23 @@
   export let boxWidth: number = 0;
   export let boxHeight: number = 0;
 
-  let wrapperWidth: number;
-  let wrapperHeight: number;
-  $: wrapperRatio = wrapperWidth / wrapperHeight;
+  let clientWidth: number;
+  let clientHeight: number;
+  $: clientRatio = clientWidth / clientHeight;
 
   // Should the content fill the full height or the full width ?
-  $: vertical = wrapperRatio < ratio;
+  $: vertical = clientRatio < ratio;
 
-  $: boxWidth = vertical ? wrapperWidth : wrapperHeight * ratio;
-  $: boxHeight = vertical ? wrapperWidth / ratio : wrapperHeight;
+  $: boxWidth = vertical ? clientWidth : clientHeight * ratio;
+  $: boxHeight = vertical ? clientWidth / ratio : clientHeight;
 </script>
 
 <div
-  bind:clientWidth={wrapperWidth}
-  bind:clientHeight={wrapperHeight}
+  bind:clientWidth
+  bind:clientHeight
   class="relative flex h-full w-full items-center justify-center"
 >
-  <div
-    style:width={`${boxWidth}px`}
-    style:height={`${boxHeight}px`}
-    class="relative"
-  >
+  <div style:width={`${boxWidth}px`} style:height={`${boxHeight}px`}>
     <slot />
   </div>
 </div>

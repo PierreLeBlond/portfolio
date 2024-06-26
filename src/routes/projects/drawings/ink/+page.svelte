@@ -5,6 +5,8 @@
   import { onDestroy } from "svelte";
   import { fade } from "svelte/transition";
   import Project from "$lib/components/Project.svelte";
+  import RatioBox from "$lib/components/reusable/RatioBox.svelte";
+  import { VERTICAL_RATIO_LIMIT } from "../../../../constants";
 
   $: urls = $page.data["urls"] || [];
   $: texts = $page.data["texts"] || [];
@@ -19,15 +21,12 @@
 </script>
 
 <Project title="A cube">
-  <div
-    class="relative top-0 flex h-[90%] items-center justify-center"
-    slot="project"
-  >
-    <div
-      class="absolute flex aspect-square w-[90%] items-center justify-center square:aspect-auto square:h-full square:w-full"
-    >
-      <CubeViewer {urls} {texts} {pageIndex} bind:text />
-    </div>
+  <div class="relative h-full w-full" slot="project">
+    <RatioBox ratio={VERTICAL_RATIO_LIMIT}>
+      <div class="h-[90%]">
+        <CubeViewer {urls} {texts} {pageIndex} bind:text />
+      </div>
+    </RatioBox>
   </div>
 
   <div class="flex w-full flex-col" slot="hud">
