@@ -15,8 +15,8 @@
 
 {#if loading}
   <div
-    class="absolute bottom-16 right-8 z-40 flex animate-spin items-center justify-center duration-1000 sm:right-16"
+    class="fixed bottom-1/2 left-1/2 z-50 flex -translate-x-1/2 translate-y-1/2 text-stone-200"
   >
-    <Cog size={32}></Cog>
+    <Cog size={64} class="animate-spin duration-1000"></Cog>
   </div>
 {/if}

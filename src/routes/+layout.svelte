@@ -4,7 +4,6 @@
   import { page } from "$app/stores";
   import Viewer from "$lib/components/Viewer/Viewer.svelte";
   import { afterNavigate, beforeNavigate } from "$app/navigation";
-  import InitialLoadingScreen from "$lib/components/LoadingScreen.svelte";
   import AppStateMachine from "$lib/state/AppStateMachine.svelte";
   import { pointedPathname } from "$lib/stores/pathname";
   import { appEvent } from "$lib/state/appEvent";
@@ -40,9 +39,8 @@
   <Loading></Loading>
 
   {#if displayInitialLoadingScreen}
-    <div class="absolute z-50 h-full w-full">
+    <div class="absolute z-40 h-full w-full">
       <Background></Background>
-      <InitialLoadingScreen />
     </div>
   {/if}
   <main class="relative grow text-gray-800">
