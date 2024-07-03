@@ -4,12 +4,24 @@
   import Project from "$lib/components/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
   import { VERTICAL_RATIO_LIMIT } from "../../../../constants";
+  import { appState } from "$lib/state/appState";
+  import { appEvent } from "$lib/state/appEvent";
+  import { onMount } from "svelte";
 
   let boxWidth: number;
   let boxHeight: number;
 
   // Avoid revealing the iframe before it's fully loaded
-  let loaded = false;
+  let unmask = false;
+
+  onMount(async () => {
+    appEvent.set("load");
+  });
+
+  const handleLoaded = () => {
+    appEvent.set("loaded");
+    unmask = true;
+  };
 </script>
 
 <Project
@@ -30,11 +42,11 @@
         frames={30}
         width={boxWidth}
         height={boxHeight}
-        {loaded}
+        loaded={unmask}
       >
         <div class="h-full w-full scale-90">
           <iframe
-            on:load={() => (loaded = true)}
+            on:load={handleLoaded}
             title="ustom"
             src="https://ustom.pierrelespingal.com/?encryptedWord=158ae1b0d188&iv=a62f76eb217e47f158688e579c00209b"
             class="h-full w-full bg-stone-100"
@@ -45,8 +57,12 @@
   </div>
 
   <div class="flex flex-col" slot="hud">
-    <p>It's a clone of wordle.</p>
-    <p>It has a leaderboard, as well as a word generator.</p>
-    <p>It is also made with <b>svelte</b>, neat.</p>
+    {#if $appState === "idle"}
+      <p>It's a clone of wordle.</p>
+      <p>It has a leaderboard, as well as a word generator.</p>
+      <p>It is also made with <b>svelte</b>, neat.</p>
+    {:else}
+      <p>Thinking of a word...</p>
+    {/if}
   </div>
 </Project>

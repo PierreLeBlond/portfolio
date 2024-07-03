@@ -4,12 +4,24 @@
   import Project from "$lib/components/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
   import { VERTICAL_RATIO_LIMIT } from "../../../../constants";
+  import { onMount } from "svelte";
+  import { appEvent } from "$lib/state/appEvent";
+  import { appState } from "$lib/state/appState";
 
   let boxWidth: number;
   let boxHeight: number;
 
   // Avoid revealing the iframe before it's fully loaded
-  let loaded = false;
+  let unmask = false;
+
+  onMount(async () => {
+    appEvent.set("load");
+  });
+
+  const handleLoaded = () => {
+    appEvent.set("loaded");
+    unmask = true;
+  };
 </script>
 
 <Project
@@ -30,11 +42,11 @@
         frames={30}
         width={boxWidth}
         height={boxHeight}
-        {loaded}
+        loaded={unmask}
       >
         <div class="h-full w-full scale-90">
           <iframe
-            on:load={() => (loaded = true)}
+            on:load={handleLoaded}
             title="quests"
             src="https://quests.pierrelespingal.com"
             class="h-full w-full bg-stone-100"
@@ -45,7 +57,7 @@
   </div>
 
   <div class="flex flex-col" slot="hud">
-    {#if loaded}
+    {#if $appState === "idle"}
       <p>It's a todo app. Nothing fancy or original.</p>
       <p>
         Perheaps seeing todo's as quests helps in finding the determination to
@@ -58,6 +70,8 @@
       <p>
         Under the hood, there's some <b>react</b> involved.
       </p>
+    {:else}
+      <p>Going on an adventure...</p>
     {/if}
   </div>
 </Project>

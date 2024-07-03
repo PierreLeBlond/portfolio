@@ -4,12 +4,24 @@
   import Project from "$lib/components/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
   import { VERTICAL_RATIO_LIMIT } from "../../../../constants";
+  import { appState } from "$lib/state/appState";
+  import { appEvent } from "$lib/state/appEvent";
+  import { onMount } from "svelte";
 
   let boxWidth: number;
   let boxHeight: number;
 
   // Avoid revealing the iframe before it's fully loaded
-  let loaded = false;
+  let unmask = false;
+
+  onMount(async () => {
+    appEvent.set("load");
+  });
+
+  const handleLoaded = () => {
+    appEvent.set("loaded");
+    unmask = true;
+  };
 </script>
 
 <Project
@@ -30,11 +42,11 @@
         frames={30}
         width={boxWidth}
         height={boxHeight}
-        {loaded}
+        loaded={unmask}
       >
         <div class="h-full w-full scale-90">
           <iframe
-            on:load={() => (loaded = true)}
+            on:load={handleLoaded}
             title="recipes"
             src="https://recipes.pierrelespingal.com"
             class="h-full w-full bg-stone-100"
@@ -45,9 +57,11 @@
   </div>
 
   <div class="flex flex-col" slot="hud">
-    {#if loaded}
+    {#if $appState === "idle"}
       <p>Some recipes.</p>
       <p>In french, obviously.</p>
+    {:else}
+      <p>Cooking...</p>
     {/if}
   </div>
 </Project>
