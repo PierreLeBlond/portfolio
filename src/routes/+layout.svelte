@@ -31,7 +31,7 @@
   $: isHome = $page.data["isHome"];
 </script>
 
-<div class="relative flex h-screen w-screen flex-col overflow-hidden">
+<div class="relative flex h-dvh w-screen flex-col overflow-hidden">
   <Background />
 
   <Explore></Explore>
