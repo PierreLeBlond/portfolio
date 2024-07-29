@@ -12,7 +12,7 @@
       href={$touchedPage.pathname}
       class="flex h-24 w-full items-center justify-center bg-stone-200 font-bold"
     >
-      Inspect
+      Explore
     </a>
   </div>
 {/if}
