@@ -34,9 +34,14 @@
 
 {#if $descriptionOpenStatus}
   <div
-    class="fixed right-0 top-0 flex h-screen w-full justify-center bg-stone-700/40 text-base horizontal:hidden"
+    class="fixed right-0 top-0 flex h-screen w-full justify-center text-base horizontal:hidden"
     transition:fade|global={{ duration: 400 }}
   >
+    <button
+      class="absolute top-0 h-full w-full bg-stone-700/40"
+      on:click={() => descriptionOpenStatus.set(false)}
+    >
+    </button>
     <div
       class="absolute bottom-0 w-full bg-stone-200 px-8 pb-48 shadow-lg xs:w-[384px] xs:rounded-t-xl"
       transition:fly|global={{ duration: 400, y: 400 }}
