@@ -148,7 +148,7 @@
     >
       {#each rotations as rotation, i}
         {@const urlIndice = urlIndices[i]}
-        {@const url = urlIndice != undefined ? urls[urlIndice] ?? "" : ""}
+        {@const url = urlIndice != undefined ? (urls[urlIndice] ?? "") : ""}
         <Face {url} yaw={rotation} {translation} {faceSize} />
       {/each}
       <Face url={topFaceUrl} pitch={-90} {translation} {faceSize} />

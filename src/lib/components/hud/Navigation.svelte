@@ -4,9 +4,7 @@
   import { currentPage } from "$lib/stores/selectedPage";
   import { ArrowBigLeft, ArrowBigRight, Box, HelpCircle } from "lucide-svelte";
 
-  $: pages = $page.data["pages"].filter(
-    ({ isExternal }: { isExternal: boolean }) => !isExternal,
-  );
+  $: pages = $page.data["pages"];
 
   $: pageIndex = $currentPage ? pages.indexOf($currentPage) : -1;
 

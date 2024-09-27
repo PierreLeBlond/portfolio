@@ -1,3 +1,6 @@
+<script lang="ts">
+</script>
+
 <div class="absolute -z-20 h-full w-full">
   <div class="relative h-full w-full bg-stone-900">
     <div

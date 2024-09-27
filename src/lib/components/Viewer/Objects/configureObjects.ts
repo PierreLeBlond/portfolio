@@ -1,4 +1,4 @@
-import type { Scene } from "@s0rt/3d-viewer";
+import type { Scene, THREE } from "@s0rt/3d-viewer";
 import { tweened, type Tweened } from "svelte/motion";
 import { disolveObject } from "./disolve/disolveObject";
 
@@ -7,13 +7,12 @@ export const configureObjects = (
   pages: {
     objectName: string;
     pathname: string;
-    isExternal: boolean;
     disolve: boolean;
   }[],
 ): Map<string, THREE.Object3D> => {
   const map = new Map<string, THREE.Object3D>();
 
-  pages.forEach(({ objectName, pathname, isExternal, disolve }) => {
+  pages.forEach(({ objectName, pathname, disolve }) => {
     const object = scene.getObjectByName(objectName);
 
     if (!object) {
@@ -25,7 +24,6 @@ export const configureObjects = (
     }
 
     object.userData["pathname"] = pathname;
-    object.userData["isExternal"] = isExternal;
 
     if (disolve) {
       const disolveRatio: Tweened<number> = tweened(1, { duration: 500 });

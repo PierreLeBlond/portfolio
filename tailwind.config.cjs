@@ -1,5 +1,3 @@
-const colors = require("tailwindcss/colors");
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{svelte,ts}", "./node_modules/@s0rt/**/*.{svelte,js}"],
@@ -18,11 +16,6 @@ module.exports = {
         "gradient-radial":
           "radial-gradient(circle at top left, var(--tw-gradient-stops))",
       },
-    },
-    colors: {
-      ...colors,
-      primary: colors.yellow,
-      secondary: colors.sky,
     },
   },
 };

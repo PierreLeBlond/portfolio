@@ -6,7 +6,6 @@ export type Page = {
   pathname: string;
   label: string;
   description?: string;
-  isExternal: boolean;
   disolve: boolean;
 };
 

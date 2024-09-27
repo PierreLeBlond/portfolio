@@ -1,3 +1,4 @@
+import type { THREE } from "@s0rt/3d-viewer";
 import { getDisolveData } from "./getDisolveData";
 
 const RATIO_DELAY = 0.3;

@@ -74,11 +74,6 @@
       (page: Page) => page.objectName === object?.name,
     );
 
-    if (selectedPage.isExternal) {
-      window.open(selectedPage.pathname);
-      return;
-    }
-
     goto(`${base}${selectedPage.pathname}`);
   };
 </script>
