@@ -24,14 +24,16 @@
   ]);
 
   const setCamera = () => {
-    const { position, target } = $page.data["camera"];
+    const { position, target, yOffset } = $page.data["camera"];
     const controlMinDistance = $page.data["controlMinDistance"];
     cameraTarget.set({
       position: position,
       target: target,
+      yOffset: yOffset || 0,
       controlMinDistance: controlMinDistance,
     });
   };
+  setCamera();
 
   const playViewer = () => {
     if (!$publicViewer) {

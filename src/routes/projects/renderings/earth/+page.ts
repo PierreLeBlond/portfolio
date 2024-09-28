@@ -6,6 +6,7 @@ export const load: PageLoad = () => {
     camera: {
       position: new THREE.Vector3(-1.065, 2.07, -0.305),
       target: new THREE.Vector3(-1.24, 2.02, -0.64),
+      yOffset: -0.15,
     },
   };
 };

@@ -2,10 +2,12 @@
   import { onMount, onDestroy } from "svelte";
   import { setContext } from "svelte";
   import type { LayoutData } from "./$types";
-  import { writable, type Writable } from "svelte/store";
+  import { get, writable, type Writable } from "svelte/store";
   import { IblSpace, PublicViewer } from "@s0rt/3d-viewer";
   import { fade } from "svelte/transition";
   import { VERTICAL_RATIO_LIMIT } from "../../../constants";
+  import { cameraTarget } from "$lib/stores/cameraTarget";
+  import { configureViewOffset } from "$lib/components/Viewer/configureScreenOffset";
 
   export let data: LayoutData;
 
@@ -55,6 +57,7 @@
     });
     publicViewer.viewer.fov = 50;
     publicViewer.viewer.verticalRatio = VERTICAL_RATIO_LIMIT;
+    configureViewOffset(publicViewer);
     await publicViewer.launch();
 
     publicViewerWritable.set(publicViewer);
@@ -69,10 +72,7 @@
   });
 </script>
 
-<div
-  class="absolute h-full w-full horizontal:pr-[40%]"
-  out:fade|global={{ duration: 0 }}
->
+<div class="absolute h-full w-full" out:fade|global={{ duration: 0 }}>
   <div
     style:visibility={loading ? "hidden" : "visible"}
     class="relative flex h-full w-full items-center justify-center"

@@ -1,6 +1,6 @@
 import { appEvent } from "$lib/state/appEvent";
 import { cameraTarget } from "$lib/stores/cameraTarget";
-import { THREE, type Scene } from "@s0rt/3d-viewer";
+import { OffsetCamera, THREE, type Scene } from "@s0rt/3d-viewer";
 import { cubicInOut } from "svelte/easing";
 import type { OrbitControls } from "three/examples/jsm/controls/OrbitControls.d.ts";
 
@@ -8,12 +8,12 @@ const DURATION = 1500;
 
 export const configureCamera = (
   scene: Scene,
-  camera: THREE.PerspectiveCamera,
+  camera: OffsetCamera,
   controls: OrbitControls,
 ) => {
-  camera.position.set(3.75, 3.75, 4.5);
+  camera.position.set(4.27, 4.16, 5.12);
   camera.near = 0.01;
-  camera.far = 10;
+  camera.far = 15;
   camera.fov = 50;
   camera.updateProjectionMatrix();
 
@@ -32,6 +32,8 @@ export const configureCamera = (
   let positionEnd = new THREE.Vector3();
   let targetStart = new THREE.Vector3();
   let targetEnd = new THREE.Vector3();
+  let yOffsetStart = 0;
+  let yOffsetEnd = 0;
   let minDistanceEnd = 0;
   let time = 0;
 
@@ -46,6 +48,9 @@ export const configureCamera = (
     camera.position.lerpVectors(positionStart, positionEnd, easedTime);
     controls.target.lerpVectors(targetStart, targetEnd, easedTime);
     controls.update();
+
+    camera.yOffset = yOffsetStart + (yOffsetEnd - yOffsetStart) * easedTime;
+    camera.updateProjectionMatrix();
   };
 
   const endCameraAnimation = () => {
@@ -73,9 +78,11 @@ export const configureCamera = (
 
     positionStart.copy(camera.position);
     targetStart.copy(controls.target);
+    yOffsetStart = camera.yOffset;
 
     positionEnd.copy(payload.position);
     targetEnd.copy(payload.target);
+    yOffsetEnd = payload.yOffset;
 
     minDistanceEnd = payload.controlMinDistance;
 

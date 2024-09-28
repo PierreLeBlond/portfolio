@@ -3,21 +3,23 @@
 </script>
 
 <section
-  class="text-md pointer-events-none absolute bottom-0 right-0 flex h-screen w-full flex-col justify-end gap-y-4 p-6 text-stone-100 md:text-xl horizontal:h-full horizontal:w-1/3 horizontal:-translate-y-[30%] horizontal:p-16"
+  class="pointer-events-none absolute bottom-0 right-0 flex h-screen w-full flex-col justify-between gap-y-4 p-6 text-stone-100 horizontal:h-full horizontal:w-1/2 horizontal:flex-col horizontal:items-start horizontal:justify-center horizontal:p-16"
   transition:fly|global={{ x: 500 }}
 >
   <div class="flex flex-col gap-y-4">
     <p>
-      <span class="font-bold">Pierre Lespingal</span>, <br />
-      <span class="font-bold"> 3D & Web developer</span>
+      <span class="text-5xl font-bold">Pierre Lespingal</span> <br />
+      <span class="text-4xl font-bold text-stone-400"> 3D & Web developer</span>
     </p>
   </div>
-  <p class="pointer-events-none justify-self-end">
+  <p
+    class="pointer-events-none justify-self-end text-start text-xl horizontal:text-start xs:text-center"
+  >
     Looking for job opportunities!<br />
     Feel free to contact me at
     <a
       href="mailto:pierre.lespingal@gmail.com"
-      class="pointer-events-auto text-blue-500"
+      class="pointer-events-auto text-blue-400"
     >
       pierre.lespingal@gmail.com
     </a>

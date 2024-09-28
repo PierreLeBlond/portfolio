@@ -8,9 +8,6 @@
   import { appEvent } from "$lib/state/appEvent";
   import { onMount } from "svelte";
 
-  let boxWidth: number;
-  let boxHeight: number;
-
   // Avoid revealing the iframe before it's fully loaded
   let unmask = false;
 
@@ -36,24 +33,18 @@
     }}
     slot="project"
   >
-    <RatioBox ratio={VERTICAL_RATIO_LIMIT} bind:boxWidth bind:boxHeight>
-      <Mask
-        columns={6}
-        frames={30}
-        width={boxWidth}
-        height={boxHeight}
-        loaded={unmask}
-      >
+    <Mask columns={6} frames={30} loaded={unmask}>
+      <RatioBox ratio={VERTICAL_RATIO_LIMIT}>
         <div class="h-full w-full scale-90">
           <iframe
             on:load={handleLoaded}
             title="ustom"
             src="https://ustom.pierrelespingal.com/?encryptedWord=158ae1b0d188&iv=a62f76eb217e47f158688e579c00209b"
-            class="h-full w-full bg-stone-100"
+            class="h-full w-full rounded-lg bg-stone-100"
           />
         </div>
-      </Mask>
-    </RatioBox>
+      </RatioBox>
+    </Mask>
   </div>
 
   <div class="flex flex-col" slot="hud">

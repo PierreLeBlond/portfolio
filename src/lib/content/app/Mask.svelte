@@ -11,8 +11,8 @@
   export let columns: number;
   export let frames: number;
 
-  export let width: number;
-  export let height: number;
+  let width: number;
+  let height: number;
 
   export let loaded: boolean;
   $: if (loaded) {
@@ -53,7 +53,11 @@
   $: maskY = -Math.trunc(Math.trunc($frame) / columns) * height;
 </script>
 
-<div class="relative h-full w-full">
+<div
+  class="relative h-full w-full"
+  bind:clientWidth={width}
+  bind:clientHeight={height}
+>
   {#if mounted}
     <slot />
   {/if}
@@ -64,7 +68,7 @@
       src={imageData}
       alt={"Animated mask"}
       class="h-full w-full"
-      style:object-position={"center"}
+      style:object-position={"left"}
       style:object-fit={"cover"}
       style:-webkit-mask-image={`url(${maskData})`}
       style:mask-image={`url(${maskData})`}
