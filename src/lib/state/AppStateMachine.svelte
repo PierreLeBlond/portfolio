@@ -24,6 +24,9 @@
   ]);
 
   const setCamera = () => {
+    if (!$page.data["camera"]) {
+      return;
+    }
     const { position, target, yOffset } = $page.data["camera"];
     const controlMinDistance = $page.data["controlMinDistance"];
     cameraTarget.set({
