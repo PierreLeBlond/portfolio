@@ -3,7 +3,7 @@
   import Mask from "$lib/content/app/Mask.svelte";
   import Project from "$lib/components/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
-  import { VERTICAL_RATIO_LIMIT } from "../../../../constants";
+  import { QUESTS_LABEL, VERTICAL_RATIO_LIMIT } from "../../../../constants";
   import { onMount } from "svelte";
   import { appEvent } from "$lib/state/appEvent";
   import { appState } from "$lib/state/appState";
@@ -22,7 +22,7 @@
 </script>
 
 <Project
-  title="Quests"
+  title={QUESTS_LABEL}
   githubLink="https://github.com/PierreLeBlond/quests"
   link="https://quests.pierrelespingal.com"
 >

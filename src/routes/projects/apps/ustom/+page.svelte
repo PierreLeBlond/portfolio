@@ -3,7 +3,7 @@
   import Mask from "$lib/content/app/Mask.svelte";
   import Project from "$lib/components/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
-  import { VERTICAL_RATIO_LIMIT } from "../../../../constants";
+  import { USTOM_LABEL, VERTICAL_RATIO_LIMIT } from "../../../../constants";
   import { appState } from "$lib/state/appState";
   import { appEvent } from "$lib/state/appEvent";
   import { onMount } from "svelte";
@@ -22,7 +22,7 @@
 </script>
 
 <Project
-  title="Ustom"
+  title={USTOM_LABEL}
   githubLink="https://github.com/PierreLeBlond/ustom"
   link="https://ustom.pierrelespingal.com/?encryptedWord=158ae1b0d188&iv=a62f76eb217e47f158688e579c00209b"
 >

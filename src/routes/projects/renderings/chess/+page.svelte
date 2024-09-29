@@ -6,6 +6,7 @@
   import type App from "chess";
   import { appState } from "$lib/state/appState";
   import Project from "$lib/components/Project.svelte";
+  import { CHESS_LABEL } from "../../../../constants";
 
   const mainPublicViewerContext = getContext<PublicViewerContext>(
     "mainPublicViewerContext",
@@ -72,7 +73,7 @@
 </script>
 
 <Project
-  title="Render"
+  title={CHESS_LABEL}
   githubLink="https://github.com/PierreLeBlond/chessboard"
 >
   <div class="flex w-full flex-col" slot="hud">

@@ -6,7 +6,7 @@
   import { fade } from "svelte/transition";
   import Project from "$lib/components/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
-  import { VERTICAL_RATIO_LIMIT } from "../../../../constants";
+  import { INK_LABEL, VERTICAL_RATIO_LIMIT } from "../../../../constants";
 
   $: urls = $page.data["urls"] || [];
   $: texts = $page.data["texts"] || [];
@@ -20,7 +20,7 @@
   });
 </script>
 
-<Project title="A cube">
+<Project title={INK_LABEL}>
   <div class="relative h-full w-full" slot="project">
     <RatioBox ratio={VERTICAL_RATIO_LIMIT}>
       <div class="h-[90%]">

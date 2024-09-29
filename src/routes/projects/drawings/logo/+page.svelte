@@ -4,7 +4,7 @@
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
   import CubeViewer from "$lib/content/drawings/CubeViewer.svelte";
   import { fade } from "svelte/transition";
-  import { VERTICAL_RATIO_LIMIT } from "../../../../constants";
+  import { LOGO_LABEL, VERTICAL_RATIO_LIMIT } from "../../../../constants";
 
   $: urls = $page.data["urls"] || [];
   $: texts = $page.data["texts"] || [];
@@ -13,7 +13,7 @@
   let text: string | null;
 </script>
 
-<Project title="Another cube">
+<Project title={LOGO_LABEL}>
   <div class="relative h-full w-full" slot="project">
     <RatioBox ratio={VERTICAL_RATIO_LIMIT}>
       <div class="h-[90%]">

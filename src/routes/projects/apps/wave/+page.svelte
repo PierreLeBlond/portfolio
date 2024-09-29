@@ -4,11 +4,11 @@
   import Mask from "$lib/content/app/Mask.svelte";
   import Project from "$lib/components/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
-  import { VERTICAL_RATIO_LIMIT } from "../../../../constants";
+  import { VERTICAL_RATIO_LIMIT, WAVE_LABEL } from "../../../../constants";
 </script>
 
 <Project
-  title="Wave function collapse"
+  title={WAVE_LABEL}
   githubLink="https://github.com/PierreLeBlond/wave-monster-collapse"
 >
   <div

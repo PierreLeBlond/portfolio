@@ -3,7 +3,7 @@
   import Mask from "$lib/content/app/Mask.svelte";
   import Project from "$lib/components/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
-  import { VERTICAL_RATIO_LIMIT } from "../../../../constants";
+  import { RECIPE_LABEL, VERTICAL_RATIO_LIMIT } from "../../../../constants";
   import { appState } from "$lib/state/appState";
   import { appEvent } from "$lib/state/appEvent";
   import { onMount } from "svelte";
@@ -22,7 +22,7 @@
 </script>
 
 <Project
-  title="App"
+  title={RECIPE_LABEL}
   githubLink="https://github.com/PierreLeBlond/recipes"
   link="https://recipes.pierrelespingal.com"
 >
