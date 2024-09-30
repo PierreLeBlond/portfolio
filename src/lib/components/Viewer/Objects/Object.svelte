@@ -3,6 +3,7 @@
   import { getContext } from "svelte";
   import { writable, type Writable } from "svelte/store";
   import type { PublicViewerContext } from "../PublicViewerContext";
+  import ObjectOverlay from "./overlay/ObjectOverlay.svelte";
 
   const { viewer } = getContext<PublicViewerContext>(
     "mainPublicViewerContext",
@@ -187,3 +188,7 @@
   $: onHighlightedChange(highlighted);
   $: onEnteredChange(entered);
 </script>
+
+{#if highlighted}
+  <ObjectOverlay {object}></ObjectOverlay>
+{/if}

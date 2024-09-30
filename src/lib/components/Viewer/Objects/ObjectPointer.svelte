@@ -1,10 +1,9 @@
 <script lang="ts">
   import { THREE } from "@s0rt/3d-viewer";
-  import { createEventDispatcher, onDestroy, onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { getObjectUnderMouse } from "./getObjectUnderMouse";
   import { getContext } from "svelte";
   import throttle from "lodash.throttle";
-  import { afterNavigate } from "$app/navigation";
   import type { PublicViewerContext } from "../PublicViewerContext";
 
   const { viewer } = getContext<PublicViewerContext>(
@@ -42,6 +41,7 @@
   }, 100);
 
   let touchedDownObject: null | THREE.Object3D;
+  let lastPointer: null | THREE.Vector2 = null;
   const onTouchDown = (event: PointerEvent) => {
     if (event.pointerType != "touch") {
       return;
@@ -58,6 +58,7 @@
       camera,
       pointableObjects,
     );
+    lastPointer = pointer;
 
     if (!objectUnderMouse || !selectableObjects.includes(objectUnderMouse)) {
       touchedDownObject = null;
@@ -84,7 +85,10 @@
       pointableObjects,
     );
 
-    // TODO Do not untouched object if touch (camera) has moved ?
+    if (lastPointer !== null && !pointer.equals(lastPointer)) {
+      return;
+    }
+    lastPointer = null;
 
     touchedObject =
       objectUnderMouse == touchedDownObject ? touchedDownObject : null;

@@ -8,7 +8,6 @@
   import { pointedPathname } from "$lib/stores/pathname";
   import { appEvent } from "$lib/state/appEvent";
   import { appState } from "$lib/state/appState";
-  import Explore from "$lib/components/hud/Explore.svelte";
   import Loading from "$lib/components/hud/Loading.svelte";
 
   beforeNavigate(async (navigation) => {
@@ -33,8 +32,6 @@
 
 <div class="relative flex h-dvh w-screen flex-col overflow-hidden">
   <Background />
-
-  <Explore></Explore>
 
   <Loading></Loading>
 
