@@ -7,6 +7,9 @@
   import { appState } from "$lib/state/appState";
   import { appEvent } from "$lib/state/appEvent";
   import { onMount } from "svelte";
+  import type { PageData } from "./$types";
+
+  export let data: PageData;
 
   // Avoid revealing the iframe before it's fully loaded
   let unmask = false;
@@ -25,6 +28,7 @@
   title={RECIPE_LABEL}
   githubLink="https://github.com/PierreLeBlond/recipes"
   link="https://recipes.pierrelespingal.com"
+  screenshots={data.screenshots}
 >
   <div
     class="relative h-full w-full"

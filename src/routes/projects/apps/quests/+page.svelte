@@ -7,6 +7,9 @@
   import { onMount } from "svelte";
   import { appEvent } from "$lib/state/appEvent";
   import { appState } from "$lib/state/appState";
+  import type { PageData } from "./$types";
+
+  export let data: PageData;
 
   // Avoid revealing the iframe before it's fully loaded
   let unmask = false;
@@ -25,6 +28,7 @@
   title={QUESTS_LABEL}
   githubLink="https://github.com/PierreLeBlond/quests"
   link="https://quests.pierrelespingal.com"
+  screenshots={data.urls}
 >
   <div
     class="relative h-full w-full"
@@ -51,11 +55,11 @@
     {#if $appState === "idle"}
       <p>It's a todo app. Nothing fancy or original.</p>
       <p>
-        Perheaps seeing todo's as quests helps in finding the determination to
+        Perheaps seeing todo's as quests helps finding the determination to
         complete them.
       </p>
       <p>
-        When you are'nt logged in, your data do persist in your local storage.
+        When you aren't logged in, your data do persist in your local storage.
         Handy, but who will clean them after that ?
       </p>
       <p>

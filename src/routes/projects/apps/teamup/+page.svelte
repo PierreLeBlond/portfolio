@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { page } from "$app/stores";
   import { fade } from "svelte/transition";
   import Mask from "$lib/content/app/Mask.svelte";
   import Project from "$lib/components/project/Project.svelte";
@@ -8,8 +7,9 @@
   import { onMount } from "svelte";
   import { appEvent } from "$lib/state/appEvent";
   import { appState } from "$lib/state/appState";
+  import type { PageData } from "./$types";
 
-  $: urls = $page.data["urls"] || [];
+  export let data: PageData;
 
   // Avoid revealing the iframe before it's fully loaded
   let unmask = false;
@@ -28,7 +28,7 @@
   title={TEAMUP_LABEL}
   githubLink="https://github.com/PierreLeBlond/teamup"
   link="https://teamup-app.fly.dev/tournaments/1"
-  screenshots={urls}
+  screenshots={data.screenshots}
 >
   <div
     class="relative h-full w-full"
