@@ -1,12 +1,15 @@
 <script lang="ts">
+  import { page } from "$app/stores";
   import { fade } from "svelte/transition";
   import Mask from "$lib/content/app/Mask.svelte";
-  import Project from "$lib/components/Project.svelte";
+  import Project from "$lib/components/project/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
   import { TEAMUP_LABEL, VERTICAL_RATIO_LIMIT } from "../../../../constants";
   import { onMount } from "svelte";
   import { appEvent } from "$lib/state/appEvent";
   import { appState } from "$lib/state/appState";
+
+  $: urls = $page.data["urls"] || [];
 
   // Avoid revealing the iframe before it's fully loaded
   let unmask = false;
@@ -24,7 +27,8 @@
 <Project
   title={TEAMUP_LABEL}
   githubLink="https://github.com/PierreLeBlond/teamup"
-  link="https://teamup-app.fly.dev/"
+  link="https://teamup-app.fly.dev/tournaments/1"
+  screenshots={urls}
 >
   <div
     class="relative h-full w-full"
@@ -39,7 +43,7 @@
           <iframe
             on:load={handleLoaded}
             title="teamup"
-            src="https://teamup-app.fly.dev/"
+            src="https://teamup-app.fly.dev/tournaments/1"
             class="h-full w-full rounded-lg bg-stone-100"
           />
         </div>
@@ -47,14 +51,17 @@
     </Mask>
   </div>
 
-  <div class="flex flex-col" slot="hud">
+  <div slot="about">
     {#if $appState === "idle"}
-      <p>An app to manage teams and score within olimpiad's like tournament.</p>
-      <p>
-        For each game, the teams are rearranged to minimize the difference in
-        score between the players.
+      <p transition:fade>
+        An app to manage teams and score within an olympiad or a tournament.<br
+        />
+        Create multiple games, and auto-generate the teams before each game.<br
+        />
+        The app will teamup players based on their current score, to build fair and
+        balanced teams.<br />
+        It's build with <b>c# & asp.net technologies.</b>
       </p>
-      <p>It's build with <b>c# & asp.net technologies</b></p>
     {:else}
       <p>Generating teams...</p>
     {/if}

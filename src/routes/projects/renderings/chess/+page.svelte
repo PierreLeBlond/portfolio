@@ -5,7 +5,7 @@
   import { onMount } from "svelte";
   import type App from "chess";
   import { appState } from "$lib/state/appState";
-  import Project from "$lib/components/Project.svelte";
+  import Project from "$lib/components/project/Project.svelte";
   import { CHESS_LABEL } from "../../../../constants";
 
   const mainPublicViewerContext = getContext<PublicViewerContext>(
@@ -76,7 +76,7 @@
   title={CHESS_LABEL}
   githubLink="https://github.com/PierreLeBlond/chessboard"
 >
-  <div class="flex w-full flex-col" slot="hud">
+  <div class="flex w-full flex-col" slot="about">
     {#if $appState === "loading"}
       <p>You can hear the sound of pieces moving.</p>
       <p>Maybe of you wait a bit longer, you will see something.</p>

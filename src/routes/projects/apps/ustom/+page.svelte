@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
   import Mask from "$lib/content/app/Mask.svelte";
-  import Project from "$lib/components/Project.svelte";
+  import Project from "$lib/components/project/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
   import { USTOM_LABEL, VERTICAL_RATIO_LIMIT } from "../../../../constants";
   import { appState } from "$lib/state/appState";
@@ -47,7 +47,7 @@
     </Mask>
   </div>
 
-  <div class="flex flex-col" slot="hud">
+  <div class="flex flex-col" slot="about">
     {#if $appState === "idle"}
       <p>It's a clone of wordle.</p>
       <p>It has a leaderboard, as well as a word generator.</p>

@@ -7,7 +7,7 @@
   import type App from "earth";
   import { appState } from "$lib/state/appState";
   import { fade } from "svelte/transition";
-  import Project from "$lib/components/Project.svelte";
+  import Project from "$lib/components/project/Project.svelte";
   import { currentPage } from "$lib/stores/selectedPage";
   import { EARTH_LABEL } from "../../../../constants";
 
@@ -100,7 +100,7 @@
   title={EARTH_LABEL}
   githubLink="https://github.com/PierreLeBlond/earth"
 >
-  <div class="flex w-full flex-col" slot="hud">
+  <div class="flex w-full flex-col" slot="about">
     {#if $appState === "loading"}
       <p>Nothing appears yet, but you know some hidden works are happening.</p>
       <p>You are willing to wait...</p>

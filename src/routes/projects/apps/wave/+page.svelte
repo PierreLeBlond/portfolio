@@ -2,7 +2,7 @@
   import WaveMonsterCollapse from "@s0rt/wave-monster-collapse";
   import { fade } from "svelte/transition";
   import Mask from "$lib/content/app/Mask.svelte";
-  import Project from "$lib/components/Project.svelte";
+  import Project from "$lib/components/project/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
   import { VERTICAL_RATIO_LIMIT, WAVE_LABEL } from "../../../../constants";
 </script>
@@ -27,7 +27,7 @@
     </Mask>
   </div>
 
-  <div class="flex flex-col" slot="hud">
+  <div class="flex flex-col" slot="about">
     <p>That's an implementation of the wave function algorythm.</p>
   </div>
 </Project>

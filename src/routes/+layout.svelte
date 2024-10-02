@@ -8,7 +8,7 @@
   import { pointedPathname } from "$lib/stores/pathname";
   import { appEvent } from "$lib/state/appEvent";
   import { appState } from "$lib/state/appState";
-  import Loading from "$lib/components/hud/Loading.svelte";
+  import Loading from "$lib/components/project/Loading.svelte";
 
   beforeNavigate(async (navigation) => {
     if (!navigation.to) {

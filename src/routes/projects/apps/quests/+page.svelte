@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
   import Mask from "$lib/content/app/Mask.svelte";
-  import Project from "$lib/components/Project.svelte";
+  import Project from "$lib/components/project/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
   import { QUESTS_LABEL, VERTICAL_RATIO_LIMIT } from "../../../../constants";
   import { onMount } from "svelte";
@@ -47,7 +47,7 @@
     </Mask>
   </div>
 
-  <div class="flex flex-col" slot="hud">
+  <div class="flex flex-col" slot="about">
     {#if $appState === "idle"}
       <p>It's a todo app. Nothing fancy or original.</p>
       <p>

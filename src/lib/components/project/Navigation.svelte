@@ -18,7 +18,7 @@
 </script>
 
 <nav
-  class="z-40 grid w-full grid-cols-4 items-center rounded-t-xl bg-stone-200 horizontal:grid-cols-3"
+  class="z-40 grid w-full grid-cols-4 items-center rounded-t-xl bg-stone-100 horizontal:grid-cols-3"
 >
   {#if previousPage}
     <a

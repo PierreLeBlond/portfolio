@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import Project from "$lib/components/Project.svelte";
+  import Project from "$lib/components/project/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
   import CubeViewer from "$lib/content/drawings/CubeViewer.svelte";
   import { fade } from "svelte/transition";
@@ -22,7 +22,7 @@
     </RatioBox>
   </div>
 
-  <div class="flex w-full flex-col" slot="hud">
+  <div class="flex w-full flex-col" slot="about">
     <p>Another cube. It also rotates if you drag it.</p>
     <p>Though, the inscription on it looks like they were made numerically.</p>
     <p>

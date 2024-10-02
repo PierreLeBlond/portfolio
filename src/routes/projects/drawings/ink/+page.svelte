@@ -4,7 +4,7 @@
   import { pageDialog } from "$lib/stores/pageDialog";
   import { onDestroy } from "svelte";
   import { fade } from "svelte/transition";
-  import Project from "$lib/components/Project.svelte";
+  import Project from "$lib/components/project/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
   import { INK_LABEL, VERTICAL_RATIO_LIMIT } from "../../../../constants";
 
@@ -29,7 +29,7 @@
     </RatioBox>
   </div>
 
-  <div class="flex w-full flex-col" slot="hud">
+  <div class="flex w-full flex-col" slot="about">
     <p>A cube that rotate if you drag it.</p>
     <p>On each face there is a drawing, probably made with black ink.</p>
     <p>
