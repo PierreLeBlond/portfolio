@@ -1,12 +1,19 @@
 <script lang="ts">
   import { Link } from "lucide-svelte";
   import Gallery from "./Gallery.svelte";
+  import type { Snippet } from "svelte";
 
-  export let title: string;
-  export let githubLink: string | null = null;
-  export let link: string | null = null;
-  export let scrollKey: string;
-  export let screenshots: string[] = [];
+  interface Props {
+    title: string;
+    githubLink: string | null;
+    link: string | null;
+    scrollKey: string;
+    screenshots: string[];
+    children: Snippet;
+  }
+
+  let { title, githubLink, link, scrollKey, screenshots, children }: Props =
+    $props();
 </script>
 
 <div class="flex h-full flex-col">
@@ -17,6 +24,7 @@
     <div class="flex gap-2">
       {#if githubLink}
         <a
+          aria-label="github link"
           href={githubLink}
           target="_blank"
           class=" rounded-xl fill-stone-800 hover:bg-stone-300"
@@ -47,7 +55,7 @@
     class="relative grow overflow-hidden pt-4 text-start text-sm text-stone-800 horizontal:text-base"
   >
     <div class="flex h-full flex-col gap-2">
-      <slot />
+      {@render children()}
       {#if screenshots.length > 0}
         <Gallery {scrollKey} {screenshots} />
       {/if}

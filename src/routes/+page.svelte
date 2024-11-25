@@ -4,7 +4,7 @@
 
 <section
   class="pointer-events-none absolute bottom-0 right-0 flex h-screen w-full flex-col justify-between gap-y-4 p-6 text-stone-100 horizontal:h-full horizontal:w-1/2 horizontal:flex-col horizontal:items-start horizontal:justify-center horizontal:p-16"
-  transition:fly|global={{ x: 500 }}
+  transition:fly|global={{ x: 500, delay: 1 }}
 >
   <div class="flex flex-col gap-y-4">
     <p>

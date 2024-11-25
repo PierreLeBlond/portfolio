@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run } from "svelte/legacy";
+
   import { THREE } from "@s0rt/3d-viewer";
   import { getContext } from "svelte";
   import { writable, type Writable } from "svelte/store";
@@ -10,10 +12,13 @@
   ).getPublicViewerSync();
   const { scene } = viewer;
 
-  export let object: THREE.Object3D;
+  interface Props {
+    object: THREE.Object3D;
+    highlighted: boolean;
+    entered: boolean;
+  }
 
-  export let highlighted = false;
-  export let entered = false;
+  let { object, highlighted, entered }: Props = $props();
 
   type ActionName =
     | "LiftAction"
@@ -185,8 +190,12 @@
     objectEvent.set(highlighted ? "highlight" : "unhighlight");
   };
 
-  $: onHighlightedChange(highlighted);
-  $: onEnteredChange(entered);
+  $effect(() => {
+    onHighlightedChange(highlighted);
+  });
+  $effect(() => {
+    onEnteredChange(entered);
+  });
 </script>
 
 {#if highlighted}

@@ -2,11 +2,10 @@
   import { onMount, onDestroy } from "svelte";
   import { setContext } from "svelte";
   import type { LayoutData } from "./$types";
-  import { get, writable, type Writable } from "svelte/store";
+  import { writable, type Writable } from "svelte/store";
   import { IblSpace, PublicViewer } from "@s0rt/3d-viewer";
   import { fade } from "svelte/transition";
   import { VERTICAL_RATIO_LIMIT } from "../../../constants";
-  import { cameraTarget } from "$lib/stores/cameraTarget";
   import { configureViewOffset } from "$lib/components/Viewer/configureScreenOffset";
 
   export let data: LayoutData;
@@ -77,7 +76,7 @@
     style:visibility={loading ? "hidden" : "visible"}
     class="relative flex h-full w-full items-center justify-center"
     id="objectViewer"
-  />
+  ></div>
 </div>
 
 <slot />

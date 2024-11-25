@@ -1,9 +1,13 @@
 <script lang="ts">
-  let width: number;
+  let width: number = $state(0);
 
-  export let index = 0;
-  export let direction = 0;
-  export let texts: string[] = [];
+  interface Props {
+    index?: number;
+    direction?: number;
+    texts?: string[];
+  }
+
+  let { index = 0, direction = 0, texts = [] }: Props = $props();
 
   const slideIn = (_: HTMLElement) => ({
     duration: 500,

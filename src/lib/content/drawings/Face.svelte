@@ -1,11 +1,15 @@
 <script lang="ts">
   import { imagePromises } from "./imagePromises";
 
-  export let url: string;
-  export let yaw = 0;
-  export let pitch = 0;
-  export let translation = 0;
-  export let faceSize: number;
+  interface Props {
+    url: string | null;
+    yaw?: number;
+    pitch?: number;
+    translation?: number;
+    faceSize: number;
+  }
+
+  let { url, yaw = 0, pitch = 0, translation = 0, faceSize }: Props = $props();
 
   const getImage = (url: string): Promise<HTMLImageElement> => {
     return new Promise((resolve) => {
@@ -34,7 +38,7 @@
 
     imagePromise.then((image: HTMLImageElement) => {
       // If another promise has been called meanwhile, nothing more to do
-      if (imagePromise != $imagePromises[url]) {
+      if (imagePromise != $imagePromises[newUrl]) {
         return;
       }
       node.innerHTML = "";
@@ -42,7 +46,10 @@
     });
   };
 
-  function addImage(node: HTMLElement, url: string) {
+  function addImage(node: HTMLElement, url: string | null) {
+    if (url == null) {
+      return;
+    }
     addImageCore(node, url);
     return {
       update: (newUrl: string) => {
@@ -60,4 +67,4 @@
     30}px inset;
           transform-style: preserve-3d;
           transform: rotateX({pitch}deg) rotateY({yaw}deg) translate3d(0, 0, {translation}px);"
-/>
+></div>

@@ -4,22 +4,27 @@
   import Project from "$lib/components/project/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
   import { USTOM_LABEL, VERTICAL_RATIO_LIMIT } from "../../../../constants";
-  import { appState } from "$lib/state/appState";
-  import { appEvent } from "$lib/state/appEvent";
   import { onMount } from "svelte";
   import type { PageData } from "./$types";
+  import { getAppContext } from "$lib/context/appContext";
 
-  export let data: PageData;
+  interface Props {
+    data: PageData;
+  }
+
+  let { data }: Props = $props();
+
+  let app = getAppContext();
 
   // Avoid revealing the iframe before it's fully loaded
-  let unmask = false;
+  let unmask = $state(false);
 
   onMount(async () => {
-    appEvent.set("load");
+    app.trigger("load");
   });
 
   const handleLoaded = () => {
-    appEvent.set("loaded");
+    app.trigger("loaded");
     unmask = true;
   };
 </script>
@@ -30,34 +35,37 @@
   link="https://ustom.pierrelespingal.com/?encryptedWord=158ae1b0d188&iv=a62f76eb217e47f158688e579c00209b"
   screenshots={data.screenshots}
 >
-  <div
-    class="relative h-full w-full"
-    out:fade|global={{
-      duration: 0 /* Hide immediatly on page navigation, regardless of other transition deleying component destroy */,
-    }}
-    slot="project"
-  >
-    <Mask columns={6} frames={30} loaded={unmask}>
-      <RatioBox ratio={VERTICAL_RATIO_LIMIT}>
-        <div class="h-full w-full scale-90">
-          <iframe
-            on:load={handleLoaded}
-            title="ustom"
-            src="https://ustom.pierrelespingal.com/?encryptedWord=158ae1b0d188&iv=a62f76eb217e47f158688e579c00209b"
-            class="h-full w-full rounded-lg bg-stone-100"
-          />
-        </div>
-      </RatioBox>
-    </Mask>
-  </div>
+  {#snippet project()}
+    <div
+      class="relative h-full w-full"
+      out:fade|global={{
+        duration: 1 /* Hide immediatly on page navigation, regardless of other transition deleying component destroy */,
+      }}
+    >
+      <Mask columns={6} frames={30} loaded={unmask}>
+        <RatioBox ratio={VERTICAL_RATIO_LIMIT}>
+          <div class="h-full w-full scale-90">
+            <iframe
+              onload={handleLoaded}
+              title="ustom"
+              src="https://ustom.pierrelespingal.com/?encryptedWord=158ae1b0d188&iv=a62f76eb217e47f158688e579c00209b"
+              class="h-full w-full rounded-lg bg-stone-100"
+            ></iframe>
+          </div>
+        </RatioBox>
+      </Mask>
+    </div>
+  {/snippet}
 
-  <div class="flex flex-col" slot="about">
-    {#if $appState === "idle"}
-      <p>It's a clone of wordle.</p>
-      <p>It has a leaderboard, as well as a word generator.</p>
-      <p>It is also made with <b>svelte</b>, neat.</p>
-    {:else}
-      <p>Thinking of a word...</p>
-    {/if}
-  </div>
+  {#snippet about()}
+    <div class="flex flex-col">
+      {#if app.state === "idle"}
+        <p>It's a clone of wordle.</p>
+        <p>It has a leaderboard, as well as a word generator.</p>
+        <p>It is also made with <b>svelte</b>, neat.</p>
+      {:else}
+        <p>Thinking of a word...</p>
+      {/if}
+    </div>
+  {/snippet}
 </Project>

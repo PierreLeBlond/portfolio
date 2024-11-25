@@ -3,23 +3,24 @@
   import Mask from "$lib/content/app/Mask.svelte";
   import Project from "$lib/components/project/Project.svelte";
   import RatioBox from "$lib/components/reusable/RatioBox.svelte";
-  import { QUESTS_LABEL, VERTICAL_RATIO_LIMIT } from "../../../../constants";
   import { onMount } from "svelte";
-  import { appEvent } from "$lib/state/appEvent";
-  import { appState } from "$lib/state/appState";
   import type { PageData } from "./$types";
+  import { getAppContext } from "$lib/context/appContext";
+  import { QUESTS_LABEL, VERTICAL_RATIO_LIMIT } from "../../../../constants";
 
   export let data: PageData;
 
   // Avoid revealing the iframe before it's fully loaded
   let unmask = false;
 
+  let app = getAppContext();
+
   onMount(async () => {
-    appEvent.set("load");
+    app.trigger("load");
   });
 
   const handleLoaded = () => {
-    appEvent.set("loaded");
+    app.trigger("loaded");
     unmask = true;
   };
 </script>
@@ -30,43 +31,46 @@
   link="https://quests.pierrelespingal.com"
   screenshots={data.urls}
 >
-  <div
-    class="relative h-full w-full"
-    out:fade|global={{
-      duration: 0 /* Hide immediatly on page navigation, regardless of other transition deleying component destroy */,
-    }}
-    slot="project"
-  >
-    <Mask columns={6} frames={30} loaded={unmask}>
-      <RatioBox ratio={VERTICAL_RATIO_LIMIT}>
-        <div class="h-full w-full scale-90">
-          <iframe
-            on:load={handleLoaded}
-            title="quests"
-            src="https://quests.pierrelespingal.com"
-            class="h-full w-full rounded-lg bg-stone-100"
-          />
-        </div>
-      </RatioBox>
-    </Mask>
-  </div>
+  {#snippet project()}
+    <div
+      class="relative h-full w-full"
+      out:fade|global={{
+        duration: 1 /* Hide immediatly on page navigation, regardless of other transition deleying component destroy */,
+      }}
+    >
+      <Mask columns={6} frames={30} loaded={unmask}>
+        <RatioBox ratio={VERTICAL_RATIO_LIMIT}>
+          <div class="h-full w-full scale-90">
+            <iframe
+              on:load={handleLoaded}
+              title="quests"
+              src="https://quests.pierrelespingal.com"
+              class="h-full w-full rounded-lg bg-stone-100"
+            ></iframe>
+          </div>
+        </RatioBox>
+      </Mask>
+    </div>
+  {/snippet}
 
-  <div class="flex flex-col" slot="about">
-    {#if $appState === "idle"}
-      <p>It's a todo app. Nothing fancy or original.</p>
-      <p>
-        Perheaps seeing todo's as quests helps finding the determination to
-        complete them.
-      </p>
-      <p>
-        When you aren't logged in, your data do persist in your local storage.
-        Handy, but who will clean them after that ?
-      </p>
-      <p>
-        Under the hood, there's some <b>react</b> involved.
-      </p>
-    {:else}
-      <p>Going on an adventure...</p>
-    {/if}
-  </div>
+  {#snippet about()}
+    <div class="flex flex-col">
+      {#if app.state === "idle"}
+        <p>It's a todo app. Nothing fancy or original.</p>
+        <p>
+          Perheaps seeing todo's as quests helps finding the determination to
+          complete them.
+        </p>
+        <p>
+          When you aren't logged in, your data do persist in your local storage.
+          Handy, but who will clean them after that ?
+        </p>
+        <p>
+          Under the hood, there's some <b>react</b> involved.
+        </p>
+      {:else}
+        <p>Going on an adventure...</p>
+      {/if}
+    </div>
+  {/snippet}
 </Project>

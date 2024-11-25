@@ -16,11 +16,7 @@ export const configureViewer = async () => {
 
   publicViewer.viewer.fov = 50;
   publicViewer.viewer.verticalRatio = VERTICAL_RATIO_LIMIT;
-  configureCamera(
-    scene,
-    publicViewer.viewer.camera,
-    publicViewer.viewer.controls,
-  );
+  configureCamera(publicViewer.viewer.camera, publicViewer.viewer.controls);
 
   configureViewOffset(publicViewer);
 

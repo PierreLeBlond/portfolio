@@ -1,20 +1,31 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { descriptionOpenStatus } from "$lib/stores/descriptionOpenStatus";
-  import { currentPage } from "$lib/stores/selectedPage";
+  import { globalState } from "$lib/state/globalState.svelte";
   import { ArrowBigLeft, ArrowBigRight, Box, HelpCircle } from "lucide-svelte";
 
-  $: pages = $page.data["pages"];
+  type Props = {
+    open: boolean;
+  };
 
-  $: pageIndex = $currentPage ? pages.indexOf($currentPage) : -1;
+  let { open = $bindable() }: Props = $props();
+
+  let pages = $derived($page.data["pages"]);
+
+  let pageIndex = $derived(
+    globalState.currentPage ? globalState.currentPage.index : -1,
+  );
 
   const mod = (n: number, m: number) => ((n % m) + m) % m;
 
-  $: previousIndex = pageIndex > -1 ? mod(pageIndex - 1, pages.length) : -1;
-  $: nextIndex = pageIndex > -1 ? mod(pageIndex + 1, pages.length) : -1;
+  let previousIndex = $derived(
+    pageIndex > -1 ? mod(pageIndex - 1, pages.length) : -1,
+  );
+  let nextIndex = $derived(
+    pageIndex > -1 ? mod(pageIndex + 1, pages.length) : -1,
+  );
 
-  $: previousPage = pages[previousIndex] ?? null;
-  $: nextPage = pages[nextIndex] ?? null;
+  let previousPage = $derived(pages[previousIndex] ?? null);
+  let nextPage = $derived(pages[nextIndex] ?? null);
 </script>
 
 <nav
@@ -42,13 +53,13 @@
   <button
     type="button"
     class="flex h-full w-full flex-col items-center justify-center p-2 hover:bg-stone-300 horizontal:hidden xs:w-24"
-    on:click={() => descriptionOpenStatus.set(!$descriptionOpenStatus)}
+    onclick={() => (open = !open)}
   >
     <HelpCircle
       size={42}
       strokeWidth={3}
       absoluteStrokeWidth
-      class={`transition-transform ${$descriptionOpenStatus ? "rotate-180" : ""}`}
+      class={`transition-transform ${open ? "rotate-180" : ""}`}
     ></HelpCircle>
     <p class="text-xs">info</p>
   </button>

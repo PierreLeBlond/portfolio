@@ -1,21 +1,32 @@
 <script lang="ts">
   import { THREE } from "@s0rt/3d-viewer";
-  import { onDestroy, onMount } from "svelte";
+  import { onDestroy, onMount, type Snippet } from "svelte";
   import { getObjectUnderMouse } from "./getObjectUnderMouse";
   import { getContext } from "svelte";
   import throttle from "lodash.throttle";
   import type { PublicViewerContext } from "../PublicViewerContext";
+
+  interface Props {
+    children: Snippet;
+    pointableObjects: THREE.Object3D[];
+    selectableObjects: THREE.Object3D[];
+    pointedObject: null | THREE.Object3D;
+    touchedObject: null | THREE.Object3D;
+  }
+
+  let {
+    children,
+    pointableObjects,
+    selectableObjects,
+    pointedObject = $bindable(),
+    touchedObject = $bindable(),
+  }: Props = $props();
 
   const { viewer } = getContext<PublicViewerContext>(
     "mainPublicViewerContext",
   ).getPublicViewerSync();
   const { camera, renderer } = viewer;
   const { domElement } = renderer;
-
-  export let pointableObjects: THREE.Object3D[];
-  export let pointedObject: null | THREE.Object3D = null;
-  export let touchedObject: null | THREE.Object3D = null;
-  export let selectableObjects: THREE.Object3D[];
 
   const onMouseMove = (event: PointerEvent) => {
     if (event.pointerType != "mouse") {
@@ -98,13 +109,15 @@
     domElement.addEventListener("pointermove", onMouseMove);
     domElement.addEventListener("pointerdown", onTouchDown);
     domElement.addEventListener("pointerup", onTouchUp);
+    domElement.addEventListener("pointerleave", onTouchUp);
   });
 
   onDestroy(() => {
     domElement.removeEventListener("pointermove", onMouseMove);
     domElement.removeEventListener("pointerdown", onTouchDown);
     domElement.removeEventListener("pointerup", onTouchUp);
+    domElement.removeEventListener("pointerleave", onTouchUp);
   });
 </script>
 
-<slot />
+{@render children()}

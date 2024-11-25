@@ -1,15 +1,14 @@
 <script lang="ts">
   import type { PublicViewerContext } from "$lib/components/Viewer/PublicViewerContext";
-  import { appEvent } from "$lib/state/appEvent";
-  import { pageDialog } from "$lib/stores/pageDialog";
   import { getContext, onDestroy, onMount } from "svelte";
   import { THREE } from "@s0rt/3d-viewer";
   import type App from "earth";
-  import { appState } from "$lib/state/appState";
   import { fade } from "svelte/transition";
   import Project from "$lib/components/project/Project.svelte";
-  import { currentPage } from "$lib/stores/selectedPage";
   import { EARTH_LABEL } from "../../../../constants";
+  import { getAppContext } from "$lib/context/appContext";
+  import { useDisolve } from "$lib/hooks/useDisolve.svelte";
+  import { globalState } from "$lib/state/globalState.svelte";
 
   const mainPublicViewerContext = getContext<PublicViewerContext>(
     "mainPublicViewerContext",
@@ -17,13 +16,20 @@
   const renderingsPublicViewerContext = getContext<PublicViewerContext>(
     "renderingsPublicViewerContext",
   );
+  let app = getAppContext();
+
+  const { disolve, resolve } = useDisolve(
+    app.trigger,
+    globalState.selectedObject,
+  );
 
   let earth: App;
 
-  let country: string | null = null;
+  let country: string | null = $state(null);
 
   onMount(async () => {
-    appEvent.set("load");
+    await disolve();
+    app.trigger("load");
     const mainPublicViewer = await mainPublicViewerContext.getPublicViewer();
     const renderingsPublicViewer =
       await renderingsPublicViewerContext.getPublicViewer();
@@ -85,14 +91,14 @@
       country = message ? message.toLowerCase() : null;
     });
 
-    appEvent.set("loaded");
+    app.trigger("loaded");
   });
 
-  onDestroy(() => {
-    pageDialog.set(null);
+  onDestroy(async () => {
     if (earth) {
       earth.stop();
     }
+    await resolve();
   });
 </script>
 
@@ -100,28 +106,41 @@
   title={EARTH_LABEL}
   githubLink="https://github.com/PierreLeBlond/earth"
 >
-  <div class="flex w-full flex-col" slot="about">
-    {#if $appState === "loading"}
-      <p>Nothing appears yet, but you know some hidden works are happening.</p>
-      <p>You are willing to wait...</p>
-    {:else}
-      <p in:fade>It's a globe. It reflects the room it's in.</p>
-      <p in:fade>There is some <b>three.js</b> magic happening for sure.</p>
-      <p in:fade>You feel the urge to hover a country.</p>
-      {#if country}
-        <p in:fade>
-          Doing so, you recognize it as <b>{country}</b>.
+  {#snippet about()}
+    <div class="flex w-full flex-col">
+      {#if app.state !== "idle"}
+        <p>
+          Nothing appears yet, but you know some hidden works are happening.
         </p>
+        <p>You are willing to wait...</p>
+      {:else}
+        <p in:fade={{ delay: 1 }}>
+          It's a globe. It reflects the room it's in.
+        </p>
+        <p in:fade={{ delay: 1 }}>
+          There is some <b>three.js</b> magic happening for sure.
+        </p>
+        <p in:fade={{ delay: 1 }}>You feel the urge to hover a country.</p>
+        {#if country}
+          <p in:fade={{ delay: 1 }}>
+            Doing so, you recognize it as <b>{country}</b>.
+          </p>
+        {/if}
       {/if}
-    {/if}
-  </div>
-  <div slot="excerpt">
-    {#if country}
-      <p in:fade class="overflow-hidden text-ellipsis text-nowrap">
-        You recognize it as <b>{country}</b>.
-      </p>
-    {:else}
-      <p in:fade>You feel the urge to hover a country.</p>
-    {/if}
-  </div>
+    </div>
+  {/snippet}
+  {#snippet excerpt()}
+    <div>
+      {#if country}
+        <p
+          in:fade={{ delay: 1 }}
+          class="overflow-hidden text-ellipsis text-nowrap"
+        >
+          You recognize it as <b>{country}</b>.
+        </p>
+      {:else}
+        <p in:fade={{ delay: 1 }}>You feel the urge to hover a country.</p>
+      {/if}
+    </div>
+  {/snippet}
 </Project>

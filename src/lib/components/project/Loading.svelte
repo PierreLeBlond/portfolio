@@ -1,6 +1,8 @@
 <script lang="ts">
-  import { appState } from "$lib/state/appState";
+  import { getAppContext } from "$lib/context/appContext";
   import { Cog } from "lucide-svelte";
+
+  const app = getAppContext();
 
   const loadingStates = [
     "mounting",
@@ -10,7 +12,7 @@
     "navigatingWhileFlying",
     "disolving",
   ];
-  $: loading = loadingStates.includes($appState);
+  let loading = $derived(loadingStates.includes(app.state));
 </script>
 
 {#if loading}

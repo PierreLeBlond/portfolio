@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tweened } from "svelte/motion";
-  import { getContext, onMount } from "svelte";
+  import { getContext, onMount, type Snippet } from "svelte";
   import type { PublicViewerContext } from "$lib/components/Viewer/PublicViewerContext";
   import mask from "./mask.png";
 
@@ -8,23 +8,24 @@
     "mainPublicViewerContext",
   );
 
-  export let columns: number;
-  export let frames: number;
+  let width: number = $state(0);
+  let height: number = $state(0);
 
-  let width: number;
-  let height: number;
-
-  export let loaded: boolean;
-  $: if (loaded) {
-    frame.set(frames - 1);
+  interface Props {
+    columns: number;
+    frames: number;
+    loaded: boolean;
+    children: Snippet;
   }
+
+  let { columns, frames, loaded, children }: Props = $props();
 
   const frame = tweened(0, { duration: 1500 });
 
-  let imageData: string;
-  let maskData: string;
+  let imageData: string | null = $state(null);
+  let maskData: string | null = $state(null);
 
-  let mounted = false;
+  let mounted = $state(false);
   onMount(async () => {
     const mainPublicViewer = await mainPublicViewerContext.getPublicViewer();
 
@@ -47,10 +48,15 @@
     };
   });
 
-  $: maskWidth = width * columns;
-  $: maskHeight = height * Math.ceil(frames / columns);
-  $: maskX = -(Math.trunc($frame) % columns) * width;
-  $: maskY = -Math.trunc(Math.trunc($frame) / columns) * height;
+  $effect(() => {
+    if (loaded) {
+      frame.set(frames - 1);
+    }
+  });
+  let maskWidth = $derived(width * columns);
+  let maskHeight = $derived(height * Math.ceil(frames / columns));
+  let maskX = $derived(-(Math.trunc($frame) % columns) * width);
+  let maskY = $derived(-Math.trunc(Math.trunc($frame) / columns) * height);
 </script>
 
 <div
@@ -59,7 +65,7 @@
   bind:clientHeight={height}
 >
   {#if mounted}
-    <slot />
+    {@render children()}
   {/if}
   <div
     class="pointer-events-none absolute left-0 top-0 flex h-full w-full items-center justify-center"

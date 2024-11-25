@@ -1,12 +1,15 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
 
-  let width: number;
+  interface Props {
+    index?: number;
+    length?: number;
+  }
 
-  export let index = 0;
-  export let length = 0;
+  let { index = 0, length = 0 }: Props = $props();
 
-  $: items = Array(Number(length));
+  let width: number = $state(0);
+  let items = $derived(Array(Number(length)));
 
   const slide = (_: HTMLElement, { delay }: { delay: number }) => ({
     delay,
@@ -37,8 +40,8 @@
         class="group hover:cursor-pointer"
         role="button"
         tabindex={i}
-        on:click={() => handleClickEvent(i)}
-        on:keydown={() => handleClickEvent(i)}
+        onclick={() => handleClickEvent(i)}
+        onkeydown={() => handleClickEvent(i)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

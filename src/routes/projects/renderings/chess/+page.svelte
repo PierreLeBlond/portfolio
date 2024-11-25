@@ -1,12 +1,13 @@
 <script lang="ts">
   import type { PublicViewerContext } from "$lib/components/Viewer/PublicViewerContext";
-  import { appEvent } from "$lib/state/appEvent";
   import { getContext, onDestroy } from "svelte";
   import { onMount } from "svelte";
   import type App from "chess";
-  import { appState } from "$lib/state/appState";
   import Project from "$lib/components/project/Project.svelte";
   import { CHESS_LABEL } from "../../../../constants";
+  import { getAppContext } from "$lib/context/appContext";
+  import { useDisolve } from "$lib/hooks/useDisolve.svelte";
+  import { globalState } from "$lib/state/globalState.svelte";
 
   const mainPublicViewerContext = getContext<PublicViewerContext>(
     "mainPublicViewerContext",
@@ -15,9 +16,17 @@
     "renderingsPublicViewerContext",
   );
 
+  let app = getAppContext();
+
+  const { disolve, resolve } = useDisolve(
+    app.trigger,
+    globalState.selectedObject,
+  );
+
   let chessboard: App;
   onMount(async () => {
-    appEvent.set("load");
+    await disolve();
+    app.trigger("load");
     const mainPublicViewer = await mainPublicViewerContext.getPublicViewer();
     const renderingsPublicViewer =
       await renderingsPublicViewerContext.getPublicViewer();
@@ -62,13 +71,14 @@
       delay: 0.1,
       color: 0xfb923c,
     });
-    appEvent.set("loaded");
+    app.trigger("loaded");
   });
 
   onDestroy(async () => {
     if (chessboard) {
       chessboard.stop();
     }
+    await resolve();
   });
 </script>
 
@@ -76,20 +86,22 @@
   title={CHESS_LABEL}
   githubLink="https://github.com/PierreLeBlond/chessboard"
 >
-  <div class="flex w-full flex-col" slot="about">
-    {#if $appState === "loading"}
-      <p>You can hear the sound of pieces moving.</p>
-      <p>Maybe of you wait a bit longer, you will see something.</p>
-    {:else}
-      <p>A chessboard, no pieces are missing.</p>
-      <p>
-        As you reach one of them, sadly, they just keep on dancing in place.
-      </p>
-      <p>Hopeffuly one day we might be able to play with it.</p>
-      <p>
-        Until then, you appreciate the <b>blender</b> made composition,
-        presented with <b>three.js</b>.
-      </p>
-    {/if}
-  </div>
+  {#snippet about()}
+    <div class="flex w-full flex-col">
+      {#if app.state !== "idle"}
+        <p>You can hear the sound of pieces moving.</p>
+        <p>Maybe of you wait a bit longer, you will see something.</p>
+      {:else}
+        <p>A chessboard, no pieces are missing.</p>
+        <p>
+          As you reach one of them, sadly, they just keep on dancing in place.
+        </p>
+        <p>Hopeffuly one day we might be able to play with it.</p>
+        <p>
+          Until then, you appreciate the <b>blender</b> made composition,
+          presented with <b>three.js</b>.
+        </p>
+      {/if}
+    </div>
+  {/snippet}
 </Project>

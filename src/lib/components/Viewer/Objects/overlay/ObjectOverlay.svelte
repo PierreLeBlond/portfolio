@@ -5,14 +5,18 @@
   import { page } from "$app/stores";
   import { THREE } from "@s0rt/3d-viewer";
   import { fly } from "svelte/transition";
-  import { type Page, touchedPage } from "$lib/stores/selectedPage";
+  import { globalState, type Page } from "$lib/state/globalState.svelte";
 
   const { viewer } = getContext<PublicViewerContext>(
     "mainPublicViewerContext",
   ).getPublicViewerSync();
   const { camera, controls } = viewer;
 
-  export let object: THREE.Object3D;
+  interface Props {
+    object: THREE.Object3D;
+  }
+
+  let { object }: Props = $props();
 
   const objectWithOffsetedLabelName = [
     "Wave",
@@ -23,13 +27,19 @@
   ];
   const isOffseted = objectWithOffsetedLabelName.includes(object.name);
 
-  const objectPage = $page.data["pages"].find(
+  const objectPage: Page | null = $page.data["pages"].find(
     (page: Page) => page.objectName === object?.name,
   );
   if (!objectPage) {
     throw new Error(`Page not found for ${object.name}`);
   }
   const label = objectPage.label || null;
+
+  let isTouched = $derived(
+    globalState.touchedPage &&
+      objectPage &&
+      globalState.touchedPage.pathname === objectPage.pathname,
+  );
 
   let toVector3 = (v: THREE.Vector4) => new THREE.Vector3(v.x, v.y, v.z);
 
@@ -42,11 +52,11 @@
         )
       : object.position.clone();
 
-  let clientWidth: number = 0;
-  let clientHeight: number = 0;
+  let clientWidth: number = $state(0);
+  let clientHeight: number = $state(0);
 
-  let xOffset = 0;
-  let yOffset = 0;
+  let xOffset = $state(0);
+  let yOffset = $state(0);
 
   let onControlsChange = () => {
     const projectedPosition = getScreenProjectedPosition(
@@ -88,7 +98,7 @@
     >
       {label}
     </p>
-    {#if $touchedPage === objectPage}
+    {#if isTouched}
       <a
         href={objectPage.pathname}
         class="pointer-events-auto absolute flex -translate-x-1/2 {isOffseted

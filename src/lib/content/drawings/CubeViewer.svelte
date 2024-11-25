@@ -3,22 +3,27 @@
   import CubeNavigation from "./CubeNavigation.svelte";
   import { onDestroy, onMount } from "svelte";
 
-  let index = 0;
-  let direction = 0;
-  let yawOffset = 0;
+  let index = $state(0);
+  let direction = $state(0);
+  let yawOffset = $state(0);
 
   let isLocked = false;
 
   const mod = (n: number, m: number) => ((n % m) + m) % m;
 
-  export let urls: string[] = [];
-  export let texts: string[] = [];
-  export let pageIndex: number;
-  export let text: string | null;
+  interface Props {
+    urls: string[];
+    texts: string[];
+    text: string | null;
+  }
 
-  $: length = urls.length;
+  let { urls, texts, text = $bindable() }: Props = $props();
 
-  $: text = texts[index] ?? null;
+  let length = $derived(urls.length);
+
+  $effect(() => {
+    text = texts[index] ?? null;
+  });
 
   const handleChooseEvent = (event: { detail: { index: number } }) => {
     if (event.detail.index == index) {
@@ -43,20 +48,27 @@
     }
   };
 
-  let faceSize: number;
+  let faceSize: number = $state(0);
   let lastX = 0;
   const move = (clientX: number) => {
     if (isLocked) {
       yawOffset = ((clientX - lastX) / faceSize) * 90.0;
     }
   };
-  const handlePointerMove = (event: PointerEvent) => move(event.clientX);
+  const handlePointerMove = (event: PointerEvent) => {
+    event.preventDefault();
+    move(event.clientX);
+  };
   const lock = (clientX: number) => {
     isLocked = true;
     lastX = clientX;
   };
-  const handlePointerDown = (event: PointerEvent) => lock(event.clientX);
-  const release = () => {
+  const handlePointerDown = (event: PointerEvent) => {
+    event.preventDefault();
+    lock(event.clientX);
+  };
+  const release = (event: PointerEvent) => {
+    event.preventDefault();
     if (Math.abs(yawOffset) > 45) {
       direction = -Math.sign(yawOffset);
       index = mod(index + direction, urls.length);
@@ -84,11 +96,11 @@
   style:perspective="100vh"
   style:perspective-origin="50% 50%"
   role="presentation"
-  on:pointermove|preventDefault={handlePointerMove}
-  on:pointerdown|preventDefault={handlePointerDown}
-  on:pointerup|preventDefault={release}
-  on:pointerleave|preventDefault={release}
+  onpointermove={handlePointerMove}
+  onpointerdown={handlePointerDown}
+  onpointerup={release}
+  onpointerleave={release}
 >
-  <Cube {urls} {index} {pageIndex} {direction} {yawOffset} bind:faceSize />
+  <Cube {urls} {index} {direction} {yawOffset} bind:faceSize />
   <CubeNavigation {length} {index} on:choose={handleChooseEvent} />
 </div>

@@ -6,11 +6,16 @@
     selected: { object: THREE.Object3D | null };
   }>();
 
+  type Props = {
+    onSelected: (object: THREE.Object3D | null) => void;
+    pointedObject: THREE.Object3D | null;
+    selectableObjects: THREE.Object3D[];
+  };
+
+  let { onSelected, pointedObject, selectableObjects }: Props = $props();
+
   const LEFT_BUTTON = 0;
   const RIGHT_BUTTON = 2;
-
-  export let pointedObject: null | THREE.Object3D = null;
-  export let selectableObjects: THREE.Object3D[];
 
   let clickedObject: null | THREE.Object3D;
   const onPointerDown = (event: PointerEvent) => {
@@ -37,6 +42,7 @@
     // Unselect on right mouse click
     if (event.button === RIGHT_BUTTON) {
       dispatch("selected", { object: null });
+      onSelected(null);
     }
 
     if (event.button !== LEFT_BUTTON) {
@@ -48,7 +54,7 @@
       return;
     }
 
-    dispatch("selected", { object: clickedObject });
+    onSelected(clickedObject);
   };
 </script>
 

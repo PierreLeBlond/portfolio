@@ -6,14 +6,24 @@
   import { fade } from "svelte/transition";
   import Face from "./Face.svelte";
 
-  export let index = 0;
-  export let direction = 0;
-  export let yawOffset = 0;
-  export let urls: string[] = [];
-  export let pageIndex = 0;
-  export let faceSize = 0;
+  interface Props {
+    index: number;
+    direction: number;
+    yawOffset: number;
+    urls: string[];
+    faceSize: number;
+  }
+
+  let {
+    index,
+    direction,
+    yawOffset,
+    urls,
+    faceSize = $bindable(),
+  }: Props = $props();
 
   const land = (_: HTMLElement) => ({
+    delay: 1,
     duration: 1000,
     easing: expoOut,
     css: (_: number, u: number) => `transform: translateY(-${u * 200}%);`,
@@ -25,10 +35,13 @@
   });
 
   // Cube sizing response to page size
-  let width: number;
-  let height: number;
-  $: faceSize = Math.min(width, height) * 0.9;
-  $: translation = faceSize / 2;
+  let width: number = $state(0);
+  let height: number = $state(0);
+
+  $effect(() => {
+    faceSize = Math.min(width, height) * 0.9;
+  });
+  let translation = $derived(faceSize / 2);
 
   let yawAnchor = 0;
   let yaw = spring(0, {
@@ -36,18 +49,8 @@
     damping: 0.2,
   });
   let faceIndex = 0;
-  const urlIndices = [0, 0, 0, 0, 0];
+  const urlIndices = $state([0, 0, 0, 0, 0]);
   const rotations = [0, 90, 180, -90];
-
-  const rotateHorizontally = (newYawAnchor: number) => {
-    yaw
-      .update(() => newYawAnchor + yawOffset)
-      .then(() => {
-        // When rotation has finished, set correct previous face image, who could be different if we just jumped
-        let previousFaceIndex = mod(faceIndex - direction, 4);
-        urlIndices[previousFaceIndex] = mod(index - direction, urls.length);
-      });
-  };
 
   const changeIndex = (newIndex: number) => {
     // Set new face image before rotating
@@ -60,69 +63,23 @@
 
     yawAnchor -= direction * 90;
 
-    rotateHorizontally(yawAnchor);
+    yaw
+      .update(() => yawAnchor)
+      .then(() => {
+        // When rotation has finished, set correct previous face image, who could be different if we just jumped
+        let previousFaceIndex = mod(faceIndex - direction, 4);
+        urlIndices[previousFaceIndex] = mod(index - direction, urls.length);
+      });
   };
 
-  // Rotate the cube when navigating
-  $: changeIndex(index);
-
-  const updateOffset = (newYawOffset: number) => {
-    yaw.set(yawAnchor + newYawOffset);
-  };
-  $: updateOffset(yawOffset);
-
-  let jump = tweened(0, {
-    duration: 1000,
-    easing: sineOut,
+  $effect(() => {
+    changeIndex(index);
   });
 
-  let pitch = spring(0, {
-    stiffness: 0.02,
-    damping: 0.2,
+  $effect(() => {
+    // Sync spring store
+    yaw.set(yawAnchor + yawOffset);
   });
-
-  let oldUrls = urls.slice(0);
-  let oldPageIndex = pageIndex;
-  let topFaceUrl = "";
-  let bottomFaceUrl = "";
-  const changeUrls = (newUrls: string[]) => {
-    if (newUrls.length == 0) {
-      return;
-    }
-
-    if (oldUrls.length == 0) {
-      return;
-    }
-
-    if (oldUrls.toString() == newUrls.toString()) {
-      return;
-    }
-
-    const sign = Math.sign(oldPageIndex - pageIndex);
-
-    // Set top face image before rotating up
-
-    const oldUrl = oldUrls[index] ?? "";
-
-    topFaceUrl = sign > 0 ? oldUrl : "";
-    bottomFaceUrl = sign < 0 ? oldUrl : "";
-
-    // Reset all rotation, making pitch rotation way easier
-    pitch.set(sign * 90, { hard: true });
-    yawAnchor = 0;
-    yaw.set(0, { hard: true });
-
-    jump.set(1).then(() => jump.set(0, { duration: 0 }));
-
-    faceIndex = 0;
-    urlIndices[faceIndex] = index;
-
-    pitch.update(() => 0);
-    oldUrls = newUrls.slice(0);
-    oldPageIndex = pageIndex;
-  };
-
-  $: changeUrls(urls);
 </script>
 
 <div
@@ -140,10 +97,7 @@
   >
     <div
       class="h-full w-full"
-      style="transform-style: preserve-3d;
-      transform: translateY({-Math.sin($jump * Math.PI) *
-        faceSize *
-        0.5}px) rotateX({$pitch}deg);"
+      style="transform-style: preserve-3d;"
       transition:land|global
     >
       {#each rotations as rotation, i}
@@ -151,24 +105,23 @@
         {@const url = urlIndice != undefined ? (urls[urlIndice] ?? "") : ""}
         <Face {url} yaw={rotation} {translation} {faceSize} />
       {/each}
-      <Face url={topFaceUrl} pitch={-90} {translation} {faceSize} />
-      <Face url={bottomFaceUrl} pitch={90} {translation} {faceSize} />
+      <Face url={null} pitch={-90} {translation} {faceSize} />
+      <Face url={null} pitch={90} {translation} {faceSize} />
     </div>
 
     <div
       class="absolute flex items-center justify-center"
       style="width: {faceSize}px; height: {faceSize}px; 
           transform-style: preserve-3d;
-      transform: translateY({translation + faceSize / 30}px) rotateX(-90deg);
-      opacity: {1.0 - Math.sin($jump * Math.PI)}"
-      in:fade|global={{ duration: 1000, easing: sineIn }}
-      out:fade|global={{ duration: 1000, easing: expoOut }}
+      transform: translateY({translation + faceSize / 30}px) rotateX(-90deg);"
+      in:fade|global={{ duration: 1000, easing: sineIn, delay: 1 }}
+      out:fade|global={{ duration: 1000, easing: expoOut, delay: 1 }}
     >
       <div
         class="h-full w-full bg-gray-800"
         style="transform-style: preserve-3d; transform-origin: 50% 50% -200px;"
         style:filter={"blur(2em)"}
-      />
+      ></div>
     </div>
   </div>
 </div>

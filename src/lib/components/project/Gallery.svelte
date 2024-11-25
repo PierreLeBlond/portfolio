@@ -2,12 +2,19 @@
   import { mod } from "$lib/content/drawings/util";
   import { ArrowLeftCircle, ArrowRightCircle } from "lucide-svelte";
 
-  export let scrollKey: string;
-  export let screenshots: string[] = [];
+  interface Props {
+    scrollKey: string;
+    screenshots: string[];
+  }
 
-  let element: HTMLDivElement;
-  let elementWidth: number;
+  let { scrollKey, screenshots }: Props = $props();
+
+  let element: HTMLDivElement | null = $state(null);
+  let elementWidth: number = $state(0);
   const scrollToScreenshot = (offset: number) => {
+    if (!element) {
+      return;
+    }
     const scrollLeft = element.scrollLeft;
     const index = Math.floor(scrollLeft / elementWidth);
     const nextIndex = mod(index + offset, screenshots.length);
@@ -44,7 +51,7 @@
     >
       <button
         class="pointer-events-auto"
-        on:click={() => scrollToScreenshot(-1)}
+        onclick={() => scrollToScreenshot(-1)}
         aria-label="previous screenshot"
       >
         <ArrowLeftCircle></ArrowLeftCircle>
@@ -55,7 +62,7 @@
     >
       <button
         class="pointer-events-auto"
-        on:click={() => scrollToScreenshot(1)}
+        onclick={() => scrollToScreenshot(1)}
         aria-label="next screenshot"
       >
         <ArrowRightCircle></ArrowRightCircle>

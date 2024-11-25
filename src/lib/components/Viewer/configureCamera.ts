@@ -1,13 +1,7 @@
-import { appEvent } from "$lib/state/appEvent";
-import { cameraTarget } from "$lib/stores/cameraTarget";
-import { OffsetCamera, THREE, type Scene } from "@s0rt/3d-viewer";
-import { cubicInOut } from "svelte/easing";
+import { OffsetCamera } from "@s0rt/3d-viewer";
 import type { OrbitControls } from "three/examples/jsm/controls/OrbitControls.d.ts";
 
-const DURATION = 1500;
-
 export const configureCamera = (
-  scene: Scene,
   camera: OffsetCamera,
   controls: OrbitControls,
 ) => {
@@ -27,67 +21,4 @@ export const configureCamera = (
   controls.rotateSpeed = 0.5;
   controls.enableDamping = true;
   controls.dampingFactor = 0.1;
-
-  let positionStart = new THREE.Vector3();
-  let positionEnd = new THREE.Vector3();
-  let targetStart = new THREE.Vector3();
-  let targetEnd = new THREE.Vector3();
-  let yOffsetStart = 0;
-  let yOffsetEnd = 0;
-  let minDistanceEnd = 0;
-  let time = 0;
-
-  const onAnimate = ({ delta }: { delta: number }) => {
-    if (time == 1.0) {
-      endCameraAnimation();
-      return;
-    }
-
-    time = Math.min(1.0, time + (delta * 1000.0) / DURATION);
-    const easedTime = cubicInOut(time);
-    camera.position.lerpVectors(positionStart, positionEnd, easedTime);
-    controls.target.lerpVectors(targetStart, targetEnd, easedTime);
-    controls.update();
-
-    camera.yOffset = yOffsetStart + (yOffsetEnd - yOffsetStart) * easedTime;
-    camera.updateProjectionMatrix();
-  };
-
-  const endCameraAnimation = () => {
-    scene.getEventDispatcher().removeEventListener("animate", onAnimate);
-
-    controls.minDistance = minDistanceEnd;
-
-    controls.enableDamping = true;
-    controls.enabled = true;
-
-    appEvent.set("land");
-  };
-
-  cameraTarget.subscribe((payload) => {
-    if (!payload) {
-      return;
-    }
-
-    time = 0.0;
-
-    controls.enabled = false;
-    controls.enableDamping = false;
-
-    controls.minDistance = 0;
-
-    positionStart.copy(camera.position);
-    targetStart.copy(controls.target);
-    yOffsetStart = camera.yOffset;
-
-    positionEnd.copy(payload.position);
-    targetEnd.copy(payload.target);
-    yOffsetEnd = payload.yOffset;
-
-    minDistanceEnd = payload.controlMinDistance;
-
-    if (!scene.getEventDispatcher().hasEventListener("animate", onAnimate)) {
-      scene.getEventDispatcher().addEventListener("animate", onAnimate);
-    }
-  });
 };
