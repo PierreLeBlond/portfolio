@@ -37,7 +37,7 @@
 >
   {#snippet project()}
     <div
-      class="relative h-full w-full"
+      class="pointer-events-auto relative h-full w-full"
       out:fade|global={{
         duration: 1 /* Hide immediatly on page navigation, regardless of other transition deleying component destroy */,
       }}
@@ -60,8 +60,7 @@
   {#snippet about()}
     <div class="flex flex-col">
       {#if app.state === "idle"}
-        <p>Some recipes.</p>
-        <p>In french, obviously.</p>
+        <p>Some recipes. In french, obviously.</p>
       {:else}
         <p>Cooking...</p>
       {/if}

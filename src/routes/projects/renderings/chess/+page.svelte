@@ -89,17 +89,16 @@
   {#snippet about()}
     <div class="flex w-full flex-col">
       {#if app.state !== "idle"}
-        <p>You can hear the sound of pieces moving.</p>
-        <p>Maybe of you wait a bit longer, you will see something.</p>
-      {:else}
-        <p>A chessboard, no pieces are missing.</p>
         <p>
-          As you reach one of them, sadly, they just keep on dancing in place.
+          You can hear the sound of pieces moving. Maybe of you wait a bit
+          longer, you will see something.
         </p>
-        <p>Hopeffuly one day we might be able to play with it.</p>
+      {:else}
         <p>
-          Until then, you appreciate the <b>blender</b> made composition,
-          presented with <b>three.js</b>.
+          A chessboard, no pieces are missing. As you reach one of them, sadly,
+          they just keep on dancing in place. Hopefuly one day we might be able
+          to play with it. Until then, you appreciate the <b>blender</b> made
+          composition, presented with <b>three.js</b>.
         </p>
       {/if}
     </div>

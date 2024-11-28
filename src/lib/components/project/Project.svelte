@@ -23,12 +23,12 @@
   }: Props = $props();
 </script>
 
-<div class="grid h-full w-full horizontal:grid-cols-5">
-  <div class="h-full overflow-hidden horizontal:col-span-3">
+<div class="pointer-events-none relative flex h-full w-full">
+  <div class="w-full overflow-hidden horizontal:w-3/5">
     {@render project?.()}
   </div>
   <div
-    class="fixed bottom-0 flex w-full justify-center justify-self-center horizontal:relative horizontal:col-span-2"
+    class="absolute top-0 flex h-full w-full items-center justify-start p-16 horizontal:relative horizontal:w-2/5 horizontal:pr-16"
   >
     <ProjectPanel {title} {githubLink} {link} {screenshots}>
       {#snippet about()}

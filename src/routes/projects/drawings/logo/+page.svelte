@@ -30,7 +30,7 @@
 <Project title={LOGO_LABEL}>
   {#snippet project()}
     {#await disolve() then}
-      <div class="relative h-full w-full">
+      <div class="pointer-events-auto relative h-full w-full">
         <RatioBox ratio={VERTICAL_RATIO_LIMIT}>
           <div class="h-[90%]">
             <CubeViewer {urls} {texts} bind:text />
@@ -42,12 +42,10 @@
 
   {#snippet about()}
     <div class="flex w-full flex-col">
-      <p>Another cube. It also rotates if you drag it.</p>
       <p>
-        Though, the inscription on it looks like they were made numerically.
-      </p>
-      <p>
-        Without doubt with open source software such as Inkscape, Gimp or Krita.
+        Another cube. It also rotates if you drag it. Though, the inscription on
+        it looks like they were made numerically. Without doubt with open source
+        software such as Inkscape, Gimp or Krita.
       </p>
       <p>
         This one seems to represent {#key text}

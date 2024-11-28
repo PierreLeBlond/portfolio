@@ -114,7 +114,7 @@
       <Background></Background>
     </div>
   {/if}
-  <main class="relative grow text-gray-800">
+  <main class="relative h-full w-full text-gray-800">
     <div id="container" class="relative h-full w-full">
       <div
         class="absolute top-0 h-full w-full {globalState.pointedPage

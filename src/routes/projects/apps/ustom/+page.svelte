@@ -37,7 +37,7 @@
 >
   {#snippet project()}
     <div
-      class="relative h-full w-full"
+      class="pointer-events-auto relative h-full w-full"
       out:fade|global={{
         duration: 1 /* Hide immediatly on page navigation, regardless of other transition deleying component destroy */,
       }}
@@ -60,9 +60,10 @@
   {#snippet about()}
     <div class="flex flex-col">
       {#if app.state === "idle"}
-        <p>It's a clone of wordle.</p>
-        <p>It has a leaderboard, as well as a word generator.</p>
-        <p>It is also made with <b>svelte</b>, neat.</p>
+        <p>
+          It's a clone of wordle. It has a leaderboard, and you can create your
+          own game. It is also made with <b>svelte</b>, neat.
+        </p>
       {:else}
         <p>Thinking of a word...</p>
       {/if}

@@ -37,7 +37,7 @@
 >
   {#snippet project()}
     <div
-      class="relative h-full w-full"
+      class="pointer-events-auto relative h-full w-full"
       out:fade|global={{
         duration: 1 /* Hide immediatly on page navigation, regardless of other transition deleying component destroy */,
       }}

@@ -109,22 +109,22 @@
   {#snippet about()}
     <div class="flex w-full flex-col">
       {#if app.state !== "idle"}
-        <p>
-          Nothing appears yet, but you know some hidden works are happening.
+        <p in:fade={{ delay: 1 }}>
+          Nothing appears yet, but you know some hidden works are happening. You
+          are willing to wait...
         </p>
-        <p>You are willing to wait...</p>
       {:else}
         <p in:fade={{ delay: 1 }}>
-          It's a globe. It reflects the room it's in.
+          It's a globe. It reflects the room it's in. There is some <b
+            >three.js</b
+          > magic happening for sure.
         </p>
-        <p in:fade={{ delay: 1 }}>
-          There is some <b>three.js</b> magic happening for sure.
-        </p>
-        <p in:fade={{ delay: 1 }}>You feel the urge to hover a country.</p>
         {#if country}
           <p in:fade={{ delay: 1 }}>
             Doing so, you recognize it as <b>{country}</b>.
           </p>
+        {:else}
+          <p in:fade={{ delay: 1 }}>You feel the urge to hover a country.</p>
         {/if}
       {/if}
     </div>

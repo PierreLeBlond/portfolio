@@ -30,7 +30,7 @@
 <Project title={INK_LABEL}>
   {#snippet project()}
     {#await disolve() then}
-      <div class="relative h-full w-full">
+      <div class="pointer-events-auto relative h-full w-full">
         <RatioBox ratio={VERTICAL_RATIO_LIMIT}>
           <div class="h-[90%]">
             <CubeViewer {urls} {texts} bind:text />
@@ -42,12 +42,10 @@
 
   {#snippet about()}
     <div class="flex w-full flex-col">
-      <p>A cube that rotate if you drag it.</p>
-      <p>On each face there is a drawing, probably made with black ink.</p>
       <p>
-        After further investigation, you found out that the cube is made with <b
-          >css</b
-        >.
+        A cube that rotate if you drag it. On each face there is a drawing,
+        probably made with black ink. After further investigation, you found out
+        that the cube is made with <b>css</b>.
       </p>
       <p>
         You inexpicably want to title that drawing {#key text}<b

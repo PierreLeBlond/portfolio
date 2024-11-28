@@ -2,6 +2,7 @@
   import { page } from "$app/stores";
   import { globalState } from "$lib/state/globalState.svelte";
   import { ArrowBigLeft, ArrowBigRight, Box, HelpCircle } from "lucide-svelte";
+  import { fly } from "svelte/transition";
 
   type Props = {
     open: boolean;
@@ -26,33 +27,51 @@
 
   let previousPage = $derived(pages[previousIndex] ?? null);
   let nextPage = $derived(pages[nextIndex] ?? null);
+
+  let previousHovered = $state(false);
+  let nextHovered = $state(false);
+  let homeHovered = $state(false);
 </script>
 
-<nav
-  class="z-40 grid w-full grid-cols-4 items-center rounded-t-xl bg-stone-100 horizontal:grid-cols-3"
->
+<nav class="pointer-events-none absolute h-full w-full">
   {#if previousPage}
     <a
       href={previousPage.pathname}
-      class="flex h-full w-full flex-col items-center justify-center p-2 hover:bg-stone-300 horizontal:w-24 horizontal:justify-self-start horizontal:rounded-xl xs:w-24 xs:rounded-tl-xl"
+      class="pointer-events-auto absolute bottom-0 left-0 flex -translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-stone-300 p-2 shadow-md"
+      onpointerenter={() => (previousHovered = true)}
+      onpointerleave={() => (previousHovered = false)}
     >
       <ArrowBigLeft size={42} strokeWidth={3} absoluteStrokeWidth
       ></ArrowBigLeft>
-      <p class="text-xs">
-        {previousPage.label}
-      </p>
+      {#if previousHovered}
+        <p
+          class="absolute -translate-y-16 text-nowrap rounded-md bg-stone-200 px-2 py-1 shadow-sm"
+          transition:fly|global={{ y: 20, delay: 1 }}
+        >
+          {previousPage.label}
+        </p>
+      {/if}
     </a>
   {/if}
   <a
     href="/"
-    class="flex h-full w-full flex-col items-center justify-center p-2 hover:bg-stone-300 horizontal:w-24 horizontal:justify-self-center horizontal:rounded-xl xs:w-24"
+    class="group pointer-events-auto absolute left-0 top-0 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-stone-300 p-2 shadow-md"
+    onpointerenter={() => (homeHovered = true)}
+    onpointerleave={() => (homeHovered = false)}
   >
     <Box class="rotate-180" size={42} strokeWidth={3} absoluteStrokeWidth></Box>
-    <p class="text-xs">home</p>
+    {#if homeHovered}
+      <p
+        class="absolute translate-y-16 text-nowrap rounded-md bg-stone-200 px-2 py-1 shadow-sm"
+        transition:fly|global={{ y: -20, delay: 1 }}
+      >
+        home
+      </p>
+    {/if}
   </a>
   <button
     type="button"
-    class="flex h-full w-full flex-col items-center justify-center p-2 hover:bg-stone-300 horizontal:hidden xs:w-24"
+    class="group pointer-events-auto absolute bottom-0 right-1/2 flex translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-stone-300 p-2 shadow-md horizontal:hidden"
     onclick={() => (open = !open)}
   >
     <HelpCircle
@@ -61,18 +80,24 @@
       absoluteStrokeWidth
       class={`transition-transform ${open ? "rotate-180" : ""}`}
     ></HelpCircle>
-    <p class="text-xs">info</p>
   </button>
   {#if nextPage}
     <a
       href={nextPage.pathname}
-      class="flex h-full w-full flex-col items-center justify-center p-2 hover:bg-stone-300 horizontal:w-24 horizontal:justify-self-end horizontal:rounded-xl xs:w-24 xs:rounded-tr-xl"
+      class="group pointer-events-auto absolute bottom-0 right-0 flex translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-stone-300 p-2 shadow-md"
+      onpointerenter={() => (nextHovered = true)}
+      onpointerleave={() => (nextHovered = false)}
     >
       <ArrowBigRight size={42} strokeWidth={3} absoluteStrokeWidth
       ></ArrowBigRight>
-      <p class="text-nowrap text-xs">
-        {nextPage.label}
-      </p>
+      {#if nextHovered}
+        <p
+          class="absolute -translate-y-16 text-nowrap rounded-md bg-stone-200 px-2 py-1 shadow-sm"
+          transition:fly|global={{ y: 20, delay: 1 }}
+        >
+          {nextPage.label}
+        </p>
+      {/if}
     </a>
   {/if}
 </nav>

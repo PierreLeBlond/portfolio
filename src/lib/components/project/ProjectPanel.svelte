@@ -20,7 +20,7 @@
 </script>
 
 <section
-  class="hidden h-full w-full flex-col justify-between bg-stone-100 p-8 horizontal:flex"
+  class="relative hidden h-full w-full flex-col justify-between rounded-lg bg-stone-100/50 shadow-lg backdrop-blur-xl horizontal:flex"
   transition:fly|global={{ duration: 400, x: 400, delay: 1 }}
 >
   <About {title} {githubLink} {link} {screenshots} scrollKey="horizontal"
@@ -29,20 +29,9 @@
   <Navigation bind:open></Navigation>
 </section>
 
-<section
-  class="flex h-24 w-full justify-center horizontal:hidden xs:w-[384px]"
-  transition:fly|global={{ duration: 400, y: 400, delay: 1 }}
->
-  <div
-    class="flex w-full justify-between bg-stone-100 shadow-lg xs:rounded-t-xl"
-  >
-    <Navigation bind:open></Navigation>
-  </div>
-</section>
-
 {#if open}
   <div
-    class="absolute bottom-0 right-0 flex h-screen w-full justify-center text-base horizontal:hidden"
+    class="pointer-events-auto absolute bottom-0 right-0 flex h-screen w-full justify-center pt-16 text-base horizontal:hidden"
     transition:fade|global={{ duration: 400, delay: 1 }}
   >
     <button
@@ -52,7 +41,7 @@
     >
     </button>
     <div
-      class="absolute bottom-0 flex h-[90%] w-full bg-stone-100 px-2 pb-24 shadow-lg"
+      class="h-full w-full overflow-hidden bg-stone-100/50 px-2 pb-32 shadow-lg backdrop-blur-xl"
       transition:fly|global={{ duration: 400, y: 400, delay: 1 }}
     >
       <About {title} {githubLink} {link} {screenshots} scrollKey="vertical"
@@ -62,9 +51,13 @@
   </div>
 {:else}
   <div
-    class="absolute bottom-0 w-full bg-stone-100 px-4 pb-24 pt-2 shadow-lg empty:hidden horizontal:hidden xs:w-[384px] xs:rounded-t-xl"
+    class="absolute bottom-0 left-1/2 w-full -translate-x-1/2 px-4 pb-28 pt-2 text-center shadow-lg empty:hidden horizontal:hidden"
     transition:fly|global={{ duration: 400, y: 400, delay: 1 }}
   >
     {@render excerpt?.()}
   </div>
 {/if}
+
+<section class="pointer-events-none relative h-full w-full horizontal:hidden">
+  <Navigation bind:open></Navigation>
+</section>

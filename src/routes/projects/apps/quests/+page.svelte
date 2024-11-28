@@ -33,7 +33,7 @@
 >
   {#snippet project()}
     <div
-      class="relative h-full w-full"
+      class="pointer-events-auto relative h-full w-full"
       out:fade|global={{
         duration: 1 /* Hide immediatly on page navigation, regardless of other transition deleying component destroy */,
       }}
@@ -56,17 +56,11 @@
   {#snippet about()}
     <div class="flex flex-col">
       {#if app.state === "idle"}
-        <p>It's a todo app. Nothing fancy or original.</p>
         <p>
-          Perheaps seeing todo's as quests helps finding the determination to
-          complete them.
-        </p>
-        <p>
-          When you aren't logged in, your data do persist in your local storage.
-          Handy, but who will clean them after that ?
-        </p>
-        <p>
-          Under the hood, there's some <b>react</b> involved.
+          It's a todo app. Nothing fancy or original. Perheaps seeing todo's as
+          quests helps finding the determination to complete them. When you
+          aren't logged in, your data do persist in your local storage. Under
+          the hood, there's some <b>react</b> involved.
         </p>
       {:else}
         <p>Going on an adventure...</p>

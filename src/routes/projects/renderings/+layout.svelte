@@ -71,7 +71,7 @@
   });
 </script>
 
-<div class="absolute h-full w-full" out:fade|global={{ duration: 0 }}>
+<div class="absolute h-full w-full" out:fade|global={{ duration: 1 }}>
   <div
     style:visibility={loading ? "hidden" : "visible"}
     class="relative flex h-full w-full items-center justify-center"

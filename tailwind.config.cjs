@@ -1,3 +1,5 @@
+import typography from "@tailwindcss/typography";
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{svelte,ts}", "./node_modules/@s0rt/**/*.{svelte,js}"],
@@ -9,4 +11,5 @@ module.exports = {
       },
     },
   },
+  plugins: [typography],
 };

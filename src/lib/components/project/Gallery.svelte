@@ -24,9 +24,11 @@
   };
 </script>
 
-<div class="relative flex grow justify-center overflow-x-hidden">
+<div
+  class="relative flex max-w-96 justify-center overflow-x-hidden rounded-xl bg-stone-700/20"
+>
   <div
-    class="flex aspect-[1.5] h-full max-w-full snap-x snap-mandatory overflow-x-auto scroll-smooth"
+    class="flex aspect-[2/3] h-full max-w-full snap-x snap-mandatory overflow-x-auto scroll-smooth horizontal:aspect-[1.5]"
     bind:this={element}
     bind:clientWidth={elementWidth}
   >
@@ -38,7 +40,7 @@
         <img
           src={screenshot}
           alt="teamup screenshot"
-          class="aspect-[0.45] h-full shadow-lg"
+          class="m-0 aspect-[0.45] h-full shadow-lg"
         />
       </div>
     {/each}
@@ -46,9 +48,7 @@
   <div
     class="pointer-events-none absolute flex aspect-[1.5] h-full max-w-full justify-between"
   >
-    <div
-      class="left-0 top-0 flex h-full w-[20%] items-center justify-start bg-gradient-to-r from-stone-100 via-stone-100 to-stone-100/0"
-    >
+    <div class="left-0 top-0 flex h-full w-[20%] items-center justify-center">
       <button
         class="pointer-events-auto"
         onclick={() => scrollToScreenshot(-1)}
@@ -57,9 +57,7 @@
         <ArrowLeftCircle></ArrowLeftCircle>
       </button>
     </div>
-    <div
-      class="right-0 top-0 flex h-full w-[20%] items-center justify-end bg-gradient-to-l from-stone-100 via-stone-100 to-stone-100/0"
-    >
+    <div class="right-0 top-0 flex h-full w-[20%] items-center justify-center">
       <button
         class="pointer-events-auto"
         onclick={() => scrollToScreenshot(1)}
