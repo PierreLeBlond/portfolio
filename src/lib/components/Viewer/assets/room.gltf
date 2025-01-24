@@ -1,9 +1,10 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.3.47",
 		"version":"2.0"
 	},
 	"extensionsUsed":[
+		"KHR_materials_emissive_strength",
 		"KHR_materials_specular",
 		"KHR_materials_ior"
 	],
@@ -4771,10 +4772,15 @@
 		{
 			"doubleSided":true,
 			"emissiveFactor":[
-				0.40037524700164795,
 				1,
-				0.8461307287216187
+				0.910257875919342,
+				0.8570089936256409
 			],
+			"extensions":{
+				"KHR_materials_emissive_strength":{
+					"emissiveStrength":2.1251986026763916
+				}
+			},
 			"name":"wave",
 			"pbrMetallicRoughness":{
 				"baseColorFactor":[
@@ -4790,9 +4796,14 @@
 			"doubleSided":true,
 			"emissiveFactor":[
 				1,
-				0.2504677474498749,
-				0.7030365467071533
+				1,
+				0.90311199426651
 			],
+			"extensions":{
+				"KHR_materials_emissive_strength":{
+					"emissiveStrength":10.869500160217285
+				}
+			},
 			"name":"ustom",
 			"pbrMetallicRoughness":{
 				"baseColorFactor":[
@@ -4807,9 +4818,9 @@
 		{
 			"doubleSided":true,
 			"emissiveFactor":[
-				0.4265231788158417,
-				1,
-				0.3112261891365051
+				0.0012029999634250998,
+				0.0008053064811974764,
+				0.0006385903689078987
 			],
 			"name":"quests",
 			"pbrMetallicRoughness":{
@@ -4826,9 +4837,14 @@
 			"doubleSided":true,
 			"emissiveFactor":[
 				1,
-				0.49836647510528564,
-				0.22828437387943268
+				0.0028250000905245543,
+				0.000653000024612993
 			],
+			"extensions":{
+				"KHR_materials_emissive_strength":{
+					"emissiveStrength":10000
+				}
+			},
 			"name":"recipe",
 			"pbrMetallicRoughness":{
 				"baseColorFactor":[
@@ -4843,10 +4859,15 @@
 		{
 			"doubleSided":true,
 			"emissiveFactor":[
-				0.20736904442310333,
-				0.19353890419006348,
-				1
+				1,
+				1,
+				0.90311199426651
 			],
+			"extensions":{
+				"KHR_materials_emissive_strength":{
+					"emissiveStrength":10.869500160217285
+				}
+			},
 			"name":"teamup",
 			"pbrMetallicRoughness":{
 				"baseColorFactor":[
@@ -4885,6 +4906,23 @@
 					1
 				],
 				"metallicFactor":0
+			}
+		},
+		{
+			"doubleSided":true,
+			"emissiveFactor":[
+				0.011612173169851303,
+				0.009721226990222931,
+				0.008568130433559418
+			],
+			"name":"Black",
+			"pbrMetallicRoughness":{
+				"baseColorFactor":[
+					0,
+					0,
+					0,
+					1
+				]
 			}
 		},
 		{
@@ -5315,7 +5353,7 @@
 						"TEXCOORD_1":132
 					},
 					"indices":133,
-					"material":7
+					"material":8
 				},
 				{
 					"attributes":{
@@ -5340,7 +5378,7 @@
 						"TEXCOORD_1":142
 					},
 					"indices":143,
-					"material":8
+					"material":9
 				}
 			]
 		}
