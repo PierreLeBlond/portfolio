@@ -1,5 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap");
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@plugin "@tailwindcss/typography";
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@theme {
+  --font-sans: 'Comic+Neue', Inter, sans-serif;
+}
+
+@custom-variant horizontal {
+  @media (min-aspect-ratio: 16/9) {
+    @slot;
+  }
+}
+
+@custom-variant xs {
+  @media (max-aspect-ratio: 16/9) and (min-width: 448px) {
+    @slot;
+  }
+}
