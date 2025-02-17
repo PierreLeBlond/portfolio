@@ -38,10 +38,10 @@
 		"vite": "^6.1.0"
 	},
 	"dependencies": {
-		"@s0rt/3d-viewer": "9.2.2",
+		"@s0rt/3d-viewer": "10.0.1",
 		"@s0rt/wave-monster-collapse": "^4.2.7",
 		"chess": "https://app.pierrelespingal.xyz/chess/v3.0.0/package/chess-3.0.0.tgz",
-		"earth": "https://app.pierrelespingal.xyz/earth/v3.0.0/package/earth-3.0.0.tgz",
+		"earth": "https://app.pierrelespingal.xyz/earth/v4.1.2/package/earth-4.1.2.tgz",
 		"lucide-svelte": "^0.475.0"
 	}
 }
