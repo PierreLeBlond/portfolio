@@ -1,63 +1,46 @@
 <script lang="ts">
-  import { fade, fly } from "svelte/transition";
-  import About from "./About.svelte";
-  import Navigation from "./Navigation.svelte";
-  import type { Snippet } from "svelte";
+	import { fade, fly, scale } from 'svelte/transition';
+	import About from './About.svelte';
+	import Navigation from './Navigation.svelte';
+	import type { Snippet } from 'svelte';
+	import { cn } from '../utils';
 
-  interface Props {
-    title: string;
-    githubLink: string | null;
-    link: string | null;
-    screenshots: string[];
-    about: Snippet;
-    excerpt?: Snippet;
-  }
+	interface Props {
+		title: string;
+		githubLink: string | null;
+		link: string | null;
+		screenshots: string[];
+		about: Snippet;
+		excerpt?: Snippet;
+	}
 
-  let { title, githubLink, link, screenshots, about, excerpt }: Props =
-    $props();
+	let { title, githubLink, link, screenshots, about, excerpt }: Props = $props();
 
-  let open = $state(false);
+	let open = $state(false);
 </script>
 
 <section
-  class="relative hidden h-full w-full flex-col justify-between rounded-lg bg-stone-100/50 shadow-lg backdrop-blur-xl horizontal:flex"
-  transition:fly|global={{ duration: 400, x: 400, delay: 1 }}
+	class={cn(
+		'horizontal:max-w-96 relative flex max-h-full w-full max-w-[40rem] flex-col justify-between rounded-lg bg-stone-100/50 shadow-sm backdrop-blur-xl transition-all'
+	)}
+	transition:scale|global={{ duration: 400, delay: 1 }}
 >
-  <About {title} {githubLink} {link} {screenshots} scrollKey="horizontal"
-    >{@render about()}</About
-  >
-  <Navigation bind:open></Navigation>
-</section>
-
-{#if open}
-  <div
-    class="pointer-events-auto absolute bottom-0 right-0 flex h-screen w-full justify-center pt-16 text-base horizontal:hidden"
-    transition:fade|global={{ duration: 400, delay: 1 }}
-  >
-    <button
-      aria-label="close"
-      class="absolute top-0 h-full w-full bg-stone-700/40"
-      onclick={() => (open = false)}
-    >
-    </button>
-    <div
-      class="h-full w-full overflow-hidden bg-stone-100/50 px-2 pb-32 shadow-lg backdrop-blur-xl"
-      transition:fly|global={{ duration: 400, y: 400, delay: 1 }}
-    >
-      <About {title} {githubLink} {link} {screenshots} scrollKey="vertical"
-        >{@render about()}</About
-      >
-    </div>
-  </div>
-{:else}
-  <div
-    class="absolute bottom-0 left-1/2 w-full -translate-x-1/2 px-4 pb-28 pt-2 text-center shadow-lg empty:hidden horizontal:hidden"
-    transition:fly|global={{ duration: 400, y: 400, delay: 1 }}
-  >
-    {@render excerpt?.()}
-  </div>
-{/if}
-
-<section class="pointer-events-none relative h-full w-full horizontal:hidden">
-  <Navigation bind:open></Navigation>
+	<div
+		class={cn(
+			'grid overflow-hidden transition-all',
+			open ? 'grid-rows-[1fr]' : 'horizontal:grid-rows-[1fr] grid-rows-[0fr]'
+		)}
+	>
+		<About {title} {githubLink} {link} {screenshots} scrollKey="horizontal">{@render about()}</About
+		>
+	</div>
+	{#if !open}
+		<div
+			class="horizontal:hidden absolute bottom-0 left-1/2 w-full -translate-x-1/2 px-4 pt-2 pb-16 text-center empty:hidden"
+			transition:fly|global={{ duration: 300, y: 20, delay: 1 }}
+		>
+			{@render excerpt?.()}
+		</div>
+	{/if}
+	<Navigation bind:open></Navigation>
 </section>

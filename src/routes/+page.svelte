@@ -8,16 +8,16 @@
 >
 	<div class="flex flex-col gap-y-4">
 		<p>
-			<span class="text-5xl font-bold">Pierre Lespingal</span> <br />
-			<span class="text-4xl font-bold text-stone-400"> 3D & Web developer</span>
+			<span class="font-title ont-bold text-3xl sm:text-5xl">Pierre Lespingal</span> <br />
+			<span class="font-title text-2xl font-bold text-stone-300 sm:text-3xl">
+				3D & Web developer</span
+			>
 		</p>
 	</div>
-	<p
-		class="horizontal:text-start xs:text-center pointer-events-none justify-self-end text-start text-xl"
-	>
+	<p class="horizontal:text-start pointer-events-none justify-self-end text-start text-lg">
 		Looking for job opportunities!<br />
 		Feel free to contact me at
-		<a href="mailto:pierre.lespingal@gmail.com" class="pointer-events-auto text-blue-400">
+		<a href="mailto:pierre.lespingal@gmail.com" class="pointer-events-auto text-sky-500">
 			pierre.lespingal@gmail.com
 		</a>
 	</p>

@@ -10,7 +10,8 @@
 }
 
 @theme {
-  --font-sans: 'Comic+Neue', Inter, sans-serif;
+  --font-sans: 'Istok Web', Inter, sans-serif;
+  --font-title: 'Lexend';
 }
 
 @custom-variant horizontal {
