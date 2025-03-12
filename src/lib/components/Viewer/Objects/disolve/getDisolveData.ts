@@ -1,70 +1,70 @@
-import { THREE } from "@s0rt/3d-viewer";
+import { THREE } from '@s0rt/3d-viewer';
 
 const wireframeMaterial = new THREE.MeshBasicMaterial({
-  wireframe: true,
-  color: 0xfb923c,
+	wireframe: true,
+	color: 0x51a2ff
 });
 
 export const getDisolveData = (object: THREE.Object3D) => {
-  const meshDatas: {
-    mesh: THREE.Mesh;
-    wireframeMesh: THREE.Mesh;
-    faceCount: number;
-  }[] = [];
+	const meshDatas: {
+		mesh: THREE.Mesh;
+		wireframeMesh: THREE.Mesh;
+		faceCount: number;
+	}[] = [];
 
-  object.traverse((children: THREE.Object3D) => {
-    if (children.type != "Mesh" && children.type != "SkinnedMesh") {
-      return;
-    }
+	object.traverse((children: THREE.Object3D) => {
+		if (children.type != 'Mesh' && children.type != 'SkinnedMesh') {
+			return;
+		}
 
-    if (children.userData["isDisolveWireframe"]) {
-      return;
-    }
+		if (children.userData['isDisolveWireframe']) {
+			return;
+		}
 
-    const mesh = children as THREE.Mesh;
+		const mesh = children as THREE.Mesh;
 
-    let meshData = mesh.userData["disolveData"];
-    if (meshData) {
-      meshDatas.push(meshData);
-      return;
-    }
+		let meshData = mesh.userData['disolveData'];
+		if (meshData) {
+			meshDatas.push(meshData);
+			return;
+		}
 
-    const wireframeMesh = new THREE.Mesh();
-    wireframeMesh.name = `${mesh.name}_wireframe`;
+		const wireframeMesh = new THREE.Mesh();
+		wireframeMesh.name = `${mesh.name}_wireframe`;
 
-    wireframeMesh.geometry = new THREE.BufferGeometry();
-    wireframeMesh.geometry.copy(mesh.geometry);
+		wireframeMesh.geometry = new THREE.BufferGeometry();
+		wireframeMesh.geometry.copy(mesh.geometry);
 
-    wireframeMesh.material = wireframeMaterial;
+		wireframeMesh.material = wireframeMaterial;
 
-    const meshIndexBuffer = mesh.geometry.getIndex();
+		const meshIndexBuffer = mesh.geometry.getIndex();
 
-    if (!meshIndexBuffer) {
-      throw new Error("Mesh should be indexed to be disolved.");
-    }
+		if (!meshIndexBuffer) {
+			throw new Error('Mesh should be indexed to be disolved.');
+		}
 
-    const faceCount = meshIndexBuffer.count / 3;
+		const faceCount = meshIndexBuffer.count / 3;
 
-    meshData = {
-      mesh,
-      wireframeMesh,
-      faceCount,
-    };
+		meshData = {
+			mesh,
+			wireframeMesh,
+			faceCount
+		};
 
-    wireframeMesh.userData["isDisolveWireframe"] = true;
-    mesh.userData["disolveData"] = meshData;
+		wireframeMesh.userData['isDisolveWireframe'] = true;
+		mesh.userData['disolveData'] = meshData;
 
-    meshDatas.push(meshData);
-  });
+		meshDatas.push(meshData);
+	});
 
-  meshDatas.forEach(({ mesh, wireframeMesh }) => {
-    const alreadySetChildren = mesh.getObjectByName(`${mesh.name}_wireframe`);
-    if (alreadySetChildren) {
-      return;
-    }
+	meshDatas.forEach(({ mesh, wireframeMesh }) => {
+		const alreadySetChildren = mesh.getObjectByName(`${mesh.name}_wireframe`);
+		if (alreadySetChildren) {
+			return;
+		}
 
-    mesh.add(wireframeMesh);
-  });
+		mesh.add(wireframeMesh);
+	});
 
-  return meshDatas;
+	return meshDatas;
 };

@@ -9,9 +9,14 @@
   }
 }
 
-@theme {
+@theme inline {
   --font-sans: 'Istok Web', Inter, sans-serif;
   --font-title: 'Lexend';
+
+  --color-background: var(--color-orange-100);
+  --color-foreground: var(--color-gray-900);
+
+  --color-accent: var(--color-blue-400);
 }
 
 @custom-variant horizontal {

@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<div class="horizontal:grid horizontal:grid-cols-5 absolute -z-20 flex h-full w-full bg-stone-950">
+<div class="horizontal:grid horizontal:grid-cols-5 absolute -z-20 flex h-full w-full bg-gray-950">
 	<div class="horizontal:col-span-3 relative flex h-full w-full items-center justify-center">
 		<div
 			class="horizontal:left-[30%] horizontal:top-[30%] horizontal:translate-x-[-50%] horizontal:translate-y-[-50%] absolute aspect-square w-1/2 translate-x-[-60%] translate-y-[-40%] rounded-full bg-white/90 sm:h-64 sm:w-64"

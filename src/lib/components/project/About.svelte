@@ -15,8 +15,8 @@
 	let { title, githubLink, link, scrollKey, screenshots, children }: Props = $props();
 </script>
 
-<div class="pointer-events-auto h-full w-full overflow-hidden">
-	<div class="pointer-events-auto flex h-full flex-col gap-2 overflow-y-auto px-8 pt-8">
+<div class="pointer-events-auto flex w-full flex-col overflow-y-hidden">
+	<div class="flex h-full flex-col gap-2 overflow-y-auto p-8">
 		<div class="prose flex flex-col">
 			<h1>
 				{title}
@@ -28,7 +28,7 @@
 							aria-label="github link"
 							href={githubLink}
 							target="_blank"
-							class="rounded-full fill-stone-800 p-2 hover:bg-stone-700/30"
+							class="hover:bg-background/30 fill-foreground rounded-full p-2"
 						>
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="20px" height="20px"
 								><path
@@ -41,7 +41,7 @@
 						<a
 							href={link}
 							target="_blank"
-							class=" flex items-center rounded-full fill-stone-800 p-2 hover:bg-stone-700/30"
+							class=" hover:bg-background/30 fill-foreground flex items-center rounded-full p-2"
 						>
 							<Link size="20" absoluteStrokeWidth strokeWidth="2" />
 						</a>
