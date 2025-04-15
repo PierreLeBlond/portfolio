@@ -32,7 +32,7 @@
 <Project
 	title={RECIPE_LABEL}
 	githubLink="https://github.com/PierreLeBlond/recipes"
-	link="https://recipes.pierrelespingal.com"
+	link="https://app.pierrelespingal.xyz/recipes"
 	screenshots={data.screenshots}
 >
 	{#snippet project()}
@@ -48,7 +48,7 @@
 						<iframe
 							onload={handleLoaded}
 							title="recipes"
-							src="https://recipes.pierrelespingal.com"
+							src="https://app.pierrelespingal.xyz/recipes"
 							class="bg-background h-full w-full rounded-lg"
 						></iframe>
 					</div>

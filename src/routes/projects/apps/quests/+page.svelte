@@ -28,7 +28,7 @@
 <Project
 	title={QUESTS_LABEL}
 	githubLink="https://github.com/PierreLeBlond/quests"
-	link="https://quests.pierrelespingal.com"
+	link="https://app.pierrelespingal.xyz/quests"
 	screenshots={data.urls}
 >
 	{#snippet project()}
@@ -44,7 +44,7 @@
 						<iframe
 							on:load={handleLoaded}
 							title="quests"
-							src="https://quests.pierrelespingal.com"
+							src="https://app.pierrelespingal.xyz/quests"
 							class="bg-foreground h-full w-full rounded-lg"
 						></iframe>
 					</div>
