@@ -32,7 +32,7 @@
 <Project
 	title={USTOM_LABEL}
 	githubLink="https://github.com/PierreLeBlond/ustom"
-	link="https://ustom.pierrelespingal.com/?encryptedWord=158ae1b0d188&iv=a62f76eb217e47f158688e579c00209b"
+	link="https://app.pierrelespingal.xyz/ustom/?encryptedWord=158ae1b0d188&iv=a62f76eb217e47f158688e579c00209b"
 	screenshots={data.screenshots}
 >
 	{#snippet project()}
@@ -48,7 +48,7 @@
 						<iframe
 							onload={handleLoaded}
 							title="ustom"
-							src="https://ustom.pierrelespingal.com/?encryptedWord=158ae1b0d188&iv=a62f76eb217e47f158688e579c00209b"
+							src="https://app.pierrelespingal.xyz/ustom/?encryptedWord=158ae1b0d188&iv=a62f76eb217e47f158688e579c00209b"
 							class="bg-foreground h-full w-full rounded-lg"
 						></iframe>
 					</div>
