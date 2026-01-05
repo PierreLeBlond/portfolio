@@ -32,14 +32,14 @@
 <Project
 	title={USTOM_LABEL}
 	githubLink="https://github.com/PierreLeBlond/ustom"
-	link="https://app.pierrelespingal.xyz/ustom/?encryptedWord=158ae1b0d188&iv=a62f76eb217e47f158688e579c00209b"
+	link="https://app.pierrelespingal.xyz/ustom/?encryptedWord=11015a56d8ab9bac&iv=640f05997d6e2edae8496e499763d2b7"
 	screenshots={data.screenshots}
 >
 	{#snippet project()}
 		<div
 			class="pointer-events-auto relative h-full w-full"
 			out:fade|global={{
-				duration: 1 /* Hide immediatly on page navigation, regardless of other transition deleying component destroy */
+				duration: 1 /* Hide immediately on page navigation, regardless of other transition delaying component destroy */
 			}}
 		>
 			<Mask columns={6} frames={30} loaded={unmask}>
@@ -48,7 +48,7 @@
 						<iframe
 							onload={handleLoaded}
 							title="ustom"
-							src="https://app.pierrelespingal.xyz/ustom/?encryptedWord=158ae1b0d188&iv=a62f76eb217e47f158688e579c00209b"
+							src="https://app.pierrelespingal.xyz/ustom/?encryptedWord=11015a56d8ab9bac&iv=640f05997d6e2edae8496e499763d2b7"
 							class="bg-foreground h-full w-full rounded-lg"
 						></iframe>
 					</div>
